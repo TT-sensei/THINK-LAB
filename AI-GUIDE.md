@@ -93,3 +93,16 @@ Before completing a change:
 - Test printing, including a blank template and filled-in content.
 - Check tablet and narrow-screen layouts.
 - Confirm there are no API calls, external libraries, or unapproved assets.
+
+
+## Research-informed design update
+
+The current tool library has been expanded to 30 tools. The additions include coordinate-axis sorting, diamond ranking, butterfly-style multi-perspective comparison, kumade-style perspective expansion, concentric relationship mapping, prediction planning, concept relationships, hierarchical classification, part-whole decomposition, and analogy relationships.
+
+Design references:
+- Japanese curriculum-related "thinking techniques": compare, classify, relate, sequence, and other information-processing actions.
+- Japanese education-center practice materials mapping thinking skills to tools such as Venn diagrams, coordinate axes, webbing, jellyfish charts, fishbone charts, pyramid charts, and KWL.
+- Project Zero's general principle that thinking routines should be selected for the type of thinking they support and used repeatedly with purpose. Do not copy Project Zero routine wording, templates, or visual materials into this site. Some individual Project Zero resources carry a CC BY-NC-ND license.
+- EEF guidance on teaching planning, monitoring, and evaluating strategies in the context of curriculum learning.
+
+Do not imply that a graphic organizer alone guarantees learning gains. The teacher should introduce, model, and revisit a tool in connection with the learning goal.
