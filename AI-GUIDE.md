@@ -124,3 +124,26 @@ Implementation constraints:
 - Keep each diagram's characteristic geometry visible; avoid replacing a diagram with generic rectangular input cards.
 - Preserve blank-state hints, responsive sizing, print readability, keyboard access, and the existing add/remove actions.
 - Keep Navi characters subordinate to the thinking area; never let guidance art cover or shrink the diagram.
+
+## Second-wave diagram renderers
+
+Keep the live preview isolated in `preview.html` until the owner reviews it. The 25 split-view tools should use individual diagram renderers; keep the diamond-ranking tool's existing non-split layout unchanged.
+
+Purpose-built renderers added:
+- `timeline`: alternating event cards anchored to a continuous vertical time axis.
+- `flowchart`: numbered action nodes and optional condition notes.
+- `process`: numbered action cards with a separate check/verification field.
+- `cause-effect`: three stages for causes, intervening events, and results.
+- `tree`: root topic, classification criterion, categories, and examples.
+- `brace`: one whole on the left, decomposition brace, and component/details on the right.
+- `prep`: connected Point → Reason → Example → Point sequence.
+- `claim`: claim, evidence/source cards, and reasoning link.
+- `reflection`: activity → learning/insight → next step.
+- `brainstorm`: idea-note board.
+- `imagemap` and `kumade`: radial nodes with a separate overflow list for entries beyond eight.
+- `candy`: known facts/conditions → prediction/reason → verification method.
+- `bridge`: A → B = C → D analogy rows with a relation label.
+
+Maintain the exact existing block and field IDs. Every learner-editable value must have one unique `data-diag` target so the existing input listener updates the displayed diagram. Use the `dataVal` helper for escaped text and blank-state hints. Extra radial entries must provide a `data-diag` target for every field, not only the first field.
+
+Keep the 9-position diamond ranking layout as it is in the non-split editor. It has a specific existing layout and should not be converted into the generic diagram panel without explicit approval.
