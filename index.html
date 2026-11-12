@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#f5f7fb">
 <meta name="description" content="考えを広げ、比べ、整理する。TT-senseiの思考ツール集 THINK LAB。入力も印刷もできる、授業のための道具箱です。">
 <title>THINK LAB｜考えを見える形に</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23243956'/><text x='32' y='43' font-size='27' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle'>T.</text></svg>">
 <style>
 :root{--ink:#202b3c;--muted:#657287;--line:#dfe5ee;--paper:#fff;--bg:#f4f7fb;--blue:#4669a8;--blue2:#eaf0fa;--mint:#e8f3ef;--radius:18px;--shadow:0 8px 28px rgba(34,52,79,.07)}
 *{box-sizing:border-box}
@@ -221,6 +222,24 @@ button{cursor:pointer}
 @media(max-width:440px){.quick-pick{padding:8px;gap:7px}.quick-pick b{font-size:10px}.quick-pick small{font-size:9px}.quick-icon{width:27px;height:27px}}
 @media print{.quick-guide{display:none!important}}
 
+/* Layout corrections: quadrant positions, matrix grid, table rows, sequence flow. */
+.layout-coordinate .thought-block:nth-child(2){grid-column:2;grid-row:2}
+.layout-coordinate .thought-block:nth-child(3){grid-column:1;grid-row:2}
+.layout-coordinate .thought-block:nth-child(4){grid-column:1;grid-row:3}
+.layout-coordinate .thought-block:nth-child(5){grid-column:2;grid-row:3}
+.layout-matrix{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.layout-matrix .entry-grid{grid-template-columns:1fr}
+.layout-table .entry-grid{grid-template-columns:1fr}
+.layout-table .entry{display:grid;grid-template-columns:.75fr 1fr 1fr;gap:9px;align-items:start}
+.layout-table .entry-top{grid-column:1/-1}
+.layout-sequence{gap:24px}
+.layout-sequence .thought-block{position:relative}
+.layout-sequence .thought-block:not(:last-child):after{content:'↓';position:absolute;left:50%;bottom:-21px;transform:translateX(-50%);color:#718bb1;font-size:16px;font-weight:900;z-index:2;line-height:1}
+@media(max-width:700px){
+ .layout-matrix{grid-template-columns:1fr}
+ .layout-table .entry{grid-template-columns:1fr}
+ .layout-table .entry-top{grid-column:auto}
+}
 </style>
 </head>
 <body>
@@ -254,7 +273,7 @@ button{cursor:pointer}
   <nav class="category-tabs" id="categoryTabs" aria-label="分類"></nav>
   <div class="section-head"><h2 id="listHeading">思考ツールを選ぶ</h2><p>入力して印刷・PDF保存できます</p></div>
   <div class="tool-grid" id="toolGrid"></div>
-  <div class="footer"><span>THINK LAB — 考えるための道具箱</span><span>入力内容はこの端末のブラウザに保存されます。<a href="./references.html">先生向け参考資料</a>　<a href="https://github.com/TT-sensei/THINK-LAB" target="_blank" rel="noopener">Project</a></span></div>
+  <div class="footer"><span>THINK LAB — 考えるための道具箱</span><span>入力内容はこの端末のブラウザに保存されます。<a href="./references.html">先生向け参考資料</a></span></div>
  </section>
  <section class="editor" id="editorView" aria-live="polite">
   <div class="editor-head">
@@ -303,7 +322,7 @@ const specs=[
 {id:'venn',name:'ベン図',symbol:'◉',category:'compare',desc:'二つのものの共通点と相違点を整理する。',purpose:'二つのものを比べて、同じところと違うところを見つけるよ。',steps:['比べる二つのものを書く','それぞれにしかない特徴を書く','共通する特徴を真ん中に書く'],cases:'物語の人物比較、昔と今の暮らし、動植物や地域の比較',tips:['見た目だけでなく、働きや理由も比べる','共通点は両方に当てはまるものだけを書く','違いが見つからないときは視点を変える'],layout:'venn',blocks:[{id:'a',title:'Aに当てはまること',help:'Aだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Aの特徴'}]},{id:'both',title:'共通すること',help:'AとBの両方に当てはまること。',initial:3,repeat:true,fields:[{id:'item',label:'共通点',placeholder:'同じところ'}]},{id:'b',title:'Bに当てはまること',help:'Bだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Bの特徴'}]}]},
 {id:'compare',name:'比較表',symbol:'▤',category:'compare',desc:'同じ視点で並べて、違いや共通点を見つける。',purpose:'比べるものを同じ視点で見て、違いと共通点をはっきりさせるよ。',steps:['比べるものを決める','比べる視点をそろえる','それぞれの特徴を書き、気づきをまとめる'],cases:'地域・時代・人物・生き物・実験結果などの比較',tips:['同じ視点で比べる','資料や観察を根拠にする','最後に一番大きな違いや共通点を書く'],layout:'table',blocks:[{id:'rows',title:'比べる視点',help:'同じ視点でAとBの様子を書こう。',initial:4,repeat:true,fields:[{id:'view',label:'視点',placeholder:'例：くらし・気候・役割'},{id:'a',label:'A',placeholder:'Aの特徴'},{id:'b',label:'B',placeholder:'Bの特徴'}]}]},
 {id:'matrix',name:'マトリックス',symbol:'▦',category:'compare',desc:'二つの視点を組み合わせて、情報を分類する。',purpose:'二つの視点を組み合わせて、情報を4つのまとまりに分けるよ。',steps:['縦と横の視点を決める','4つの枠の意味を確認する','情報を当てはまる枠に整理する'],cases:'情報の分類、案の比較、事実と意見の整理、優先順位の検討',tips:['縦軸と横軸の意味をはっきりさせる','どの枠にも入らないものは視点を見直す','枠ごとの特徴を比べる'],layout:'matrix',blocks:[{id:'q1',title:'左上の枠',help:'二つの条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q2',title:'右上の枠',help:'横の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q3',title:'左下の枠',help:'縦の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q4',title:'右下の枠',help:'どちらの条件にも当てはまらない情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]}]},
-{id:'pmi',name:'PMIシート',symbol:'＋',category:'compare',desc:'よい点・気になる点・おもしろい点から考える。',purpose:'一つの考えや提案を、いろいろな角度から見直すよ。',steps:['考えや提案を決める','よい点・気になる点を書く','おもしろい点や新しい可能性を考える'],cases:'話合いでの意見検討、提案の改善、社会の課題について考える',tips:['すぐに賛成・反対を決めない','気になる点は改善のヒントにもなる','おもしろい点から新しい案を考える'],layout:'columns',blocks:[{id:'plus',title:'P｜よい点・プラス',help:'よいところ、役立つところ。',initial:3,repeat:true,fields:[{id:'item',label:'よい点',placeholder:'よいところは？'}]},{id:'minus',title:'M｜気になる点・マイナス',help:'心配なところ、課題になりそうなこと。',initial:3,repeat:true,fields:[{id:'item',label:'気になる点',placeholder:'心配なところは？'}]},{id:'interesting',title:'I｜おもしろい点',help:'意外なこと、新しい可能性。',initial:3,repeat:true,fields:[{id:'item',label:'おもしろい点',placeholder:'新しい発見は？'}]}]},
+{id:'pmi',name:'PMIシート',symbol:'＋',category:'analyze',desc:'よい点・気になる点・おもしろい点から考える。',purpose:'一つの考えや提案を、いろいろな角度から見直すよ。',steps:['考えや提案を決める','よい点・気になる点を書く','おもしろい点や新しい可能性を考える'],cases:'話合いでの意見検討、提案の改善、社会の課題について考える',tips:['すぐに賛成・反対を決めない','気になる点は改善のヒントにもなる','おもしろい点から新しい案を考える'],layout:'columns',blocks:[{id:'plus',title:'P｜よい点・プラス',help:'よいところ、役立つところ。',initial:3,repeat:true,fields:[{id:'item',label:'よい点',placeholder:'よいところは？'}]},{id:'minus',title:'M｜気になる点・マイナス',help:'心配なところ、課題になりそうなこと。',initial:3,repeat:true,fields:[{id:'item',label:'気になる点',placeholder:'心配なところは？'}]},{id:'interesting',title:'I｜おもしろい点',help:'意外なこと、新しい可能性。',initial:3,repeat:true,fields:[{id:'item',label:'おもしろい点',placeholder:'新しい発見は？'}]}]},
 {id:'jellyfish',name:'クラゲチャート',symbol:'♧',category:'analyze',desc:'中心となる考えを、理由や具体例で支える。',purpose:'中心の考えに対して、理由や具体例をいくつも考えて整理するよ。',steps:['頭の部分に中心の考えを書く','足の部分に理由や具体例を書く','どの理由が大切か考える'],cases:'説明文の要点整理、意見文の理由探し、調べ学習のまとめ',tips:['理由と具体例を混ぜずに整理する','理由を支える事実や資料を探す','大切なものに印を付ける'],layout:'branches',blocks:[{id:'reasons',title:'理由・具体例',help:'中心の考えを支える理由や事実を書こう。',initial:6,repeat:true,fields:[{id:'reason',label:'理由・事実',placeholder:'なぜそう考える？'},{id:'example',label:'具体例・資料',placeholder:'たとえば？'}]}]},
 {id:'fishbone',name:'フィッシュボーン',symbol:'⌁',category:'analyze',desc:'結果につながる原因を、視点ごとに整理する。',purpose:'起きていることの原因を、いくつかの視点から整理するよ。',steps:['魚の頭に結果や問題を書く','原因の大きなまとまりを決める','それぞれの原因を細かく書き出す'],cases:'理科の実験結果、生活上の問題、地域の課題、学級の改善',tips:['一つの原因だけで決めつけない','人・環境・方法・時間など視点を変える','事実と予想を区別する'],layout:'fishbone',blocks:[{id:'cause1',title:'原因のまとまり 1',help:'原因を一つずつ具体的に書こう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'考えられる原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]},{id:'cause2',title:'原因のまとまり 2',help:'別の視点から原因を探そう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'別の原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]},{id:'cause3',title:'原因のまとまり 3',help:'さらに別の視点から考えよう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'ほかの原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]}]},
 {id:'cause-effect',name:'原因と結果',symbol:'→',category:'analyze',desc:'原因・できごと・結果のつながりを整理する。',purpose:'何が原因で、どんなことが起き、どのような結果になったのかを整理するよ。',steps:['起きた結果を確かめる','その前に起きたことをたどる','原因と結果を矢印でつなぐ'],cases:'歴史上のできごと、自然現象、物語の展開、社会の課題',tips:['時間の前後と原因・結果を区別する','一つの結果に複数の原因がないか考える','資料をもとに関係を確かめる'],layout:'sequence',blocks:[{id:'causes',title:'原因',help:'きっかけになったこと。',initial:3,repeat:true,fields:[{id:'item',label:'原因',placeholder:'何がきっかけ？'}]},{id:'events',title:'途中のできごと',help:'原因のあとに起きたこと。',initial:3,repeat:true,fields:[{id:'item',label:'できごと',placeholder:'何が起きた？'}]},{id:'results',title:'結果',help:'最後にどうなったか。',initial:2,repeat:true,fields:[{id:'item',label:'結果',placeholder:'どうなった？'}]}]},
