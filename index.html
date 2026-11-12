@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f7fb">
+<meta name="description" content="考えを広げ、比べ、整理する。TT-senseiの思考ツール集 THINK LAB。入力も印刷もできる、授業のための道具箱です。">
+<title>THINK LAB｜考えを見える形に</title>
+<style>
+:root{--ink:#202b3c;--muted:#657287;--line:#dfe5ee;--paper:#fff;--bg:#f4f7fb;--blue:#4669a8;--blue2:#eaf0fa;--mint:#e8f3ef;--radius:18px;--shadow:0 8px 28px rgba(34,52,79,.07)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"UD Digi Kyokasho N-R","BIZ UDPGothic","Yu Gothic",Meiryo,system-ui,sans-serif;line-height:1.65}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1160px;margin:auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;color:inherit;text-decoration:none}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:#243956;color:white;display:grid;place-items:center;font-weight:800;letter-spacing:-1px;font-size:15px}
+.brand-name{font-size:17px;font-weight:850;letter-spacing:.05em;line-height:1.15}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:.15em}
+.top-actions{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 14px;border-radius:11px;font-weight:700;font-size:13px}
+.btn:hover{border-color:#9eafd0;background:#f8faff}
+.btn-primary{background:#243956;color:white;border-color:#243956}
+.btn-primary:hover{background:#304a70;color:white}
+.btn-quiet{background:transparent}
+.wrap{max-width:1160px;margin:auto;padding:28px 24px 64px}
+.hero{display:grid;grid-template-columns:1.3fr .7fr;gap:24px;align-items:center;padding:26px 4px 30px}
+.eyebrow{color:var(--blue);font-size:11px;font-weight:850;letter-spacing:.18em;text-transform:uppercase}
+.hero h1{font-size:clamp(30px,4vw,48px);line-height:1.2;letter-spacing:-.04em;margin:9px 0 14px}
+.hero p{color:var(--muted);max-width:620px;margin:0;font-size:15px}
+.hero-note{background:#fff;border:1px solid var(--line);border-radius:22px;padding:17px 18px;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow)}
+.hero-note img{width:82px;height:104px;object-fit:contain;object-position:center bottom;flex:none}
+.hero-note strong{display:block;margin-bottom:4px;font-size:14px}
+.hero-note p{font-size:12px;line-height:1.7}
+.search-row{display:flex;gap:12px;align-items:center;margin:4px 0 18px}
+.searchbox{flex:1;position:relative}
+.searchbox input{width:100%;border:1px solid var(--line);border-radius:13px;background:white;padding:13px 16px 13px 43px;outline:none;font-size:14px}
+.searchbox input:focus,.field textarea:focus{border-color:#829ac4;box-shadow:0 0 0 3px rgba(70,105,168,.12)}
+.search-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#8390a3}
+.count{font-size:12px;color:var(--muted);white-space:nowrap}
+.category-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.tab{border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:#fff;color:#566477;font-size:12px;font-weight:750}
+.tab.active{background:#243956;color:#fff;border-color:#243956}
+.section-head{display:flex;align-items:end;justify-content:space-between;margin:20px 0 13px}
+.section-head h2{font-size:18px;margin:0;letter-spacing:-.02em}
+.section-head p{font-size:12px;color:var(--muted);margin:0}
+.tool-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.tool-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px 16px 15px;text-align:left;min-height:156px;display:flex;flex-direction:column;gap:9px;transition:transform .16s,border-color .16s,box-shadow .16s;color:inherit}
+.tool-card:hover{transform:translateY(-2px);border-color:#a6b6d4;box-shadow:var(--shadow)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tool-number{font-size:10px;color:#97a2b2;font-weight:800;letter-spacing:.1em}
+.tool-symbol{width:34px;height:34px;border-radius:11px;background:var(--blue2);color:var(--blue);display:grid;place-items:center;font-size:17px;font-weight:800}
+.tool-card h3{font-size:15px;margin:0}
+.tool-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.65}
+.category-label{font-size:10px;color:#63718a;font-weight:800;letter-spacing:.04em;margin-top:auto}
+.empty{padding:32px;text-align:center;color:var(--muted);background:white;border:1px dashed var(--line);border-radius:16px}
+.footer{margin-top:34px;border-top:1px solid var(--line);padding:18px 2px;color:#8993a2;font-size:11px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.footer a{color:#687b9f}
+.editor{display:none}
+.editor.active{display:block}
+.list-view.hidden{display:none}
+.editor-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:6px 0 18px}
+.back-link{border:0;background:none;color:#526783;font-weight:750;padding:8px 0;font-size:13px}
+.editor-title{display:flex;align-items:center;gap:12px}
+.editor-title .tool-symbol{width:44px;height:44px;border-radius:14px}
+.editor-title h1{font-size:24px;margin:0;line-height:1.2}
+.editor-title p{font-size:12px;color:var(--muted);margin:4px 0 0}
+.action-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.guide-strip{display:flex;gap:15px;align-items:center;background:#edf2fa;border:1px solid #dce5f3;border-radius:17px;padding:13px 17px;margin:0 0 17px}
+.guide-strip img{width:64px;height:78px;object-fit:contain;object-position:center bottom;flex:none}
+.guide-copy{flex:1}
+.guide-kicker{font-size:10px;font-weight:850;color:#637da8;letter-spacing:.1em}
+.guide-copy p{margin:3px 0 0;font-size:13px;font-weight:650}
+.guide-toggle{border:1px solid #ccd8ea;background:white;border-radius:10px;color:#4f6485;padding:7px 10px;font-size:11px;font-weight:750;white-space:nowrap}
+.work-layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:17px;align-items:start}
+.workbench{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);min-width:0}
+.paper-heading{border-bottom:1px solid var(--line);padding-bottom:15px;margin-bottom:17px}
+.paper-overline{font-size:10px;color:#8793a5;font-weight:800;letter-spacing:.16em}
+.paper-heading h2{font-size:21px;margin:3px 0 5px}
+.paper-heading p{font-size:12px;color:var(--muted);margin:0}
+.topic-field{margin:15px 0 19px;padding:12px 14px;background:#f7f9fc;border:1px solid #e7ebf1;border-radius:12px}
+.topic-field label{display:block;font-size:11px;font-weight:850;color:#65758e;margin-bottom:5px}
+.topic-field input{width:100%;border:0;border-bottom:1px solid #aab6c7;background:transparent;outline:none;padding:7px 2px;font-size:16px;font-weight:700;color:var(--ink)}
+.topic-field input:focus{border-color:var(--blue)}
+.blocks{display:grid;gap:14px}
+.thought-block{border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0;background:#fff}
+.block-head{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:10px}
+.block-title{font-size:13px;font-weight:850;margin:0}
+.block-help{font-size:11px;color:var(--muted);margin:2px 0 0}
+.block-index{font-size:10px;color:#9aa5b4;font-weight:800}
+.entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.entry{border:1px solid #e6ebf2;background:#fafbfd;border-radius:10px;padding:10px;min-width:0;position:relative}
+.entry-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.entry-label{font-size:10px;font-weight:800;color:#6c7b91}
+.field{min-width:0}
+.field label{display:block;font-size:10px;color:#6c7b91;font-weight:800;margin-bottom:4px}
+.field textarea{display:block;width:100%;min-height:62px;resize:vertical;border:1px solid #dce3ec;border-radius:8px;background:white;padding:8px;font-size:12px;line-height:1.55;color:var(--ink);outline:none}
+.field textarea::placeholder{color:#b0bac7}
+.remove-entry{border:0;background:transparent;color:#9aa5b4;font-size:10px;padding:2px 4px}
+.remove-entry:hover{color:#bc5b5b}
+.add-entry{margin-top:10px;border:1px dashed #b9c6d8;background:#fbfcfe;color:#5f7395;border-radius:9px;padding:8px 12px;font-size:11px;font-weight:800}
+.add-entry:hover{background:#f0f4fa}
+.layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(2){background:#f6f8fd;border-color:#d3deef;border-radius:48% 48% 15px 15px}
+.layout-venn .thought-block:nth-child(3){background:#f2f8f5;border-color:#d3e7dc}
+.layout-branches .blocks{position:relative}
+.layout-branches .thought-block{border-left:4px solid #adc0dd}
+.layout-matrix .entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.layout-y .thought-block{border-top:4px solid #b5c8e0}
+.layout-fishbone .thought-block{border-left:4px solid #aebfd8}
+.layout-pyramid .thought-block{max-width:760px;margin:auto}
+.editor-aside{display:grid;gap:13px}
+.aside-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
+.aside-card h3{font-size:13px;margin:0 0 10px}
+.aside-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.75}
+.use-steps{display:grid;gap:9px}
+.use-step{display:flex;gap:9px;align-items:start}
+.step-dot{width:21px;height:21px;display:grid;place-items:center;border-radius:50%;background:#edf2fa;color:#55719e;font-size:10px;font-weight:850;flex:none}
+.use-step span:last-child{font-size:11px;color:#5f6d81;line-height:1.55}
+.tip-list{padding-left:17px;margin:0;display:grid;gap:6px}
+.tip-list li{font-size:11px;color:#5e6b7e}
+.save-state{font-size:10px;color:#8b96a6;margin-top:10px}
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(22,34,51,.48);z-index:60;padding:20px;overflow:auto;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal{width:min(600px,100%);background:white;border-radius:20px;padding:23px;box-shadow:0 20px 70px rgba(0,0,0,.18);position:relative}
+.modal h2{font-size:21px;margin:0 0 7px}
+.modal-intro{font-size:12px;color:var(--muted);margin:0 0 17px}
+.modal-steps{display:grid;gap:12px}
+.modal-step{display:flex;gap:12px;padding:12px;border:1px solid var(--line);border-radius:13px}
+.modal-step b{font-size:12px}
+.modal-step p{font-size:11px;color:var(--muted);margin:3px 0 0}
+.modal-close{position:absolute;top:15px;right:15px;border:0;background:#f0f3f7;border-radius:8px;width:30px;height:30px;font-size:16px}
+.modal-footer{display:flex;justify-content:flex-end;margin-top:17px}
+@media(max-width:900px){.tool-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.work-layout{grid-template-columns:minmax(0,1fr) 235px}.hero{grid-template-columns:1fr .8fr}}
+@media(max-width:700px){.topbar-inner{padding:10px 15px}.wrap{padding:20px 15px 44px}.hero{grid-template-columns:1fr;padding:14px 0 22px;gap:17px}.hero-note{max-width:520px}.hero-note img{width:66px;height:82px}.tool-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.tool-card{padding:13px;min-height:150px}.work-layout{grid-template-columns:1fr}.editor-aside{grid-template-columns:repeat(2,minmax(0,1fr))}.editor-head{align-items:flex-start;flex-direction:column}.action-buttons{width:100%}.action-buttons .btn{flex:1}.editor-title h1{font-size:21px}.workbench{padding:15px}.guide-strip{padding:10px 12px}.guide-strip img{width:49px;height:64px}.guide-copy p{font-size:12px}.guide-toggle{font-size:10px;padding:6px 8px}}
+@media(max-width:440px){.tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tool-card h3{font-size:13px}.tool-card p{font-size:10px}.entry-grid{grid-template-columns:1fr}.editor-aside{grid-template-columns:1fr}.count{display:none}.guide-toggle{display:none}.search-row{gap:6px}.footer{font-size:10px}}
+@page{size:A4 portrait;margin:13mm}
+@media print{
+ body{background:#fff!important;color:#111!important;font-size:11pt}
+ .topbar,.list-view,.editor-head,.guide-strip,.editor-aside,.action-buttons,.back-link,.add-entry,.remove-entry,.modal-backdrop,.save-state,.footer{display:none!important}
+ .wrap{max-width:none;padding:0!important;margin:0!important}
+ .editor{display:block!important}
+ .work-layout{display:block!important}
+ .workbench{border:0!important;box-shadow:none!important;padding:0!important;border-radius:0!important}
+ .paper-heading{padding-bottom:8mm;margin-bottom:5mm}
+ .paper-heading h2{font-size:19pt}
+ .paper-heading p{font-size:9pt}
+ .topic-field{background:#fff!important;border:1px solid #999!important;margin:5mm 0;padding:3mm}
+ .topic-field input{border-bottom:1px solid #777!important;color:#111!important}
+ .thought-block{break-inside:avoid;border:1px solid #aaa!important;background:#fff!important;padding:3mm;margin-bottom:3mm}
+ .entry{background:#fff!important;border:1px solid #bbb!important;min-height:23mm}
+ .field textarea{border:0!important;background:transparent!important;resize:none!important;min-height:16mm;color:#111!important;padding:2px!important}
+ .block-title,.entry-label,.field label{color:#111!important}
+ .block-help{color:#444!important}
+ .entry-grid{gap:2.5mm}
+ .layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(2){border-radius:12px!important}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="topbar-inner">
+  <a class="brand" href="#" id="homeBrand" aria-label="THINK LAB ホーム">
+   <span class="brand-mark">T.</span><span><span class="brand-name">THINK LAB</span><span class="brand-sub">THINKING TOOLS BY TT-SENSEI</span></span>
+  </a>
+  <div class="top-actions"><button class="btn btn-quiet" id="helpOpen">使い方</button><a class="btn" href="https://tt-sensei.github.io/learning-portal/" target="_blank" rel="noopener">TT-sensei</a></div>
+ </div>
+</header>
+<main class="wrap">
+ <section class="list-view" id="listView">
+  <div class="hero">
+   <div><div class="eyebrow">THINKING TOOLS / IDEAS INTO SHAPE</div><h1>考えを、<br>見える形に。</h1><p>思いついたことを広げる。違いを比べる。理由やつながりを整理する。<br>学びに合わせて道具を選び、自分の考えをつくっていこう。</p></div>
+   <div class="hero-note"><img id="heroNavi" alt="" src=""><div><strong id="heroNaviTitle">考えることを楽しもう。</strong><p id="heroNaviText">使いたい道具を選んで、考えを入力してみよう。書いた内容は自動で保存されるよ。</p></div></div>
+  </div>
+  <div class="search-row">
+   <div class="searchbox"><span class="search-icon">⌕</span><input id="searchInput" type="search" placeholder="思考ツールを検索する（例：比べる、理由、順序）" aria-label="思考ツールを検索"></div>
+   <span class="count" id="toolCount">20 tools</span>
+  </div>
+  <nav class="category-tabs" id="categoryTabs" aria-label="分類"></nav>
+  <div class="section-head"><h2 id="listHeading">思考ツールを選ぶ</h2><p>入力して印刷・PDF保存できます</p></div>
+  <div class="tool-grid" id="toolGrid"></div>
+  <div class="footer"><span>THINK LAB — 考えるための道具箱</span><span>入力内容はこの端末のブラウザに保存されます。<a href="https://github.com/TT-sensei/THINK-LAB" target="_blank" rel="noopener">Project</a></span></div>
+ </section>
+ <section class="editor" id="editorView" aria-live="polite">
+  <div class="editor-head">
+   <div><button class="back-link" id="backButton">← ツール一覧へ戻る</button><div class="editor-title"><span class="tool-symbol" id="editorSymbol">✳</span><div><h1 id="editorName">思考ツール</h1><p id="editorDesc"></p></div></div></div>
+   <div class="action-buttons"><button class="btn" id="resetButton">入力をリセット</button><button class="btn btn-primary" id="printButton">印刷・PDF保存 ↗</button></div>
+  </div>
+  <div class="guide-strip">
+   <img id="guideNavi" alt="" src=""><div class="guide-copy"><div class="guide-kicker">NAVI GUIDE / THINKING SUPPORT</div><p id="guideMessage">使い方を確認して、考えを整理してみよう。</p></div><button class="guide-toggle" id="guideMore">使い方のコツ</button>
+  </div>
+  <div class="work-layout">
+   <section class="workbench" id="workbench">
+    <div class="paper-heading"><div class="paper-overline">THINK LAB / THINKING SHEET</div><h2 id="paperTitle">思考シート</h2><p id="paperSubtitle">考えを書き出して、見える形に整理しよう。</p></div>
+    <div class="topic-field"><label id="topicLabel" for="topicInput">テーマ・問い</label><input id="topicInput" type="text" placeholder="考えるテーマを書こう"></div>
+    <div class="blocks" id="blocks"></div>
+    <div class="save-state" id="saveState">この端末に自動保存</div>
+   </section>
+   <aside class="editor-aside">
+    <div class="aside-card"><h3>このツールの使い方</h3><div class="use-steps" id="useSteps"></div></div>
+    <div class="aside-card"><h3>こんな学習におすすめ</h3><p id="useCases"></p></div>
+    <div class="aside-card"><h3>考えるときのヒント</h3><ul class="tip-list" id="tips"></ul></div>
+   </aside>
+  </div>
+ </section>
+</main>
+<div class="modal-backdrop" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal"><button class="modal-close" id="modalClose" aria-label="閉じる">×</button><div class="eyebrow">WELCOME TO THINK LAB</div><h2 id="modalTitle">思考ツールの使い方</h2><p class="modal-intro">考えを整理するための道具を、学習に合わせて選んで使おう。</p>
+  <div class="modal-steps">
+   <div class="modal-step"><span class="step-dot">1</span><div><b>目的に合うツールを選ぶ</b><p>考えを広げたい？ 比べたい？ 理由を整理したい？ 目的から選んでみよう。</p></div></div>
+   <div class="modal-step"><span class="step-dot">2</span><div><b>枠の中に直接入力する</b><p>入力欄をタップして、自分の考えを書こう。必要に応じて項目を追加できるよ。</p></div></div>
+   <div class="modal-step"><span class="step-dot">3</span><div><b>印刷して学習に生かす</b><p>「印刷・PDF保存」から紙に印刷したり、PDFに保存したりできるよ。</p></div></div>
+  </div><div class="modal-footer"><button class="btn btn-primary" id="modalStart">使ってみる</button></div>
+ </div>
+</div>
+<script>
+(function(){
+'use strict';
+const NAVI_BASE='https://tt-sensei.github.io/navi-character-/assets/web/characters/';
+const NAVIS=['riku','sora','kai','saku','tsuki','nami'];
+const categories=[{id:'all',name:'すべて'},{id:'expand',name:'広げる'},{id:'compare',name:'比べる'},{id:'analyze',name:'分析する'},{id:'sequence',name:'順序立てる'},{id:'organize',name:'まとめる'}];
+const specs=[
+{id:'mindmap',name:'マインドマップ',symbol:'✳',category:'expand',desc:'中心のテーマから、考えを枝分かれさせて広げる。',purpose:'一つのテーマから、関連する言葉や考えをたくさん見つけたいときに使うよ。',steps:['中央にテーマを書く','思いついたことを枝ごとに分ける','枝からさらに考えを広げる'],cases:'総合的な学習の課題設定、社会科の調べ学習、読書後の考えの整理',tips:['正解を気にせず、まずは思いつくことを書く','似ている考えは近くにまとめる','言葉だけでなく短い説明を加えてもよい'],layout:'branches',blocks:[{id:'branches',title:'考えを広げる',help:'テーマにつながる考えを枝ごとに書こう。',initial:6,repeat:true,fields:[{id:'idea',label:'キーワード・考え',placeholder:'思いついたこと'},{id:'detail',label:'説明・具体例',placeholder:'もう少し詳しく'}]}]},
+{id:'webbing',name:'ウェビング',symbol:'◎',category:'expand',desc:'中心の言葉から連想をつなぎ、関係を見つける。',purpose:'一つの言葉から連想を広げ、言葉どうしのつながりを見つけるためのツールだよ。',steps:['中心に言葉を書く','周りに連想した言葉を書く','言葉どうしのつながりを線で結ぶつもりで整理する'],cases:'国語の語彙を増やす、理科の性質を整理する、総合の探究テーマを見つける',tips:['思いついた順に書いてよい','一つの言葉から別の言葉へつなげる','つながりが見えたら仲間分けする'],layout:'web',blocks:[{id:'web',title:'連想した言葉',help:'中心の言葉から思いついたことを書こう。',initial:8,repeat:true,fields:[{id:'word',label:'言葉・考え',placeholder:'連想した言葉'},{id:'link',label:'つながり',placeholder:'どんな関係かな？'}]}]},
+{id:'brainstorm',name:'ブレインストーミング',symbol:'☼',category:'expand',desc:'自由にアイデアを出し、考えの材料を集める。',purpose:'一人ひとりのアイデアをたくさん出して、考える材料を集めるよ。',steps:['テーマや問いを確認する','思いついたアイデアを一つずつ書く','似たアイデアをまとめ、次に考えることを決める'],cases:'学級活動の話合い、行事の企画、問題解決のアイデア出し',tips:['すぐに良し悪しを決めない','短い言葉でも書き残す','友達の考えから新しい考えが生まれることもある'],layout:'ideas',blocks:[{id:'ideas',title:'アイデア',help:'思いついたことを一つずつ書こう。',initial:8,repeat:true,fields:[{id:'idea',label:'アイデア',placeholder:'こんな方法はどうかな？'}]}]},
+{id:'imagemap',name:'イメージマップ',symbol:'✺',category:'expand',desc:'テーマから連想する場面や言葉を視覚的に広げる。',purpose:'テーマから思い浮かぶ場面、もの、気持ちなどを広げていくよ。',steps:['中央にテーマを書く','思い浮かぶ言葉や場面を書く','似たイメージを近くに集める'],cases:'物語を書く前の発想、詩や短歌の題材探し、地域や自然の観察',tips:['見たこと・聞いたこと・感じたことを分けてもよい','絵や簡単な図をあとから書き足してもよい','似たイメージを線でつなぐ'],layout:'radial',blocks:[{id:'images',title:'思い浮かぶこと',help:'言葉・場面・気持ちなどを自由に書こう。',initial:8,repeat:true,fields:[{id:'image',label:'イメージ',placeholder:'どんなことが思い浮かぶ？'},{id:'memo',label:'気づき',placeholder:'その理由や様子'}]}]},
+{id:'venn',name:'ベン図',symbol:'◉',category:'compare',desc:'二つのものの共通点と相違点を整理する。',purpose:'二つのものを比べて、同じところと違うところを見つけるよ。',steps:['比べる二つのものを書く','それぞれにしかない特徴を書く','共通する特徴を真ん中に書く'],cases:'物語の人物比較、昔と今の暮らし、動植物や地域の比較',tips:['見た目だけでなく、働きや理由も比べる','共通点は両方に当てはまるものだけを書く','違いが見つからないときは視点を変える'],layout:'venn',blocks:[{id:'a',title:'Aに当てはまること',help:'Aだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Aの特徴'}]},{id:'both',title:'共通すること',help:'AとBの両方に当てはまること。',initial:3,repeat:true,fields:[{id:'item',label:'共通点',placeholder:'同じところ'}]},{id:'b',title:'Bに当てはまること',help:'Bだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Bの特徴'}]}]},
+{id:'compare',name:'比較表',symbol:'▤',category:'compare',desc:'同じ視点で並べて、違いや共通点を見つける。',purpose:'比べるものを同じ視点で見て、違いと共通点をはっきりさせるよ。',steps:['比べるものを決める','比べる視点をそろえる','それぞれの特徴を書き、気づきをまとめる'],cases:'地域・時代・人物・生き物・実験結果などの比較',tips:['同じ視点で比べる','資料や観察を根拠にする','最後に一番大きな違いや共通点を書く'],layout:'table',blocks:[{id:'rows',title:'比べる視点',help:'同じ視点でAとBの様子を書こう。',initial:4,repeat:true,fields:[{id:'view',label:'視点',placeholder:'例：くらし・気候・役割'},{id:'a',label:'A',placeholder:'Aの特徴'},{id:'b',label:'B',placeholder:'Bの特徴'}]}]},
+{id:'matrix',name:'マトリックス',symbol:'▦',category:'compare',desc:'二つの視点を組み合わせて、情報を分類する。',purpose:'二つの視点を組み合わせて、情報を4つのまとまりに分けるよ。',steps:['縦と横の視点を決める','4つの枠の意味を確認する','情報を当てはまる枠に整理する'],cases:'情報の分類、案の比較、事実と意見の整理、優先順位の検討',tips:['縦軸と横軸の意味をはっきりさせる','どの枠にも入らないものは視点を見直す','枠ごとの特徴を比べる'],layout:'matrix',blocks:[{id:'q1',title:'左上の枠',help:'二つの条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q2',title:'右上の枠',help:'横の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q3',title:'左下の枠',help:'縦の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q4',title:'右下の枠',help:'どちらの条件にも当てはまらない情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]}]},
+{id:'pmi',name:'PMIシート',symbol:'＋',category:'compare',desc:'よい点・気になる点・おもしろい点から考える。',purpose:'一つの考えや提案を、いろいろな角度から見直すよ。',steps:['考えや提案を決める','よい点・気になる点を書く','おもしろい点や新しい可能性を考える'],cases:'話合いでの意見検討、提案の改善、社会の課題について考える',tips:['すぐに賛成・反対を決めない','気になる点は改善のヒントにもなる','おもしろい点から新しい案を考える'],layout:'columns',blocks:[{id:'plus',title:'P｜よい点・プラス',help:'よいところ、役立つところ。',initial:3,repeat:true,fields:[{id:'item',label:'よい点',placeholder:'よいところは？'}]},{id:'minus',title:'M｜気になる点・マイナス',help:'心配なところ、課題になりそうなこと。',initial:3,repeat:true,fields:[{id:'item',label:'気になる点',placeholder:'心配なところは？'}]},{id:'interesting',title:'I｜おもしろい点',help:'意外なこと、新しい可能性。',initial:3,repeat:true,fields:[{id:'item',label:'おもしろい点',placeholder:'新しい発見は？'}]}]},
+{id:'jellyfish',name:'クラゲチャート',symbol:'♧',category:'analyze',desc:'中心となる考えを、理由や具体例で支える。',purpose:'中心の考えに対して、理由や具体例をいくつも考えて整理するよ。',steps:['頭の部分に中心の考えを書く','足の部分に理由や具体例を書く','どの理由が大切か考える'],cases:'説明文の要点整理、意見文の理由探し、調べ学習のまとめ',tips:['理由と具体例を混ぜずに整理する','理由を支える事実や資料を探す','大切なものに印を付ける'],layout:'branches',blocks:[{id:'reasons',title:'理由・具体例',help:'中心の考えを支える理由や事実を書こう。',initial:6,repeat:true,fields:[{id:'reason',label:'理由・事実',placeholder:'なぜそう考える？'},{id:'example',label:'具体例・資料',placeholder:'たとえば？'}]}]},
+{id:'fishbone',name:'フィッシュボーン',symbol:'⌁',category:'analyze',desc:'結果につながる原因を、視点ごとに整理する。',purpose:'起きていることの原因を、いくつかの視点から整理するよ。',steps:['魚の頭に結果や問題を書く','原因の大きなまとまりを決める','それぞれの原因を細かく書き出す'],cases:'理科の実験結果、生活上の問題、地域の課題、学級の改善',tips:['一つの原因だけで決めつけない','人・環境・方法・時間など視点を変える','事実と予想を区別する'],layout:'fishbone',blocks:[{id:'cause1',title:'原因のまとまり 1',help:'原因を一つずつ具体的に書こう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'考えられる原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]},{id:'cause2',title:'原因のまとまり 2',help:'別の視点から原因を探そう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'別の原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]},{id:'cause3',title:'原因のまとまり 3',help:'さらに別の視点から考えよう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'ほかの原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]}]},
+{id:'cause-effect',name:'原因と結果',symbol:'→',category:'analyze',desc:'原因・できごと・結果のつながりを整理する。',purpose:'何が原因で、どんなことが起き、どのような結果になったのかを整理するよ。',steps:['起きた結果を確かめる','その前に起きたことをたどる','原因と結果を矢印でつなぐ'],cases:'歴史上のできごと、自然現象、物語の展開、社会の課題',tips:['時間の前後と原因・結果を区別する','一つの結果に複数の原因がないか考える','資料をもとに関係を確かめる'],layout:'sequence',blocks:[{id:'causes',title:'原因',help:'きっかけになったこと。',initial:3,repeat:true,fields:[{id:'item',label:'原因',placeholder:'何がきっかけ？'}]},{id:'events',title:'途中のできごと',help:'原因のあとに起きたこと。',initial:3,repeat:true,fields:[{id:'item',label:'できごと',placeholder:'何が起きた？'}]},{id:'results',title:'結果',help:'最後にどうなったか。',initial:2,repeat:true,fields:[{id:'item',label:'結果',placeholder:'どうなった？'}]}]},
+{id:'pyramid',name:'ピラミッドチャート',symbol:'△',category:'analyze',desc:'情報を整理し、根拠から結論へ積み上げる。',purpose:'いくつかの情報をまとめ、根拠をもとに大切な結論へつなげるよ。',steps:['一番伝えたい結論を決める','結論を支える理由を整理する','理由のもとになる事実や情報を集める'],cases:'調べ学習のまとめ、発表内容の構成、意見文の組み立て',tips:['下の段ほど具体的な事実や情報にする','同じ段の情報をまとめて上の段につなぐ','結論が根拠から導けるか確かめる'],layout:'pyramid',blocks:[{id:'top',title:'上段｜結論・一番伝えたいこと',help:'根拠をもとに導く結論を書く。',initial:1,repeat:false,fields:[{id:'item',label:'結論',placeholder:'一番伝えたいこと'}]},{id:'middle',title:'中段｜理由・まとまり',help:'結論を支える理由を書く。',initial:3,repeat:true,fields:[{id:'item',label:'理由',placeholder:'結論を支える理由'}]},{id:'base',title:'下段｜事実・情報・具体例',help:'理由のもとになる事実を書く。',initial:5,repeat:true,fields:[{id:'item',label:'根拠・情報',placeholder:'資料・事実・具体例'}]}]},
+{id:'flowchart',name:'フローチャート',symbol:'⇩',category:'sequence',desc:'手順や判断の流れを順番に表す。',purpose:'何をどの順番で行うか、途中の判断も含めて見える形にするよ。',steps:['始まりと終わりを決める','手順を順番に並べる','分かれ道や条件があれば書き加える'],cases:'実験の手順、問題解決の方法、情報モラルや安全な行動の確認',tips:['一つの枠には一つの行動を書く','「はい・いいえ」など判断の分かれ道を示す','初めての人にも分かる順序か確認する'],layout:'steps',blocks:[{id:'steps',title:'流れ・手順',help:'上から順に書こう。必要な分だけ追加できるよ。',initial:5,repeat:true,fields:[{id:'step',label:'すること・判断',placeholder:'次に何をする？'},{id:'condition',label:'条件・分かれ道',placeholder:'必要なら条件を書く'}]}]},
+{id:'process',name:'ステップチャート',symbol:'①',category:'sequence',desc:'作業や学習の手順を段階ごとに整理する。',purpose:'いくつかの手順に分けて、何をするかを順番に整理するよ。',steps:['取り組みのゴールを確認する','必要な手順を順番に書く','終わったか確かめる方法を考える'],cases:'実験・観察の手順、作品づくり、調べ学習の進め方',tips:['一つの手順を細かくしすぎない','順番を入れ替えられないか考える','各段階の確認ポイントを書く'],layout:'steps',blocks:[{id:'steps',title:'手順',help:'一つずつ、具体的な行動を書こう。',initial:5,repeat:true,fields:[{id:'action',label:'すること',placeholder:'何をする？'},{id:'check',label:'確認すること',placeholder:'できたかどう確かめる？'}]}]},
+{id:'timeline',name:'年表・タイムライン',symbol:'⌛',category:'sequence',desc:'できごとを時間の流れに沿って並べる。',purpose:'いつ、どんなことが起きたのかを時間の順に並べて、変化を見つけるよ。',steps:['期間や時間の範囲を決める','できごとと時期を書く','前後のつながりや変化を考える'],cases:'歴史学習、人物の生涯、物語の構成、観察記録の変化',tips:['時期をそろえて並べる','大切なできごとに印を付ける','前と後で何が変わったか考える'],layout:'timeline',blocks:[{id:'events',title:'できごと',help:'時期とできごとをセットで書こう。',initial:5,repeat:true,fields:[{id:'time',label:'時期・年月',placeholder:'いつ？'},{id:'event',label:'できごと・変化',placeholder:'何が起きた？'}]}]},
+{id:'prep',name:'PREPシート',symbol:'P',category:'organize',desc:'主張・理由・具体例・主張の順で考えを伝える。',purpose:'自分の考えを、理由や具体例と組み合わせて分かりやすく伝えるよ。',steps:['自分の考えを一文で書く','そう考える理由を書く','具体例を挙げ、最後に考えをまとめる'],cases:'意見文、スピーチ、話合い、振り返りで自分の考えを伝える',tips:['最初の主張をはっきりさせる','理由と具体例を区別する','最後は最初の主張とつながるようにする'],layout:'prep',blocks:[{id:'point1',title:'P｜Point：自分の考え',help:'まず、伝えたいことをはっきり書く。',initial:1,repeat:false,fields:[{id:'text',label:'主張',placeholder:'私は〜と考えます。'}]},{id:'reason',title:'R｜Reason：理由',help:'どうしてそう考えるのか。',initial:1,repeat:false,fields:[{id:'text',label:'理由',placeholder:'なぜなら〜だからです。'}]},{id:'example',title:'E｜Example：具体例',help:'理由を支える経験や事実を書く。',initial:1,repeat:false,fields:[{id:'text',label:'具体例',placeholder:'たとえば〜。'}]},{id:'point2',title:'P｜Point：もう一度まとめる',help:'考えをもう一度伝える。',initial:1,repeat:false,fields:[{id:'text',label:'まとめ',placeholder:'だから私は〜と考えます。'}]}]},
+{id:'claim',name:'主張と根拠シート',symbol:'✓',category:'organize',desc:'主張を根拠や資料で支え、説得力を高める。',purpose:'自分の主張が、どんな事実や資料に支えられているかを整理するよ。',steps:['伝えたい主張を書く','根拠となる事実や資料を集める','根拠と主張がつながっているか確かめる'],cases:'社会科の資料活用、理科の考察、国語の意見文・討論',tips:['根拠は事実や資料から選ぶ','自分の感想と事実を分ける','反対の見方も考えると主張が深まる'],layout:'branches',blocks:[{id:'claim',title:'主張',help:'自分が伝えたい考えを書く。',initial:1,repeat:false,fields:[{id:'text',label:'主張',placeholder:'私は〜と考える。'}]},{id:'evidence',title:'根拠・資料',help:'主張を支える事実や資料を書く。',initial:3,repeat:true,fields:[{id:'fact',label:'事実・根拠',placeholder:'資料から分かること'},{id:'source',label:'資料・出典',placeholder:'どの資料から？'}]},{id:'reasoning',title:'根拠と主張のつながり',help:'その根拠から、なぜ主張が言えるのか。',initial:1,repeat:false,fields:[{id:'text',label:'説明',placeholder:'このことから〜と言える。'}]}]},
+{id:'kwl',name:'KWLシート',symbol:'K',category:'organize',desc:'知っていること・知りたいこと・分かったことを整理する。',purpose:'学習の前と後で、自分の知識や疑問がどう変わったかを見える形にするよ。',steps:['学習前に知っていることを書く','知りたいことや疑問を書く','学習後に分かったことを書く'],cases:'単元の導入とまとめ、探究学習、調べ学習の振り返り',tips:['最初は予想や疑問も書いてよい','学習後に最初の疑問へ戻る','新しく生まれた疑問も残しておく'],layout:'columns',blocks:[{id:'know',title:'K｜知っていること',help:'学習前に知っていること。',initial:3,repeat:true,fields:[{id:'item',label:'知っていること',placeholder:'前から知っていること'}]},{id:'want',title:'W｜知りたいこと',help:'調べたいこと・疑問。',initial:3,repeat:true,fields:[{id:'item',label:'知りたいこと',placeholder:'疑問や調べたいこと'}]},{id:'learn',title:'L｜分かったこと',help:'学習後に分かったこと。',initial:3,repeat:true,fields:[{id:'item',label:'分かったこと',placeholder:'学習して分かったこと'}]}]},
+{id:'ychart',name:'Yチャート',symbol:'Y',category:'organize',desc:'見る・聞く・感じるなど、三つの視点で整理する。',purpose:'一つのものや場面を、三つの異なる視点から見つめ直すよ。',steps:['テーマや対象を決める','三つの視点から気づきを書く','三つを合わせて分かったことをまとめる'],cases:'作品鑑賞、自然観察、人物の様子、地域の調査',tips:['視点ごとに違うことを書く','事実と感じたことを分けてもよい','最後に全体を見て気づいたことをまとめる'],layout:'y',blocks:[{id:'see',title:'見る｜見たこと',help:'目で見て分かったこと。',initial:3,repeat:true,fields:[{id:'item',label:'気づき',placeholder:'見て分かったこと'}]},{id:'hear',title:'聞く｜聞こえたこと',help:'聞いて分かったこと。',initial:3,repeat:true,fields:[{id:'item',label:'気づき',placeholder:'聞いて分かったこと'}]},{id:'feel',title:'感じる｜思ったこと',help:'感じたこと・考えたこと。',initial:3,repeat:true,fields:[{id:'item',label:'気づき',placeholder:'感じたこと・考えたこと'}]}]},
+{id:'reflection',name:'ふり返りシート',symbol:'↗',category:'organize',desc:'学び・気づき・次に取り組みたいことを整理する。',purpose:'学習を振り返り、自分の成長や次に考えたいことを見つけるよ。',steps:['今日の学習で取り組んだことを書く','分かったことや気づきを整理する','次に取り組みたいことを考える'],cases:'授業の終末、単元のまとめ、探究活動、協働学習の振り返り',tips:['できたことだけでなく、途中の工夫を書く','具体的な場面を思い出して書く','次に何をするかを小さく決める'],layout:'reflection',blocks:[{id:'activity',title:'取り組んだこと',help:'今日、何をした？',initial:1,repeat:false,fields:[{id:'text',label:'活動',placeholder:'今日取り組んだこと'}]},{id:'learning',title:'分かったこと・気づいたこと',help:'どんな学びがあった？',initial:2,repeat:true,fields:[{id:'text',label:'学び・気づき',placeholder:'分かったこと、気づいたこと'}]},{id:'next',title:'次に取り組みたいこと',help:'これからどうしたい？',initial:1,repeat:false,fields:[{id:'text',label:'次の一歩',placeholder:'次にやってみたいこと'}]}]}
+];
+const $=id=>document.getElementById(id);
+let activeCategory='all',activeTool=null,activeNavi='sora',activeGuideNavi='kai';
+function pickNavi(){return NAVIS[Math.floor(Math.random()*NAVIS.length)];}
+function naviSrc(id,pose){return NAVI_BASE+id+'/fullbody/'+pose+'.webp';}
+function setNaviImage(img,id,pose){img.src=naviSrc(id,pose);img.onerror=function(){this.style.visibility='hidden';};}
+function escapeHtml(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function categoryName(id){const x=categories.find(c=>c.id===id);return x?x.name:'';}
+function renderCategories(){
+ $('categoryTabs').innerHTML=categories.map(c=>'<button class="tab '+(activeCategory===c.id?'active':'')+'" data-category="'+c.id+'">'+c.name+'</button>').join('');
+}
+function renderCards(){
+ const q=$('searchInput').value.trim().toLowerCase();
+ const list=specs.filter(s=>(activeCategory==='all'||s.category===activeCategory)&&(!q||(s.name+' '+s.desc+' '+categoryName(s.category)+' '+s.purpose).toLowerCase().includes(q)));
+ $('toolCount').textContent=list.length+' / '+specs.length+' tools';
+ $('listHeading').textContent=activeCategory==='all'?'思考ツールを選ぶ':categoryName(activeCategory)+'ためのツール';
+ $('toolGrid').innerHTML=list.length?list.map((s,i)=>'<button class="tool-card" data-open="'+s.id+'"><div class="card-top"><span class="tool-number">TOOL '+String(specs.indexOf(s)+1).padStart(2,'0')+'</span><span class="tool-symbol">'+s.symbol+'</span></div><h3>'+s.name+'</h3><p>'+s.desc+'</p><span class="category-label">'+categoryName(s.category)+'　↗</span></button>').join(''):'<div class="empty">条件に合うツールが見つかりません。検索語を変えてみてね。</div>';
+}
+function makeInitialState(spec){
+ return {topic:'',blocks:spec.blocks.map(b=>Array.from({length:b.initial},()=>Object.fromEntries(b.fields.map(f=>[f.id,'']))))};
+}
+function readState(spec){
+ try{const v=JSON.parse(localStorage.getItem('thinklab:'+spec.id));if(v&&Array.isArray(v.blocks)&&v.blocks.length===spec.blocks.length)return v;}catch(e){}
+ return makeInitialState(spec);
+}
+function saveState(){if(!activeTool)return;try{localStorage.setItem('thinklab:'+activeTool.id,JSON.stringify(currentState));$('saveState').textContent='✓ この端末に自動保存しました';}catch(e){$('saveState').textContent='このブラウザでは保存できません。印刷して残してください。'}}
+let currentState=null;
+function renderBlock(b,bi){
+ const rows=currentState.blocks[bi]||[];
+ const entries=rows.map((row,ri)=>{
+  const fields=b.fields.map(f=>'<div class="field"><label>'+escapeHtml(f.label)+'</label><textarea data-block="'+bi+'" data-row="'+ri+'" data-field="'+f.id+'" placeholder="'+escapeHtml(f.placeholder||'')+'">'+escapeHtml(row[f.id]||'')+'</textarea></div>').join('');
+  return '<div class="entry"><div class="entry-top"><span class="entry-label">'+escapeHtml(b.title)+' '+String(ri+1).padStart(2,'0')+'</span>'+(b.repeat?'<button type="button" class="remove-entry" data-remove="'+bi+'" data-row="'+ri+'" aria-label="この項目を削除">削除</button>':'')+'</div>'+fields+'</div>';
+ }).join('');
+ return '<section class="thought-block"><div class="block-head"><div><h3 class="block-title">'+escapeHtml(b.title)+'</h3><p class="block-help">'+escapeHtml(b.help||'')+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div><div class="entry-grid">'+entries+'</div>'+(b.repeat?'<button type="button" class="add-entry" data-add="'+bi+'">＋ 項目を追加する</button>':'')+'</section>';
+}
+function renderEditor(spec){
+ activeTool=spec;currentState=readState(spec);activeGuideNavi=pickNavi();
+ $('listView').classList.add('hidden');$('editorView').classList.add('active');
+ $('editorSymbol').textContent=spec.symbol;$('editorName').textContent=spec.name;$('editorDesc').textContent=spec.desc;
+ $('paperTitle').textContent=spec.name;$('paperSubtitle').textContent=spec.purpose;
+ $('topicLabel').textContent=spec.id==='timeline'?'テーマ・期間':'テーマ・問い';
+ $('topicInput').value=currentState.topic||'';
+ $('guideMessage').textContent=spec.purpose;
+ setNaviImage($('guideNavi'),activeGuideNavi,'hint');
+ $('useSteps').innerHTML=spec.steps.map((s,i)=>'<div class="use-step"><span class="step-dot">'+(i+1)+'</span><span>'+escapeHtml(s)+'</span></div>').join('');
+ $('useCases').textContent=spec.cases;
+ $('tips').innerHTML=spec.tips.map(t=>'<li>'+escapeHtml(t)+'</li>').join('');
+ $('blocks').className='blocks layout-'+spec.layout;
+ $('blocks').innerHTML=spec.blocks.map(renderBlock).join('');
+ $('saveState').textContent='この端末に自動保存';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function returnHome(){activeTool=null;$('editorView').classList.remove('active');$('listView').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+function openHelp(){ $('helpModal').classList.add('open');}
+function closeHelp(){ $('helpModal').classList.remove('open');}
+function resetActive(){if(!activeTool)return;if(!window.confirm('このツールに入力した内容をすべて消しますか？'))return;currentState=makeInitialState(activeTool);$('topicInput').value='';$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');saveState();}
+$('homeBrand').addEventListener('click',e=>{e.preventDefault();returnHome();});
+$('helpOpen').addEventListener('click',openHelp);$('modalClose').addEventListener('click',closeHelp);$('modalStart').addEventListener('click',closeHelp);
+$('helpModal').addEventListener('click',e=>{if(e.target===$('helpModal'))closeHelp();});
+$('backButton').addEventListener('click',returnHome);
+$('searchInput').addEventListener('input',renderCards);
+$('categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;activeCategory=b.dataset.category;renderCategories();renderCards();});
+$('toolGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const s=specs.find(x=>x.id===b.dataset.open);if(s)renderEditor(s);});
+$('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;saveState();});
+$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;saveState();}});
+$('blocks').addEventListener('click',e=>{
+ const add=e.target.closest('[data-add]');if(add){const bi=Number(add.dataset.add),b=activeTool.blocks[bi];currentState.blocks[bi].push(Object.fromEntries(b.fields.map(f=>[f.id,''])));$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');saveState();return;}
+ const rem=e.target.closest('[data-remove]');if(rem){const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');saveState();}
+});
+$('printButton').addEventListener('click',()=>window.print());
+$('resetButton').addEventListener('click',resetActive);
+$('guideMore').addEventListener('click',()=>{if(!activeTool)return;$('guideMessage').textContent=activeTool.steps.join(' → ')+'。'+activeTool.tips[0];});
+activeNavi=pickNavi();setNaviImage($('heroNavi'),activeNavi,'waving');
+const heroLines=[['考えることを楽しもう。','使いたい道具を選んで、考えを入力してみよう。書いた内容は自動で保存されるよ。'],['どの道具で考えてみる？','目的に合う思考ツールを選ぶと、考えが整理しやすくなるよ。'],['思いついたことから始めよう。','うまく書こうとしなくて大丈夫。まずは自分の考えを書いてみよう。']];
+const heroLine=heroLines[Math.floor(Math.random()*heroLines.length)];$('heroNaviTitle').textContent=heroLine[0];$('heroNaviText').textContent=heroLine[1];
+renderCategories();renderCards();
+})();
+</script>
+</body>
+</html>
