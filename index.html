@@ -201,6 +201,10 @@ button{cursor:pointer}
  .layout-tree .thought-block:nth-child(2) .entry{break-inside:avoid}
 }
 
+
+#subjectExamples{white-space:pre-line}
+@media print{#subjectExamples{display:none}}
+
 </style>
 </head>
 <body>
@@ -245,6 +249,7 @@ button{cursor:pointer}
    <aside class="editor-aside">
     <div class="aside-card"><h3>このツールの使い方</h3><div class="use-steps" id="useSteps"></div></div>
     <div class="aside-card"><h3>こんな学習におすすめ</h3><p id="useCases"></p></div>
+    <div class="aside-card"><h3>教科での活用例</h3><p id="subjectExamples"></p></div>
     <div class="aside-card"><h3>考えるときのヒント</h3><ul class="tip-list" id="tips"></ul></div>
    </aside>
   </div>
@@ -344,6 +349,19 @@ function renderEditor(spec){
  setNaviImage($('guideNavi'),activeGuideNavi,'hint');
  $('useSteps').innerHTML=spec.steps.map((s,i)=>'<div class="use-step"><span class="step-dot">'+(i+1)+'</span><span>'+escapeHtml(s)+'</span></div>').join('');
  $('useCases').textContent=spec.cases;
+ const subjectExamples={
+  mindmap:'国語：物語を読んで気付いたことを広げる\n社会：地域の課題や調べたいことを出す\n総合：探究テーマの候補を広げる',
+  venn:'国語：二人の登場人物の共通点と違い\n社会：二つの時代や地域のくらしを比べる\n理科：二つの生き物の特徴を比べる',
+  fishbone:'国語：登場人物の行動の理由を整理する\n社会：地域の課題が起きる原因を探る\n理科：実験結果につながる条件を考える',
+  timeline:'社会：歴史上の出来事を時間順に整理する\n国語：物語の出来事の順序を捉える\n理科：観察や実験の変化を記録する',
+  coordinate:'社会：二つの観点から地域や資料を位置付ける\n理科：条件の違いと結果の関係を整理する\n学級活動：課題の優先度を考える',
+  diamond:'学級活動：解決したい課題の優先順位を決める\n社会：出来事や人物の重要度を根拠とともに考える\n国語：伝えたい内容の大切さを比べる',
+  concept:'理科：用語をつなぎ、現象の仕組みを説明する\n社会：人・もの・制度の関係を整理する\n算数：数量や図形の性質のつながりを説明する',
+  tree:'理科：生き物や物質を特徴ごとに分類する\n国語：文章の内容や情報を観点別に整理する\n社会：産業や地域の特色を分類する',
+  brace:'理科：植物や人体など、全体と部分の関係を捉える\n国語：文章を段落やまとまりに分ける\n社会：社会の仕組みを構成する要素に分ける',
+  bridge:'国語：語句どうしの関係や比喩を考える\n算数：数量の関係が同じになる式や場面を探す\n社会：役割や働きが似ているものを結び付ける'
+ };
+ $('subjectExamples').textContent=subjectExamples[spec.id]||'国語：文章や資料から大切な情報を整理する\n社会：資料を比べ、地域や社会の特色を考える\n理科：観察・実験の結果や理由を整理する\n算数：考え方や数量の関係を見える形にする';
  $('tips').innerHTML=spec.tips.map(t=>'<li>'+escapeHtml(t)+'</li>').join('');
  $('blocks').className='blocks layout-'+spec.layout;
  $('blocks').innerHTML=spec.blocks.map(renderBlock).join('');
