@@ -723,6 +723,48 @@ body.furi-off rt{display:none}
 @media(max-width:600px){.afterthought{padding:14px 12px}.afterthought-head{align-items:flex-start}.afterthought-head h3{font-size:14px}.afterthought-prompts{grid-template-columns:1fr;gap:7px}.afterthought-prompt{display:grid;grid-template-columns:25px 1fr;column-gap:7px;align-items:start;padding:9px}.afterthought-prompt>span{grid-row:1/3;margin:0}.afterthought-prompt b{font-size:11px}.afterthought-prompt p{grid-column:2;margin-top:2px}.afterthought-foot{font-size:9px}}
 @media print{.afterthought{break-inside:avoid;box-shadow:none;background:#fff!important;border:1px solid #aaa!important}.afterthought-prompt{background:#fff!important;border-color:#bbb!important}.afterthought-prompt>span{background:#eee!important;color:#333!important}.afterthought-foot{color:#444!important}}
 
+
+/* Touch-first refinements for learners on tablets and phones. */
+.field textarea{min-height:76px;font-size:14px;line-height:1.6;padding:10px 11px;border-radius:10px}
+.add-entry,.remove-entry,.guide-toggle,.btn,.tab{min-height:40px}
+.add-entry{min-height:44px;padding:10px 14px;font-size:12px}
+.remove-entry{min-width:44px;min-height:40px}
+@media(max-width:900px){
+ .workbench{padding:18px}
+ .diagram-panel{max-height:none}
+ .stage{min-width:0}
+ .diagram-stage{overflow:hidden}
+ .input-panel .panel-label{margin-top:4px}
+}
+@media(max-width:600px){
+ .wrap{padding:18px 13px 40px}
+ .editor-head{align-items:flex-start;flex-direction:column;gap:9px}
+ .editor-head>div:first-child{width:100%}
+ .editor-title h1{font-size:21px}
+ .action-buttons{width:100%;display:grid;grid-template-columns:1fr 1fr}
+ .action-buttons .btn{min-height:44px}
+ .guide-strip{align-items:flex-start;gap:9px;padding:10px 11px}
+ .guide-strip img{width:48px;height:58px}
+ .guide-copy p{font-size:12px}
+ .guide-toggle{padding:6px 8px;font-size:10px;min-height:38px}
+ .workbench{padding:13px 11px;border-radius:14px}
+ .paper-heading h2{font-size:19px}
+ .split-wrap{gap:11px}
+ .diagram-panel{padding:9px;border-radius:12px}
+ .diagram-head{margin-bottom:7px}
+ .diagram-topic{font-size:12px}
+ .input-panel .panel-label{font-size:10px}
+ .thought-block{padding:11px 9px}
+ .entry-grid{grid-template-columns:1fr}
+ .field textarea{min-height:72px;font-size:14px}
+ .topic-field input{font-size:16px;min-height:42px}
+}
+@media print{
+ .afterthought{margin-top:12px}
+ .afterthought-head h3{font-size:13px}
+ .afterthought-prompt p{font-size:9px}
+}
+
 </style>
 </head>
 <body>
@@ -779,7 +821,7 @@ body.furi-off rt{display:none}
     <div class="blocks" id="blocks"></div>
     <div class="save-state" id="saveState">この端末に自動保存</div>
    <section class="afterthought" id="afterthought" aria-live="polite">
-    <div class="afterthought-head"><div><span class="afterthought-kicker">LOOK BACK / NEXT THINKING</span><h3>考えのあとを見てみよう</h3><p>書いたことを見直すと、新しい気づきが生まれるよ。</p></div><div class="thought-progress"><strong id="thoughtCount">0</strong><span>入力した項目</span></div></div>
+    <div class="afterthought-head"><div><span class="afterthought-kicker">LOOK BACK / NEXT THINKING</span><h3>考えのあとを見てみよう</h3><p>書いたことを見直すと、新しい気づきが生まれるよ。</p></div><div class="thought-progress"><strong id="thoughtCount">0</strong><span>書いたところ</span></div></div>
     <div class="afterthought-prompts">
      <div class="afterthought-prompt"><span>01</span><b>つながりはあるかな？</b><p>似ている考えや、関係していることを探そう。</p></div>
      <div class="afterthought-prompt"><span>02</span><b>理由や根拠は十分かな？</b><p>「どうして？」と問い直してみよう。</p></div>
