@@ -512,6 +512,160 @@ body.furi-off rt{display:none}
 .mind-node .zval:empty,.web-node .zval:empty,.jelly-reason.zval:empty,.jelly-example.zval:empty,.concept-node.zval:empty,.concept-rel .zval:empty{display:block}
 .concept-rel .zval:empty:after{content:"関係";color:#ae9d7b}
 
+
+/* Second wave: distinctive structures for sequence, hierarchy, evidence and reflection. */
+.stage-timeline{min-height:360px;position:relative}
+.timeline-card{position:absolute;z-index:2;transform:translate(-50%,-50%);width:35%;min-height:68px;padding:9px 12px;border:1.5px solid #c6d3e5;border-radius:13px;background:rgba(255,255,255,.97);box-shadow:0 3px 11px rgba(41,59,89,.07);text-align:left}
+.timeline-card.left{left:24%}.timeline-card.right{left:76%}
+.timeline-card .time{display:inline-block;padding:2px 8px;border-radius:999px;background:#edf3fb;color:#58749b;font-size:10px;font-weight:850;margin-bottom:4px}
+.timeline-card .event{font-size:clamp(10px,1.15vw,13px);line-height:1.45;color:#35445c;font-weight:750;overflow-wrap:anywhere}
+.timeline-card .time:empty:after{content:"いつ？";color:#9aa9bd}
+.timeline-card .event:empty:after{content:"できごと・変化";color:#b2bdcb}
+.flow-step-card{position:absolute;left:50%;transform:translateX(-50%);width:54%;min-height:58px;padding:9px 14px;border:2px solid #91a8c9;border-radius:13px;background:#f7faff;box-shadow:0 3px 10px rgba(41,59,89,.07);display:flex;align-items:center;gap:11px;z-index:2}
+.flow-step-card .flow-no{width:26px;height:26px;display:grid;place-items:center;flex:none;border-radius:50%;background:#e4ecf8;color:#5c79a2;font-size:11px;font-weight:900}
+.flow-step-card .flow-main{min-width:0;flex:1}
+.flow-step-card .flow-action{font-size:clamp(10px,1.15vw,13px);font-weight:800;line-height:1.4;color:#34445c;overflow-wrap:anywhere}
+.flow-step-card .flow-condition{font-size:10px;line-height:1.35;color:#9a7748;margin-top:4px;overflow-wrap:anywhere}
+.flow-step-card .flow-action:empty:after{content:"すること";color:#b4bfce}
+.flow-step-card .flow-condition:empty{display:none}
+.process-road{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch;padding:10px 4px}
+.process-step{position:relative;min-width:0;min-height:125px;padding:16px 12px 12px;border:1px solid #d6e1ef;border-radius:15px;background:linear-gradient(145deg,#fff,#f7faff);box-shadow:0 3px 12px rgba(41,59,89,.05);display:flex;flex-direction:column;gap:7px}
+.process-step:nth-child(3n+2){background:linear-gradient(145deg,#fff,#f5faf6);border-color:#d5e5d9}
+.process-step:nth-child(3n){background:linear-gradient(145deg,#fff,#fbf7ef);border-color:#e9dfca}
+.process-step .process-no{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#e8eef8;color:#536f96;font-weight:900;font-size:12px}
+.process-step .process-action{font-size:clamp(10px,1.12vw,13px);font-weight:800;line-height:1.4;color:#35445c;overflow-wrap:anywhere}
+.process-step .process-check{margin-top:auto;padding-top:7px;border-top:1px dashed #dbe2eb;font-size:10px;color:#76849a;line-height:1.4;overflow-wrap:anywhere}
+.process-step .process-action:empty:after{content:"すること";color:#b5bfcd}
+.process-step .process-check:empty:after{content:"確認すること";color:#c2c9d3}
+.process-step:not(:nth-child(3n)):after{content:"";position:absolute;right:-13px;top:50%;width:13px;height:2px;background:#9aacbf;z-index:3}
+.process-step:not(:nth-child(3n)):before{content:"";position:absolute;right:-13px;top:calc(50% - 4px);width:7px;height:7px;border-top:2px solid #9aacbf;border-right:2px solid #9aacbf;transform:rotate(45deg);z-index:4}
+.causal-map{display:grid;grid-template-columns:1fr 38px 1fr 38px 1fr;gap:7px;align-items:stretch;padding:7px 0}
+.causal-column{min-width:0;border:1px solid #e0e6ef;border-radius:14px;padding:10px;background:#fbfcfe}
+.causal-column:nth-child(1){background:#f4f7fc;border-color:#d7e1f0}
+.causal-column:nth-child(3){background:#f7faf7;border-color:#d8e7dc}
+.causal-column:nth-child(5){background:#faf7f1;border-color:#ebe0c9}
+.causal-heading{display:flex;align-items:center;gap:7px;margin-bottom:9px;font-size:12px;font-weight:900;color:#465b78}
+.causal-heading .causal-symbol{width:25px;height:25px;display:grid;place-items:center;border-radius:8px;background:#e5edf8;color:#617fa8}
+.causal-item{padding:8px 9px;margin:6px 0;border-radius:9px;background:rgba(255,255,255,.92);border:1px solid #e5eaf1;font-size:11px;font-weight:650;color:#47566d;line-height:1.45;overflow-wrap:anywhere}
+.causal-item:empty:after{content:"書き込む";color:#b9c3d0}
+.causal-arrow{display:grid;place-items:center;color:#8c9db6;font-size:22px;font-weight:800}
+.tree-map{padding:8px 0 4px}
+.tree-root{position:relative;z-index:2;width:38%;margin:0 auto 30px;padding:11px 13px;text-align:center;border:2px solid #829dc2;border-radius:12px;background:#edf3fb;color:#3e5577;font-size:13px;font-weight:850;overflow-wrap:anywhere}
+.tree-root:empty:after{content:"分類のテーマ";color:#9babc0}
+.tree-branches{position:absolute;left:8%;right:8%;top:59px;height:28px;border-top:2px solid #b0c1d7;border-left:2px solid #b0c1d7;border-right:2px solid #b0c1d7;border-radius:10px 10px 0 0;pointer-events:none}
+.tree-groups{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;position:relative}
+.tree-group{position:relative;min-width:0;padding:10px 8px;border:1px solid #d8e5dc;border-top:4px solid #91b29e;border-radius:11px;background:#f8fbf8;text-align:center}
+.tree-group:before{content:"";position:absolute;left:50%;top:-17px;height:13px;width:2px;background:#b0c1d7}
+.tree-group .tree-name{font-size:12px;font-weight:850;color:#45614f;overflow-wrap:anywhere}
+.tree-group .tree-members{margin-top:7px;padding-top:6px;border-top:1px dashed #d9e5dc;text-align:left;font-size:10px;line-height:1.55;color:#667969;white-space:pre-wrap;overflow-wrap:anywhere}
+.tree-group .tree-name:empty:after{content:"仲間";color:#aabbb0}
+.tree-group .tree-members:empty:after{content:"具体例・下位分類";color:#bdc9bf}
+.brace-map{display:grid;grid-template-columns:1fr 58px 1.2fr;gap:10px;align-items:center;min-height:300px;padding:12px 3px}
+.brace-whole{padding:18px 12px;border:2px solid #8da5c6;border-radius:15px;background:#edf3fb;text-align:center;color:#405775;font-size:14px;font-weight:850;overflow-wrap:anywhere;box-shadow:0 3px 12px rgba(41,59,89,.06)}
+.brace-whole:empty:after{content:"全体・テーマ";color:#9cabc0}
+.brace-graphic{width:100%;height:100%;min-height:230px;display:flex;align-items:center;justify-content:center}
+.brace-parts{display:grid;gap:8px;min-width:0}
+.brace-part{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:8px;align-items:center;padding:9px 10px;border:1px solid #dfe6ef;border-radius:11px;background:#fff}
+.brace-part .part-name{padding:7px;border-radius:8px;background:#edf3fb;color:#455d7b;font-size:11px;font-weight:850;text-align:center;overflow-wrap:anywhere}
+.brace-part .part-detail{font-size:10px;line-height:1.4;color:#758197;overflow-wrap:anywhere}
+.brace-part .part-name:empty:after{content:"部分";color:#aab6c6}
+.brace-part .part-detail:empty:after{content:"役割・細かい部分";color:#c1c9d4}
+.diamond-rank{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(5,minmax(54px,auto));gap:7px;padding:8px 0}
+.diamond-slot{min-width:0;min-height:54px;padding:7px 6px;border:1.5px solid #cbbd9e;border-radius:11px;background:#fbf7ed;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 2px 8px rgba(77,63,39,.06)}
+.diamond-slot:nth-child(1){background:#f5ead0;border-color:#c7a76f}
+.diamond-slot .rank-no{display:block;font-size:9px;font-weight:900;color:#a3834e;margin-bottom:3px}
+.diamond-slot .rank-text{font-size:11px;line-height:1.35;color:#5e533f;font-weight:800;overflow-wrap:anywhere}
+.diamond-slot .rank-text:empty:after{content:"項目";color:#b8ad98}
+.prep-path{display:grid;grid-template-columns:1fr 38px 1fr 38px 1fr 38px 1fr;align-items:stretch;gap:4px;padding:10px 0}
+.prep-node{min-width:0;padding:12px 9px;border:1px solid #d8e2ef;border-radius:13px;background:#f7faff;text-align:center;display:flex;flex-direction:column;gap:8px}
+.prep-node:nth-child(3){background:#f6faf7;border-color:#d8e7dc}
+.prep-node:nth-child(5){background:#fbf8f1;border-color:#ebe0ce}
+.prep-node:nth-child(7){background:#f8f5fb;border-color:#e1d8ef}
+.prep-letter{width:29px;height:29px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:#e3ecf8;color:#536f96;font-size:13px;font-weight:900}
+.prep-node strong{font-size:10px;color:#53637a}
+.prep-node p{font-size:11px;line-height:1.55;color:#45546a;margin:0;overflow-wrap:anywhere}
+.prep-node p:empty:after{content:"ここに書く";color:#bdc6d2}
+.prep-arrow{display:grid;place-items:center;color:#91a2ba;font-size:20px;font-weight:900}
+.claim-map{display:grid;gap:12px;padding:8px 2px}
+.claim-main{max-width:520px;width:78%;margin:0 auto;padding:13px 15px;border:2px solid #829dc2;border-radius:14px;background:#edf3fb;text-align:center}
+.claim-main .claim-label{font-size:10px;color:#617da4;font-weight:900;letter-spacing:.1em}
+.claim-main .claim-text{font-size:13px;font-weight:850;color:#3f5575;line-height:1.5;margin-top:4px;overflow-wrap:anywhere}
+.claim-main .claim-text:empty:after{content:"伝えたい主張";color:#9babc0}
+.claim-evidence-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;position:relative;padding-top:17px}
+.claim-evidence-row:before{content:"";position:absolute;left:16%;right:16%;top:0;height:2px;background:#b5c5da}
+.claim-evidence{position:relative;padding:10px 9px;border:1px solid #dce5ef;border-radius:11px;background:#fff}
+.claim-evidence:before{content:"";position:absolute;left:50%;top:-18px;height:17px;width:2px;background:#b5c5da}
+.claim-evidence .evidence-no{font-size:9px;font-weight:900;color:#8194b1;margin-bottom:5px}
+.claim-evidence .evidence-text{font-size:11px;color:#45566e;line-height:1.4;overflow-wrap:anywhere}
+.claim-evidence .evidence-source{font-size:10px;color:#8a96a8;margin-top:5px;padding-top:5px;border-top:1px dashed #e2e7ee;overflow-wrap:anywhere}
+.claim-evidence .evidence-text:empty:after{content:"根拠・事実";color:#b5bfcd}
+.claim-evidence .evidence-source:empty:after{content:"資料・出典";color:#c3cbd5}
+.claim-reasoning{max-width:600px;width:86%;margin:0 auto;padding:10px 14px;border-left:4px solid #9db4d2;border-radius:8px;background:#f7f9fc}
+.claim-reasoning .reasoning-label{font-size:10px;font-weight:900;color:#7188a9}
+.claim-reasoning .reasoning-text{font-size:11px;color:#47566c;line-height:1.5;margin-top:4px;overflow-wrap:anywhere}
+.claim-reasoning .reasoning-text:empty:after{content:"根拠から主張につながる説明";color:#b8c2cf}
+.reflection-path{display:grid;grid-template-columns:1fr 36px 1fr 36px 1fr;gap:5px;align-items:stretch;padding:10px 0}
+.reflection-step{padding:13px 10px;border:1px solid #dce4ed;border-radius:14px;background:#f8fafc;min-width:0}
+.reflection-step:nth-child(1){background:#f1f5fb;border-color:#d7e1f0}
+.reflection-step:nth-child(3){background:#f2f8f3;border-color:#d9e8dd}
+.reflection-step:nth-child(5){background:#fbf7ef;border-color:#ebe0ca}
+.reflection-step .reflection-no{font-size:9px;font-weight:900;letter-spacing:.08em;color:#7c8da7}
+.reflection-step h4{font-size:12px;color:#465a76;margin:5px 0 8px}
+.reflection-step .reflection-item{padding:7px 0;border-top:1px dashed rgba(130,148,170,.25);font-size:11px;line-height:1.5;color:#5b687b;overflow-wrap:anywhere}
+.reflection-step .reflection-item:empty:after{content:"ここに書く";color:#bdc6d2}
+.idea-board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:12px 3px}
+.idea-note{min-height:74px;padding:11px 10px;border:1px solid #e2d9bf;border-radius:4px 12px 9px 9px;background:#fbf7eb;box-shadow:0 3px 8px rgba(77,63,39,.06);display:flex;align-items:center;justify-content:center;text-align:center;transform:rotate(var(--tilt,0deg))}
+.idea-note:nth-child(3n+2){background:#f0f5fb;border-color:#d5e0ee}
+.idea-note:nth-child(3n){background:#f1f7f1;border-color:#d7e5d6}
+.idea-note .idea-text{font-size:11px;font-weight:750;line-height:1.45;color:#566176;overflow-wrap:anywhere}
+.idea-note .idea-text:empty:after{content:"アイデア";color:#b7bfca}
+.stage-candy{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:stretch;padding:8px 0}
+.candy-stage{border:1px solid #dce4ed;border-radius:14px;background:#fbfcfe;padding:10px;min-width:0}
+.candy-stage:nth-child(1){background:#f3f7fc;border-color:#d8e2f0}
+.candy-stage:nth-child(2){background:#fbf7ef;border-color:#ebe0cc}
+.candy-stage:nth-child(3){background:#f3f8f4;border-color:#d9e7dc}
+.candy-stage h4{font-size:11px;margin:0 0 8px;color:#53647c}
+.candy-stage .candy-item{padding:7px 8px;margin:5px 0;border-radius:8px;background:rgba(255,255,255,.92);border:1px solid rgba(180,194,210,.35);font-size:10px;line-height:1.4;color:#5c687b;overflow-wrap:anywhere}
+.candy-stage .candy-item:empty:after{content:"書き込む";color:#bdc6d1}
+@media(max-width:700px){
+ .tree-groups{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:19px}
+ .tree-branches{display:none}
+ .tree-group:before{height:12px;top:-15px}
+ .causal-map{grid-template-columns:1fr;gap:4px}
+ .causal-arrow{height:24px;transform:rotate(90deg)}
+ .causal-column{padding:9px}
+ .prep-path{grid-template-columns:1fr;gap:4px}
+ .prep-arrow{height:22px;transform:rotate(90deg)}
+ .reflection-path{grid-template-columns:1fr;gap:5px}
+ .reflection-path .prep-arrow{height:22px}
+ .process-road{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .process-step:nth-child(3n):after,.process-step:nth-child(3n):before{display:none}
+ .process-step:nth-child(2n):after{content:"";position:absolute;right:-13px;top:50%;width:13px;height:2px;background:#9aacbf;z-index:3}
+ .idea-board{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .stage-candy{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+ .timeline-card{width:39%;padding:6px 7px;min-height:56px}
+ .timeline-card.left{left:25%}.timeline-card.right{left:75%}
+ .tree-root{width:58%}
+ .brace-map{grid-template-columns:1fr 30px 1.4fr;gap:5px}
+ .brace-part{grid-template-columns:1fr;gap:3px;padding:6px}
+ .brace-part .part-name{font-size:10px}
+ .diamond-rank{grid-template-rows:repeat(5,minmax(42px,auto));gap:4px}
+ .diamond-slot{min-height:42px;padding:5px 3px}
+ .diamond-slot .rank-text{font-size:9px}
+ .claim-evidence-row{gap:5px}
+ .claim-evidence{padding:7px 5px}
+ .claim-evidence .evidence-text{font-size:9px}
+ .claim-evidence .evidence-source{font-size:9px}
+ .idea-board{gap:7px}
+ .idea-note{min-height:64px;padding:8px 6px}
+ .idea-note .idea-text{font-size:10px}
+}
+@media print{
+ .timeline-card,.flow-step-card,.process-step,.causal-column,.tree-root,.tree-group,.brace-whole,.brace-part,.diamond-slot,.prep-node,.claim-main,.claim-evidence,.claim-reasoning,.reflection-step,.idea-note,.candy-stage{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
 </style>
 </head>
 <body>
@@ -811,7 +965,7 @@ function stageConcept(){
  return '<div class="stage stage-concept"><div class="concept-backbone"></div>'+cards+'</div>';
 }
 
-const OVERLAY={mindmap:stageMindmap,webbing:stageWebbing,jellyfish:stageJellyfish,concept:stageConcept,venn:stageVenn,fishbone:stageFishbone,coordinate:stageCoordinate,pyramid:stagePyramid,concentric:stageConcentric,butterfly:stageButterfly,ychart:stageY};
+const OVERLAY={mindmap:stageMindmap,webbing:stageWebbing,jellyfish:stageJellyfish,concept:stageConcept,timeline:stageTimeline,flowchart:stageFlowchart,process:stageProcess,'cause-effect':stageCauseEffect,tree:stageTree,brace:stageBrace,diamond:stageDiamond,prep:stagePrep,claim:stageClaim,reflection:stageReflection,brainstorm:stageBrainstorm,imagemap:stageImagemap,kumade:stageKumade,candy:stageCandy,venn:stageVenn,fishbone:stageFishbone,coordinate:stageCoordinate,pyramid:stagePyramid,concentric:stageConcentric,butterfly:stageButterfly,ychart:stageY};
 function renderDiagram(){
  const d=$('diagram');
  if(!activeTool||!activeTool.split){d.innerHTML='';$('diagramTopic').textContent='';return;}
