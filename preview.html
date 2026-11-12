@@ -947,7 +947,7 @@ function stageMindmap(){
   const [x,y]=base[i],c=NODE_PALETTE[i%8];
   return '<div class="mind-node" style="'+pointStyle(x,y,168)+';--node-color:'+c.line+';background:'+c.fill+'"><strong class="zval" data-diag="0-'+i+'-idea">'+escapeHtml(row.idea||'')+'</strong><small class="zval" data-diag="0-'+i+'-detail">'+escapeHtml(row.detail||'')+'</small></div>';
  }).join('');
- const extra=extras.map((r,i)=>'<div class="extra-thought" data-diag="0-'+(i+8)+'-idea">'+escapeHtml(r.idea||'')+'<span class="extra-detail">'+escapeHtml(r.detail||'')+'</span></div>').join('');
+ const extra=extras.map((r,i)=>'<div class="extra-thought"><span data-diag="0-'+(i+8)+'-idea">'+escapeHtml(r.idea||'')+'</span><span class="extra-detail" data-diag="0-'+(i+8)+'-detail">'+escapeHtml(r.detail||'')+'</span></div>').join('');
  return '<div class="stage-stack"><div class="stage stage-mindmap"><svg class="stage-art" viewBox="0 0 760 480" aria-hidden="true">'+paths+'</svg>'+nodes+'<div class="stage-center"><span class="center-kicker">MIND MAP</span><span class="center-value stage-topic-val">'+escapeHtml(currentState.topic||'')+'</span></div></div>'+(extra?'<div class="extra-thoughts"><div class="extra-heading">追加した考え</div>'+extra+'</div>':'')+'</div>';
 }function stageWebbing(){
  const rows=currentState.blocks[0]||[],visible=rows.slice(0,8),extras=rows.slice(8);
@@ -957,7 +957,7 @@ function stageMindmap(){
   const [x,y]=base[i],c=NODE_PALETTE[i%8];
   return '<div class="web-node" style="'+pointStyle(x,y,150)+';--node-color:'+c.line+';background:'+c.fill+'"><strong class="zval" data-diag="0-'+i+'-word">'+escapeHtml(row.word||'')+'</strong><small class="zval" data-diag="0-'+i+'-link">'+escapeHtml(row.link||'')+'</small></div>';
  }).join('');
- const extra=extras.map((r,i)=>'<div class="extra-thought" data-diag="0-'+(i+8)+'-word">'+escapeHtml(r.word||'')+'<span class="extra-detail">'+escapeHtml(r.link||'')+'</span></div>').join('');
+ const extra=extras.map((r,i)=>'<div class="extra-thought"><span data-diag="0-'+(i+8)+'-word">'+escapeHtml(r.word||'')+'</span><span class="extra-detail" data-diag="0-'+(i+8)+'-link">'+escapeHtml(r.link||'')+'</span></div>').join('');
  return '<div class="stage-stack"><div class="stage stage-web"><svg class="stage-art" viewBox="0 0 760 480" aria-hidden="true">'+paths+'</svg>'+nodes+'<div class="stage-center"><span class="center-kicker">WEBBING</span><span class="center-value stage-topic-val">'+escapeHtml(currentState.topic||'')+'</span></div></div>'+(extra?'<div class="extra-thoughts"><div class="extra-heading">追加した言葉</div>'+extra+'</div>':'')+'</div>';
 }function stageJellyfish(){
  const rows=currentState.blocks[0]||[];
@@ -1046,13 +1046,13 @@ function stageImagemap(){
  const rows=currentState.blocks[0]||[],visible=rows.slice(0,8),extras=rows.slice(8),base=[[305,10],[535,78],[570,205],[535,330],[305,398],[75,330],[40,205],[75,78]];
  const lines=visible.map((r,i)=>{const x=base[i][0]+75,y=base[i][1]+29;return '<path d="M380 240 Q '+((380+x)/2)+' '+((240+y)/2)+' '+x+' '+y+'" fill="none" stroke="'+NODE_PALETTE[i%8].line+'" stroke-width="3" stroke-dasharray="5 4"/>';}).join('');
  const nodes=visible.map((r,i)=>{const c=NODE_PALETTE[i%8],x=base[i][0],y=base[i][1];return '<div class="web-node" style="'+pointStyle(x,y,150)+';--node-color:'+c.line+';background:'+c.fill+'"><strong>'+dataVal(0,i,'image',r.image,'思い浮かぶこと')+'</strong><small>'+dataVal(0,i,'memo',r.memo,'気づき・説明')+'</small></div>';}).join('');
- const extra=extras.map((r,i)=>'<div class="extra-thought" data-diag="0-'+(i+8)+'-image">'+escapeHtml(r.image||'')+'<span class="extra-detail">'+escapeHtml(r.memo||'')+'</span></div>').join('');
+ const extra=extras.map((r,i)=>'<div class="extra-thought"><span data-diag="0-'+(i+8)+'-image">'+escapeHtml(r.image||'')+'</span><span class="extra-detail" data-diag="0-'+(i+8)+'-memo">'+escapeHtml(r.memo||'')+'</span></div>').join('');
  return '<div class="stage-stack"><div class="stage stage-web"><svg class="stage-art" viewBox="0 0 760 480" aria-hidden="true">'+lines+'</svg>'+nodes+'<div class="stage-center"><span class="center-kicker">IMAGE MAP</span><span class="center-value stage-topic-val">'+escapeHtml(currentState.topic||'')+'</span></div></div>'+(extra?'<div class="extra-thoughts"><div class="extra-heading">追加したイメージ</div>'+extra+'</div>':'')+'</div>';
 }function stageKumade(){
  const rows=currentState.blocks[0]||[],visible=rows.slice(0,8),extras=rows.slice(8),base=[[305,5],[535,75],[570,205],[535,335],[305,405],[75,335],[40,205],[75,75]];
  const lines=visible.map((r,i)=>{const x=base[i][0]+75,y=base[i][1]+29;return '<path d="M380 240 L'+x+' '+y+'" stroke="'+NODE_PALETTE[i%8].line+'" stroke-width="3.5" stroke-linecap="round"/>';}).join('');
  const nodes=visible.map((r,i)=>{const c=NODE_PALETTE[i%8],x=base[i][0],y=base[i][1];return '<div class="web-node" style="'+pointStyle(x,y,150)+';--node-color:'+c.line+';background:'+c.fill+'"><strong>'+dataVal(0,i,'view',r.view,'観点')+'</strong><small>'+dataVal(0,i,'idea',r.idea,'考え・気づき')+'</small></div>';}).join('');
- const extra=extras.map((r,i)=>'<div class="extra-thought" data-diag="0-'+(i+8)+'-view">'+escapeHtml(r.view||'')+'<span class="extra-detail">'+escapeHtml(r.idea||'')+'</span></div>').join('');
+ const extra=extras.map((r,i)=>'<div class="extra-thought"><span data-diag="0-'+(i+8)+'-view">'+escapeHtml(r.view||'')+'</span><span class="extra-detail" data-diag="0-'+(i+8)+'-idea">'+escapeHtml(r.idea||'')+'</span></div>').join('');
  return '<div class="stage-stack"><div class="stage stage-web"><svg class="stage-art" viewBox="0 0 760 480" aria-hidden="true">'+lines+'</svg>'+nodes+'<div class="stage-center"><span class="center-kicker">VIEWPOINTS</span><span class="center-value stage-topic-val">'+escapeHtml(currentState.topic||'')+'</span></div></div>'+(extra?'<div class="extra-thoughts"><div class="extra-heading">追加した観点</div>'+extra+'</div>':'')+'</div>';
 }function stageCandy(){
  const bs=currentState.blocks||[],names=['分かっていること','予想する','確かめ方'],fields=[['fact'],['prediction','reason'],['method']],hints=[['事実・条件'],['予想','理由'],['確かめる方法']];
