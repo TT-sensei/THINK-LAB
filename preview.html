@@ -666,6 +666,15 @@ body.furi-off rt{display:none}
  .timeline-card,.flow-step-card,.process-step,.causal-column,.tree-root,.tree-group,.brace-whole,.brace-part,.diamond-slot,.prep-node,.claim-main,.claim-evidence,.claim-reasoning,.reflection-step,.idea-note,.candy-stage{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 
+
+/* Stable empty placeholders remain visible while fields are blank. */
+.diag-val{white-space:pre-wrap;word-break:break-word}
+.diag-val:empty:after{content:attr(data-hint);color:#b5bfcd;font-weight:500}
+.timeline-card .time .diag-val:empty:after{color:#9aa9bd}
+.tree-criterion{display:block;margin-top:5px;font-size:10px;color:#7487a2;font-weight:700}
+.tree-criterion .diag-val:empty:after{color:#aab7c9}
+.tree-theme{display:block;font-size:13px}
+
 </style>
 </head>
 <body>
