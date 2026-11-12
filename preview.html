@@ -683,6 +683,27 @@ body.furi-off rt{display:none}
 .extra-thought .extra-detail{display:block;margin-top:3px;color:#8793a5;font-size:9px}
 @media(max-width:520px){.extra-thoughts{gap:6px;padding:6px}.extra-thought{padding:7px;font-size:9px}}
 
+
+.bridge-map{display:grid;gap:10px;padding:6px 0}
+.bridge-analogy{display:grid;grid-template-columns:minmax(0,1fr) 25px minmax(0,1fr);grid-template-rows:auto auto;gap:6px 9px;align-items:center;padding:12px 13px;border:1px solid #dce4ed;border-radius:14px;background:#fbfcfe}
+.bridge-pair{display:grid;grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr);gap:5px;align-items:center;min-width:0}
+.bridge-word{min-width:0;min-height:40px;padding:8px 6px;border:1.5px solid #8fa9cd;border-radius:9px;background:#edf3fb;color:#445b7b;font-size:11px;font-weight:800;text-align:center;display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere}
+.bridge-word.second{border-color:#91b49d;background:#edf5ef;color:#4d6a57}
+.bridge-word.third{border-color:#c6a976;background:#fbf5e9;color:#806b45}
+.bridge-word.fourth{border-color:#b09bc8;background:#f4f0f8;color:#66587d}
+.bridge-arrow{font-size:18px;color:#8598b2;text-align:center;font-weight:900}
+.bridge-equation{grid-column:2;grid-row:1;font-size:17px;color:#a0a9b8;font-weight:850;text-align:center}
+.bridge-relation{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 8px;border-radius:8px;background:#f5f1e7;color:#7d6944;font-size:10px;font-weight:750}
+.bridge-relation span{padding:2px 7px;border-radius:999px;background:#fff;border:1px solid #e4d8bd}
+@media(max-width:520px){
+ .bridge-analogy{padding:8px 6px;gap:5px 4px}
+ .bridge-pair{grid-template-columns:minmax(0,1fr) 14px minmax(0,1fr);gap:3px}
+ .bridge-word{min-height:38px;padding:5px 3px;font-size:9px}
+ .bridge-arrow{font-size:14px}
+ .bridge-equation{font-size:14px}
+ .bridge-relation{font-size:9px;gap:5px}
+}
+
 </style>
 </head>
 <body>
@@ -1018,10 +1039,6 @@ function stageBrace(){
  const brace='<svg viewBox="0 0 100 420" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true"><path d="M84 8 C28 8 72 94 43 160 C31 190 14 198 8 210 C14 222 31 230 43 260 C72 326 28 412 84 412" fill="none" stroke="#8ea5c5" stroke-width="6" stroke-linecap="round"/></svg>';
  return '<div class="stage"><div class="brace-map"><div class="brace-whole stage-topic-val">'+escapeHtml(currentState.topic||'全体・テーマ')+'</div><div class="brace-graphic">'+brace+'</div><div class="brace-parts">'+rows.map((r,i)=>'<div class="brace-part"><div class="part-name">'+dataVal(0,i,'part',r.part,'部分')+'</div><div class="part-detail">'+dataVal(0,i,'detail',r.detail,'役割・細かい部分')+'</div></div>').join('')+'</div></div></div>';
 }
-function stageDiamond(){
- const rows=currentState.blocks[0]||[],coords=[[2,1],[1,2],[3,2],[0,3],[2,3],[4,3],[1,4],[3,4],[2,5]];
- return '<div class="stage"><div class="diamond-rank">'+rows.map((r,i)=>'<div class="diamond-slot" style="grid-column:'+(coords[i][0]+1)+'/span 1;grid-row:'+coords[i][1]+'"><div><span class="rank-no">'+(i+1)+' 位</span><div class="rank-text">'+dataVal(0,i,'item',r.item,'項目')+'</div></div></div>').join('')+'</div></div>';
-}
 function stagePrep(){
  const bs=currentState.blocks||[],names=['主張','理由','具体例','まとめ'],letters=['P','R','E','P'],colors=['#607da7','#85a78f','#c2a169','#9b89b7'];
  const nodes=bs.map((b,bi)=>'<section class="prep-node"><span class="prep-letter" style="background:'+colors[bi]+'20;color:'+colors[bi]+'">'+letters[bi]+'</span><strong>'+names[bi]+'</strong><p>'+dataVal(bi,0,'text',(b[0]||{}).text,'ここに書く')+'</p></section>').join('');
@@ -1059,7 +1076,13 @@ function stageImagemap(){
  return '<div class="stage stage-candy">'+bs.map((rows,bi)=>'<section class="candy-stage"><h4>'+names[bi]+'</h4>'+(rows||[]).map((r,ri)=>fields[bi].map((field,fi)=>'<div class="candy-item">'+dataVal(bi,ri,field,r[field],hints[bi][fi])+'</div>').join('')).join('')+'</section>').join('')+'</div>';
 }
 
-const OVERLAY={mindmap:stageMindmap,webbing:stageWebbing,jellyfish:stageJellyfish,concept:stageConcept,timeline:stageTimeline,flowchart:stageFlowchart,process:stageProcess,'cause-effect':stageCauseEffect,tree:stageTree,brace:stageBrace,diamond:stageDiamond,prep:stagePrep,claim:stageClaim,reflection:stageReflection,brainstorm:stageBrainstorm,imagemap:stageImagemap,kumade:stageKumade,candy:stageCandy,venn:stageVenn,fishbone:stageFishbone,coordinate:stageCoordinate,pyramid:stagePyramid,concentric:stageConcentric,butterfly:stageButterfly,ychart:stageY};
+function stageBridge(){
+ const rows=currentState.blocks[0]||[];
+ const cards=rows.map((r,i)=>'<section class="bridge-analogy"><div class="bridge-pair"><div class="bridge-word">'+dataVal(0,i,'a',r.a,'言葉 A')+'</div><span class="bridge-arrow">→</span><div class="bridge-word second">'+dataVal(0,i,'b',r.b,'言葉 B')+'</div></div><div class="bridge-equation">＝</div><div class="bridge-pair"><div class="bridge-word third">'+dataVal(0,i,'c',r.c,'言葉 C')+'</div><span class="bridge-arrow">→</span><div class="bridge-word fourth">'+dataVal(0,i,'d',r.d,'言葉 D')+'</div></div><div class="bridge-relation"><span>関係</span>'+dataVal(0,i,'relation',r.relation,'二つの言葉のつながり')+'</div></section>').join('');
+ return '<div class="stage"><div class="bridge-map">'+cards+'</div></div>';
+}
+
+const OVERLAY={mindmap:stageMindmap,webbing:stageWebbing,jellyfish:stageJellyfish,concept:stageConcept,timeline:stageTimeline,flowchart:stageFlowchart,process:stageProcess,'cause-effect':stageCauseEffect,tree:stageTree,brace:stageBrace,prep:stagePrep,claim:stageClaim,reflection:stageReflection,brainstorm:stageBrainstorm,imagemap:stageImagemap,kumade:stageKumade,candy:stageCandy,bridge:stageBridge,venn:stageVenn,fishbone:stageFishbone,coordinate:stageCoordinate,pyramid:stagePyramid,concentric:stageConcentric,butterfly:stageButterfly,ychart:stageY};
 function renderDiagram(){
  const d=$('diagram');
  if(!activeTool||!activeTool.split){d.innerHTML='';$('diagramTopic').textContent='';return;}
