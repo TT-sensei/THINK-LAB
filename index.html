@@ -240,6 +240,66 @@ button{cursor:pointer}
  .layout-table .entry{grid-template-columns:1fr}
  .layout-table .entry-top{grid-column:auto}
 }
+
+/* Round 2: diagram-first layouts, tablet writing space, furigana, label fields. */
+ruby rt{font-size:.52em;color:#7a8798;letter-spacing:.02em;font-weight:600}
+body.furi-off rt{display:none}
+.label-fields{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 17px}
+.label-fields[hidden]{display:none}
+.label-field{flex:1;min-width:200px;padding:10px 13px;background:#f7f9fc;border:1px solid #e7ebf1;border-radius:12px}
+.label-field label{display:block;font-size:11px;font-weight:850;color:#65758e;margin-bottom:4px}
+.label-field input{width:100%;border:0;border-bottom:1px solid #aab6c7;background:transparent;outline:none;padding:5px 2px;font-size:15px;font-weight:700;color:var(--ink)}
+.label-field input:focus{border-color:var(--blue)}
+.saved-badge{color:#3f7a4e;font-weight:850;white-space:nowrap}
+.field textarea{font-size:14px;min-height:78px}
+.block-help{font-size:12px}
+.entry-label{font-size:11px}
+.aside-card p{font-size:12px}
+.tip-list li{font-size:12px}
+.use-step span:last-child{font-size:12px}
+.guide-copy p{font-size:14px}
+.remove-entry{font-size:11px;padding:7px 10px;min-height:32px}
+.add-entry{padding:11px 14px;font-size:12px}
+/* Venn: two overlapping circles with the shared area in the middle. */
+.layout-venn{grid-template-columns:1fr .74fr 1fr;gap:0;position:relative;padding:8px 2px}
+.layout-venn::before,.layout-venn::after{content:'';position:absolute;top:0;bottom:0;width:57%;border:2px solid #a9c0e0;border-radius:50%;background:rgba(70,105,168,.05);pointer-events:none}
+.layout-venn::before{left:0}
+.layout-venn::after{right:0;border-color:#a9cdb6;background:rgba(90,150,110,.05)}
+.layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(2),.layout-venn .thought-block:nth-child(3){grid-column:auto;grid-row:auto;width:auto;min-height:0;background:transparent;border-color:transparent;box-shadow:none;position:relative;z-index:1}
+.layout-venn .thought-block:nth-child(1){margin:26px -4% 26px 6%;border-radius:18px}
+.layout-venn .thought-block:nth-child(3){margin:26px 6% 26px -4%;border-radius:18px}
+.layout-venn .thought-block:nth-child(2){margin:auto 0;background:rgba(255,255,255,.82);border:1px dashed #9db4d4;border-radius:16px;z-index:2}
+.layout-venn .entry-grid{grid-template-columns:1fr}
+/* Fishbone: spine, head and diagonal bones. */
+.layout-fishbone{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;position:relative;padding-top:46px}
+.layout-fishbone::before{content:'';position:absolute;top:17px;left:8px;right:66px;height:3px;background:#8fa9cf;border-radius:2px}
+.layout-fishbone::after{content:'結果';position:absolute;top:2px;right:0;width:58px;height:33px;display:grid;place-items:center;background:#243956;color:#fff;font-size:12px;font-weight:850;border-radius:6px 16px 16px 6px}
+.layout-fishbone .thought-block{position:relative;border-left:1px solid var(--line);border-top:4px solid #aebfd8}
+.layout-fishbone .thought-block::before{content:'';position:absolute;top:-31px;left:30px;width:3px;height:36px;background:#8fa9cf;border-radius:2px;transform:rotate(38deg);transform-origin:top center}
+/* Branches: entries hang from a trunk line under the block head. */
+.layout-branches .entry-grid{position:relative;margin-top:12px}
+.layout-branches .entry-grid::before{content:'';position:absolute;top:-9px;left:5%;right:5%;height:2px;background:#c3d2e6;border-radius:2px}
+.layout-branches .entry::before{content:'';position:absolute;top:-9px;left:50%;width:2px;height:9px;background:#c3d2e6}
+@media(max-width:1200px){
+ .work-layout{grid-template-columns:1fr}
+ .editor-aside{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .layout-venn{grid-template-columns:1fr;padding:0}
+ .layout-venn::before,.layout-venn::after{display:none}
+ .layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(3){margin:0}
+ .layout-fishbone{grid-template-columns:1fr;padding-top:0}
+ .layout-fishbone::before,.layout-fishbone::after,.layout-fishbone .thought-block::before{display:none}
+}
+@media(max-width:440px){.editor-aside{grid-template-columns:1fr}}
+@media print{
+ .label-field{border:1px solid #999!important;background:#fff!important}
+ .layout-fishbone::before{background:#667!important}
+ .layout-fishbone::after{background:#fff!important;color:#111!important;border:1.5px solid #667!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .layout-venn::before,.layout-venn::after{border:1.5px solid #999!important;background:transparent!important}
+ .layout-venn{gap:8px}
+ .layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(3){margin:0}
+}
 </style>
 </head>
 <body>
@@ -248,7 +308,7 @@ button{cursor:pointer}
   <a class="brand" href="#" id="homeBrand" aria-label="THINK LAB ホーム">
    <span class="brand-mark">T.</span><span><span class="brand-name">THINK LAB</span><span class="brand-sub">THINKING TOOLS BY TT-SENSEI</span></span>
   </a>
-  <div class="top-actions"><button class="btn btn-quiet" id="helpOpen">使い方</button><a class="btn" href="https://tt-sensei.github.io/learning-portal/" target="_blank" rel="noopener">TT-sensei</a></div>
+  <div class="top-actions"><button class="btn btn-quiet" id="furiToggle" aria-pressed="true">ふりがな ON</button><button class="btn btn-quiet" id="helpOpen">使い方</button><a class="btn" href="https://tt-sensei.github.io/learning-portal/" target="_blank" rel="noopener">TT-sensei</a></div>
  </div>
 </header>
 <main class="wrap">
@@ -287,6 +347,7 @@ button{cursor:pointer}
    <section class="workbench" id="workbench">
     <div class="paper-heading"><div class="paper-overline">THINK LAB / THINKING SHEET</div><h2 id="paperTitle">思考シート</h2><p id="paperSubtitle">考えを書き出して、見える形に整理しよう。</p></div>
     <div class="topic-field"><label id="topicLabel" for="topicInput">テーマ・問い</label><input id="topicInput" type="text" placeholder="考えるテーマを書こう"></div>
+    <div class="label-fields" id="labelFields" hidden></div>
     <div class="blocks" id="blocks"></div>
     <div class="save-state" id="saveState">この端末に自動保存</div>
    </section>
@@ -319,9 +380,9 @@ const specs=[
 {id:'webbing',name:'ウェビング',symbol:'◎',category:'expand',desc:'中心の言葉から連想をつなぎ、関係を見つける。',purpose:'一つの言葉から連想を広げ、言葉どうしのつながりを見つけるためのツールだよ。',steps:['中心に言葉を書く','周りに連想した言葉を書く','言葉どうしのつながりを線で結ぶつもりで整理する'],cases:'国語の語彙を増やす、理科の性質を整理する、総合の探究テーマを見つける',tips:['思いついた順に書いてよい','一つの言葉から別の言葉へつなげる','つながりが見えたら仲間分けする'],layout:'web',blocks:[{id:'web',title:'連想した言葉',help:'中心の言葉から思いついたことを書こう。',initial:8,repeat:true,fields:[{id:'word',label:'言葉・考え',placeholder:'連想した言葉'},{id:'link',label:'つながり',placeholder:'どんな関係かな？'}]}]},
 {id:'brainstorm',name:'ブレインストーミング',symbol:'☼',category:'expand',desc:'自由にアイデアを出し、考えの材料を集める。',purpose:'一人ひとりのアイデアをたくさん出して、考える材料を集めるよ。',steps:['テーマや問いを確認する','思いついたアイデアを一つずつ書く','似たアイデアをまとめ、次に考えることを決める'],cases:'学級活動の話合い、行事の企画、問題解決のアイデア出し',tips:['すぐに良し悪しを決めない','短い言葉でも書き残す','友達の考えから新しい考えが生まれることもある'],layout:'ideas',blocks:[{id:'ideas',title:'アイデア',help:'思いついたことを一つずつ書こう。',initial:8,repeat:true,fields:[{id:'idea',label:'アイデア',placeholder:'こんな方法はどうかな？'}]}]},
 {id:'imagemap',name:'イメージマップ',symbol:'✺',category:'expand',desc:'テーマから連想する場面や言葉を視覚的に広げる。',purpose:'テーマから思い浮かぶ場面、もの、気持ちなどを広げていくよ。',steps:['中央にテーマを書く','思い浮かぶ言葉や場面を書く','似たイメージを近くに集める'],cases:'物語を書く前の発想、詩や短歌の題材探し、地域や自然の観察',tips:['見たこと・聞いたこと・感じたことを分けてもよい','絵や簡単な図をあとから書き足してもよい','似たイメージを線でつなぐ'],layout:'radial',blocks:[{id:'images',title:'思い浮かぶこと',help:'言葉・場面・気持ちなどを自由に書こう。',initial:8,repeat:true,fields:[{id:'image',label:'イメージ',placeholder:'どんなことが思い浮かぶ？'},{id:'memo',label:'気づき',placeholder:'その理由や様子'}]}]},
-{id:'venn',name:'ベン図',symbol:'◉',category:'compare',desc:'二つのものの共通点と相違点を整理する。',purpose:'二つのものを比べて、同じところと違うところを見つけるよ。',steps:['比べる二つのものを書く','それぞれにしかない特徴を書く','共通する特徴を真ん中に書く'],cases:'物語の人物比較、昔と今の暮らし、動植物や地域の比較',tips:['見た目だけでなく、働きや理由も比べる','共通点は両方に当てはまるものだけを書く','違いが見つからないときは視点を変える'],layout:'venn',blocks:[{id:'a',title:'Aに当てはまること',help:'Aだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Aの特徴'}]},{id:'both',title:'共通すること',help:'AとBの両方に当てはまること。',initial:3,repeat:true,fields:[{id:'item',label:'共通点',placeholder:'同じところ'}]},{id:'b',title:'Bに当てはまること',help:'Bだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Bの特徴'}]}]},
-{id:'compare',name:'比較表',symbol:'▤',category:'compare',desc:'同じ視点で並べて、違いや共通点を見つける。',purpose:'比べるものを同じ視点で見て、違いと共通点をはっきりさせるよ。',steps:['比べるものを決める','比べる視点をそろえる','それぞれの特徴を書き、気づきをまとめる'],cases:'地域・時代・人物・生き物・実験結果などの比較',tips:['同じ視点で比べる','資料や観察を根拠にする','最後に一番大きな違いや共通点を書く'],layout:'table',blocks:[{id:'rows',title:'比べる視点',help:'同じ視点でAとBの様子を書こう。',initial:4,repeat:true,fields:[{id:'view',label:'視点',placeholder:'例：くらし・気候・役割'},{id:'a',label:'A',placeholder:'Aの特徴'},{id:'b',label:'B',placeholder:'Bの特徴'}]}]},
-{id:'matrix',name:'マトリックス',symbol:'▦',category:'compare',desc:'二つの視点を組み合わせて、情報を分類する。',purpose:'二つの視点を組み合わせて、情報を4つのまとまりに分けるよ。',steps:['縦と横の視点を決める','4つの枠の意味を確認する','情報を当てはまる枠に整理する'],cases:'情報の分類、案の比較、事実と意見の整理、優先順位の検討',tips:['縦軸と横軸の意味をはっきりさせる','どの枠にも入らないものは視点を見直す','枠ごとの特徴を比べる'],layout:'matrix',blocks:[{id:'q1',title:'左上の枠',help:'二つの条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q2',title:'右上の枠',help:'横の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q3',title:'左下の枠',help:'縦の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q4',title:'右下の枠',help:'どちらの条件にも当てはまらない情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]}]},
+{id:'venn',name:'ベン図',symbol:'◉',category:'compare',desc:'二つのものの共通点と相違点を整理する。',purpose:'二つのものを比べて、同じところと違うところを見つけるよ。',steps:['比べる二つのものを書く','それぞれにしかない特徴を書く','共通する特徴を真ん中に書く'],cases:'物語の人物比較、昔と今の暮らし、動植物や地域の比較',tips:['見た目だけでなく、働きや理由も比べる','共通点は両方に当てはまるものだけを書く','違いが見つからないときは視点を変える'],layout:'venn',labels:[{id:'a',label:'A｜比べるもの',placeholder:'例：昔の人のくらし'},{id:'b',label:'B｜比べるもの',placeholder:'例：今の人のくらし'}],blocks:[{id:'a',title:'Aに当てはまること',help:'Aだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Aの特徴'}]},{id:'both',title:'共通すること',help:'AとBの両方に当てはまること。',initial:3,repeat:true,fields:[{id:'item',label:'共通点',placeholder:'同じところ'}]},{id:'b',title:'Bに当てはまること',help:'Bだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Bの特徴'}]}]},
+{id:'compare',name:'比較表',symbol:'▤',category:'compare',desc:'同じ視点で並べて、違いや共通点を見つける。',purpose:'比べるものを同じ視点で見て、違いと共通点をはっきりさせるよ。',steps:['比べるものを決める','比べる視点をそろえる','それぞれの特徴を書き、気づきをまとめる'],cases:'地域・時代・人物・生き物・実験結果などの比較',tips:['同じ視点で比べる','資料や観察を根拠にする','最後に一番大きな違いや共通点を書く'],layout:'table',labels:[{id:'a',label:'A｜比べるもの',placeholder:'例：昔の人のくらし'},{id:'b',label:'B｜比べるもの',placeholder:'例：今の人のくらし'}],blocks:[{id:'rows',title:'比べる視点',help:'同じ視点でAとBの様子を書こう。',initial:4,repeat:true,fields:[{id:'view',label:'視点',placeholder:'例：くらし・気候・役割'},{id:'a',label:'A',placeholder:'Aの特徴'},{id:'b',label:'B',placeholder:'Bの特徴'}]}]},
+{id:'matrix',name:'マトリックス',symbol:'▦',category:'compare',desc:'二つの視点を組み合わせて、情報を分類する。',purpose:'二つの視点を組み合わせて、情報を4つのまとまりに分けるよ。',steps:['縦と横の視点を決める','4つの枠の意味を確認する','情報を当てはまる枠に整理する'],cases:'情報の分類、案の比較、事実と意見の整理、優先順位の検討',tips:['縦軸と横軸の意味をはっきりさせる','どの枠にも入らないものは視点を見直す','枠ごとの特徴を比べる'],layout:'matrix',labels:[{id:'v',label:'縦の条件',placeholder:'例：あてはまる ↔ あてはまらない'},{id:'h',label:'横の条件',placeholder:'例：自分でできる ↔ 助けがいる'}],blocks:[{id:'q1',title:'左上の枠',help:'二つの条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q2',title:'右上の枠',help:'横の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q3',title:'左下の枠',help:'縦の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q4',title:'右下の枠',help:'どちらの条件にも当てはまらない情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]}]},
 {id:'pmi',name:'PMIシート',symbol:'＋',category:'analyze',desc:'よい点・気になる点・おもしろい点から考える。',purpose:'一つの考えや提案を、いろいろな角度から見直すよ。',steps:['考えや提案を決める','よい点・気になる点を書く','おもしろい点や新しい可能性を考える'],cases:'話合いでの意見検討、提案の改善、社会の課題について考える',tips:['すぐに賛成・反対を決めない','気になる点は改善のヒントにもなる','おもしろい点から新しい案を考える'],layout:'columns',blocks:[{id:'plus',title:'P｜よい点・プラス',help:'よいところ、役立つところ。',initial:3,repeat:true,fields:[{id:'item',label:'よい点',placeholder:'よいところは？'}]},{id:'minus',title:'M｜気になる点・マイナス',help:'心配なところ、課題になりそうなこと。',initial:3,repeat:true,fields:[{id:'item',label:'気になる点',placeholder:'心配なところは？'}]},{id:'interesting',title:'I｜おもしろい点',help:'意外なこと、新しい可能性。',initial:3,repeat:true,fields:[{id:'item',label:'おもしろい点',placeholder:'新しい発見は？'}]}]},
 {id:'jellyfish',name:'クラゲチャート',symbol:'♧',category:'analyze',desc:'中心となる考えを、理由や具体例で支える。',purpose:'中心の考えに対して、理由や具体例をいくつも考えて整理するよ。',steps:['頭の部分に中心の考えを書く','足の部分に理由や具体例を書く','どの理由が大切か考える'],cases:'説明文の要点整理、意見文の理由探し、調べ学習のまとめ',tips:['理由と具体例を混ぜずに整理する','理由を支える事実や資料を探す','大切なものに印を付ける'],layout:'branches',blocks:[{id:'reasons',title:'理由・具体例',help:'中心の考えを支える理由や事実を書こう。',initial:6,repeat:true,fields:[{id:'reason',label:'理由・事実',placeholder:'なぜそう考える？'},{id:'example',label:'具体例・資料',placeholder:'たとえば？'}]}]},
 {id:'fishbone',name:'フィッシュボーン',symbol:'⌁',category:'analyze',desc:'結果につながる原因を、視点ごとに整理する。',purpose:'起きていることの原因を、いくつかの視点から整理するよ。',steps:['魚の頭に結果や問題を書く','原因の大きなまとまりを決める','それぞれの原因を細かく書き出す'],cases:'理科の実験結果、生活上の問題、地域の課題、学級の改善',tips:['一つの原因だけで決めつけない','人・環境・方法・時間など視点を変える','事実と予想を区別する'],layout:'fishbone',blocks:[{id:'cause1',title:'原因のまとまり 1',help:'原因を一つずつ具体的に書こう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'考えられる原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]},{id:'cause2',title:'原因のまとまり 2',help:'別の視点から原因を探そう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'別の原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]},{id:'cause3',title:'原因のまとまり 3',help:'さらに別の視点から考えよう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'ほかの原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]}]},
@@ -352,6 +413,11 @@ function pickNavi(){return NAVIS[Math.floor(Math.random()*NAVIS.length)];}
 function naviSrc(id,pose){return NAVI_BASE+id+'/fullbody/'+pose+'.webp';}
 function setNaviImage(img,id,pose){img.src=naviSrc(id,pose);img.onerror=function(){this.style.visibility='hidden';};}
 function escapeHtml(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const FURI={'優先順位':'ゆうせんじゅんい','登場人物':'とうじょうじんぶつ','問題解決':'もんだいかいけつ','学級活動':'がっきゅうかつどう','自然現象':'しぜんげんしょう','実験結果':'じっけんけっか','座標軸':'ざひょうじく','具体例':'ぐたいてれい','共通点':'きょうつうてん','相違点':'そういてん','動植物':'どうしょくぶつ','優先度':'ゆうせんど','意見文':'いけんぶん','説明文':'せつめいぶん','社会科':'しゃかいか','出来事':'できごと','具体的':'ぐたいてき','話し合い':'はなしあい','使い方':'つかいかた','言葉':'ことば','関係':'かんけい','理由':'りゆう','情報':'じょうほう','整理':'せいり','視点':'してん','原因':'げんいん','条件':'じょうけん','事実':'じじつ','根拠':'こんきょ','資料':'しりょう','主張':'しゅちょう','特徴':'とくちょう','部分':'ぶぶん','中心':'ちゅうしん','立場':'たちば','学習':'がくしゅう','結果':'けっか','予想':'よそう','結論':'けつろん','分類':'ぶんるい','課題':'かだい','手順':'てじゅん','自分':'じぶん','説明':'せつめい','地域':'ちいき','両方':'りょうほう','全体':'ぜんたい','観点':'かんてん','方法':'ほうほう','中央':'ちゅうおう','確認':'かくにん','社会':'しゃかい','時間':'じかん','順番':'じゅんばん','疑問':'ぎもん','影響':'えいきょう','仲間':'なかま','連想':'れんそう','場面':'ばめん','物語':'ものがたり','構成':'こうせい','変化':'へんか','最初':'さいしょ','基準':'きじゅん','理科':'りか','比較':'ひかく','人物':'じんぶつ','最後':'さいご','役割':'やくわり','縦軸':'たてじく','横軸':'よこじく','位置':'いち','順位':'じゅんい','観察':'かんさつ','共通':'きょうつう','判断':'はんだん','必要':'ひつよう','範囲':'はんい','時期':'じき','様子':'ようす','提案':'ていあん','角度':'かくど','改善':'かいぜん','反対':'はんたい','区別':'くべつ','複数':'ふくすう','途中':'とちゅう','実験':'じっけん','行動':'こうどう','単元':'たんげん','理解':'りかい','場所':'ばしょ','外側':'そとがわ','概念':'がいねん','国語':'こくご','語彙':'ごい','自由':'じゆう','材料':'ざいりょう','友達':'ともだち','意見':'いけん','検討':'けんとう','意味':'いみ','可能性':'かのうせい','賛成':'さんせい','心配':'しんぱい','問題':'もんだい','前後':'ぜんご','作品':'さくひん','知識':'ちしき','対象':'たいしょう','項目':'こうもく','身近':'みぢか','意識':'いしき','仕組み':'しくみ','一部':'いちぶ','関連':'かんれん','総合':'そうごう','探究':'たんきゅう','正解':'せいかい','性質':'せいしつ','行事':'ぎょうじ','企画':'きかく','発想':'はっそう','短歌':'たんか','自然':'しぜん','時代':'じだい','気候':'きこう','意外':'いがい','発見':'はっけん','環境':'かんきょう','展開':'てんかい','矢印':'やじるし','発表':'はっぴょう','安全':'あんぜん','順序':'じゅんじょ','追加':'ついか','作業':'さぎょう','段階':'だんかい','気持ち':'きもち','大切':'たいせつ','学級':'がっきゅう','歴史':'れきし','上段':'じょうだん','中段':'ちゅうだん','下段':'げだん','思考':'しこう','印刷':'いんさつ','保存':'ほぞん','検索':'けんさく','入力':'にゅうりょく','自動':'じどう','参考':'さんこう','教科':'きょうか','活用':'かつよう','目的':'もくてき','読書':'どくしょ','内容':'ないよう','先生':'せんせい','優先':'ゆうせん'};
+const FURI_KEYS=Object.keys(FURI).sort((a,b)=>b.length-a.length);
+function rubify(text){const s=String(text==null?'':text);let out='',i=0;while(i<s.length){let m=null;for(const k of FURI_KEYS){if(s.startsWith(k,i)){m=k;break;}}if(m){out+='<ruby>'+escapeHtml(m)+'<rt>'+FURI[m]+'</rt></ruby>';i+=m.length;}else{out+=escapeHtml(s[i]);i++;}}return out;}
+function rubifyStatic(root){if(!root)return;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{if(!n.nodeValue||!n.nodeValue.trim())return NodeFilter.FILTER_REJECT;const p=n.parentElement;if(!p||/^(SCRIPT|STYLE|TEXTAREA|INPUT|RUBY|RT)$/.test(p.tagName))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);for(const n of nodes){const s=n.nodeValue;if(!FURI_KEYS.some(k=>s.includes(k)))continue;const span=document.createElement('span');span.innerHTML=rubify(s);n.replaceWith(span);}}
+function hasData(s){try{const v=JSON.parse(localStorage.getItem('thinklab:'+s.id));if(!v)return false;if(String(v.topic||'').trim())return true;if(v.labels&&Object.values(v.labels).some(x=>String(x||'').trim()))return true;return (v.blocks||[]).some(rows=>(rows||[]).some(r=>Object.values(r||{}).some(x=>String(x||'').trim())));}catch(e){return false;}}
 function categoryName(id){const x=categories.find(c=>c.id===id);return x?x.name:'';}
 function renderCategories(){
  $('categoryTabs').innerHTML=categories.map(c=>'<button class="tab '+(activeCategory===c.id?'active':'')+'" data-category="'+c.id+'">'+c.name+'</button>').join('');
@@ -361,38 +427,47 @@ function renderCards(){
  const list=specs.filter(s=>(activeCategory==='all'||s.category===activeCategory)&&(!q||(s.name+' '+s.desc+' '+categoryName(s.category)+' '+s.purpose).toLowerCase().includes(q)));
  $('toolCount').textContent=list.length+' / '+specs.length+' tools';
  $('listHeading').textContent=activeCategory==='all'?'思考ツールを選ぶ':categoryName(activeCategory)+'ためのツール';
- $('toolGrid').innerHTML=list.length?list.map((s,i)=>'<button class="tool-card" data-open="'+s.id+'"><div class="card-top"><span class="tool-number">TOOL '+String(specs.indexOf(s)+1).padStart(2,'0')+'</span><span class="tool-symbol">'+s.symbol+'</span></div><h3>'+s.name+'</h3><p>'+s.desc+'</p><span class="category-label">'+categoryName(s.category)+'　↗</span></button>').join(''):'<div class="empty">条件に合うツールが見つかりません。検索語を変えてみてね。</div>';
+ $('toolGrid').innerHTML=list.length?list.map((s,i)=>'<button class="tool-card" data-open="'+s.id+'"><div class="card-top"><span class="tool-number">TOOL '+String(specs.indexOf(s)+1).padStart(2,'0')+'</span><span class="tool-symbol">'+s.symbol+'</span></div><h3>'+rubify(s.name)+'</h3><p>'+rubify(s.desc)+'</p><span class="category-label">'+categoryName(s.category)+'　↗'+(hasData(s)?'　<span class="saved-badge">● 入力あり</span>':'')+'</span></button>').join(''):'<div class="empty">条件に合うツールが見つかりません。検索語を変えてみてね。</div>';
 }
 function makeInitialState(spec){
- return {topic:'',blocks:spec.blocks.map(b=>Array.from({length:b.initial},()=>Object.fromEntries(b.fields.map(f=>[f.id,'']))))};
+ return {topic:'',labels:Object.fromEntries((spec.labels||[]).map(l=>[l.id,''])),blocks:spec.blocks.map(b=>Array.from({length:b.initial},()=>Object.fromEntries(b.fields.map(f=>[f.id,'']))))};
 }
 function readState(spec){
- try{const v=JSON.parse(localStorage.getItem('thinklab:'+spec.id));if(v&&Array.isArray(v.blocks)&&v.blocks.length===spec.blocks.length)return v;}catch(e){}
+ try{const v=JSON.parse(localStorage.getItem('thinklab:'+spec.id));if(v&&Array.isArray(v.blocks)&&v.blocks.length===spec.blocks.length){if(!v.labels||typeof v.labels!=='object')v.labels={};return v;}}catch(e){}
  return makeInitialState(spec);
 }
 function saveState(){if(!activeTool)return;try{localStorage.setItem('thinklab:'+activeTool.id,JSON.stringify(currentState));$('saveState').textContent='✓ この端末に自動保存しました';}catch(e){$('saveState').textContent='このブラウザでは保存できません。印刷して残してください。'}}
 let currentState=null;
+let guideExpanded=false;
 function renderBlock(b,bi){
  const rows=currentState.blocks[bi]||[];
+ let bTitle=b.title,bHelp=b.help||'';
+ if(activeTool.id==='venn'){
+  if(bi===0&&(currentState.labels.a||'').trim()){bTitle=currentState.labels.a.trim()+'に当てはまること';bHelp=currentState.labels.a.trim()+'だけの特徴を書こう。';}
+  if(bi===2&&(currentState.labels.b||'').trim()){bTitle=currentState.labels.b.trim()+'に当てはまること';bHelp=currentState.labels.b.trim()+'だけの特徴を書こう。';}
+ }
  const entries=rows.map((row,ri)=>{
-  const fields=b.fields.map(f=>'<div class="field"><label>'+escapeHtml(f.label)+'</label><textarea data-block="'+bi+'" data-row="'+ri+'" data-field="'+f.id+'" placeholder="'+escapeHtml(f.placeholder||'')+'">'+escapeHtml(row[f.id]||'')+'</textarea></div>').join('');
-  return '<div class="entry"><div class="entry-top"><span class="entry-label">'+escapeHtml(b.title)+' '+String(ri+1).padStart(2,'0')+'</span>'+(b.repeat?'<button type="button" class="remove-entry" data-remove="'+bi+'" data-row="'+ri+'" aria-label="この項目を削除">削除</button>':'')+'</div>'+fields+'</div>';
+  const fields=b.fields.map(f=>{const named=(activeTool.id==='compare'&&(f.id==='a'||f.id==='b')&&(currentState.labels[f.id]||'').trim())?currentState.labels[f.id].trim():f.label;return '<div class="field"><label>'+rubify(named)+'</label><textarea data-block="'+bi+'" data-row="'+ri+'" data-field="'+f.id+'" placeholder="'+escapeHtml(f.placeholder||'')+'">'+escapeHtml(row[f.id]||'')+'</textarea></div>';}).join('');
+  return '<div class="entry"><div class="entry-top"><span class="entry-label">'+rubify(bTitle)+' '+String(ri+1).padStart(2,'0')+'</span>'+(b.repeat?'<button type="button" class="remove-entry" data-remove="'+bi+'" data-row="'+ri+'" aria-label="この項目を削除">削除</button>':'')+'</div>'+fields+'</div>';
  }).join('');
  const visualLabel=activeTool.layout==='concept'?'言葉 → 関係 → 言葉':activeTool.layout==='bridge'?'関係を見つけて、別の例につなぐ':activeTool.layout==='timeline'?'時間の流れ':activeTool.layout==='tree'?'大きな分類から小さな分類へ':activeTool.layout==='brace'?'全体 → 部分 → さらに細かく':activeTool.layout==='coordinate'?(bi===0?'二つの軸を決める':'位置から特徴を読み取る'):'';
  const visual=visualLabel?'<div class="diagram-caption">'+escapeHtml(visualLabel)+'</div>':'';
- return '<section class="thought-block" data-block-id="'+escapeHtml(b.id)+'"><div class="block-head"><div><h3 class="block-title">'+escapeHtml(b.title)+'</h3><p class="block-help">'+escapeHtml(b.help||'')+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div>'+visual+'<div class="entry-grid">'+entries+'</div>'+(b.repeat?'<button type="button" class="add-entry" data-add="'+bi+'">＋ 項目を追加する</button>':'')+'</section>';
+ return '<section class="thought-block" data-block-id="'+escapeHtml(b.id)+'"><div class="block-head"><div><h3 class="block-title">'+rubify(bTitle)+'</h3><p class="block-help">'+rubify(bHelp)+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div>'+visual+'<div class="entry-grid">'+entries+'</div>'+(b.repeat?'<button type="button" class="add-entry" data-add="'+bi+'">＋ 項目を追加する</button>':'')+'</section>';
 }
 function renderEditor(spec){
  activeTool=spec;currentState=readState(spec);activeGuideNavi=pickNavi();
  $('listView').classList.add('hidden');$('editorView').classList.add('active');
- $('editorSymbol').textContent=spec.symbol;$('editorName').textContent=spec.name;$('editorDesc').textContent=spec.desc;
- $('paperTitle').textContent=spec.name;$('paperSubtitle').textContent=spec.purpose;
+ $('editorSymbol').textContent=spec.symbol;$('editorName').innerHTML=rubify(spec.name);$('editorDesc').innerHTML=rubify(spec.desc);
+ $('paperTitle').innerHTML=rubify(spec.name);$('paperSubtitle').innerHTML=rubify(spec.purpose);
  $('topicLabel').textContent=spec.id==='timeline'?'テーマ・期間':'テーマ・問い';
  $('topicInput').value=currentState.topic||'';
- $('guideMessage').textContent=spec.purpose;
+ const lf=$('labelFields');
+ if(spec.labels&&spec.labels.length){lf.hidden=false;lf.innerHTML=spec.labels.map(l=>'<div class="label-field"><label for="lf-'+l.id+'">'+rubify(l.label)+'</label><input id="lf-'+l.id+'" data-label="'+l.id+'" type="text" placeholder="'+escapeHtml(l.placeholder||'')+'" value="'+escapeHtml(currentState.labels[l.id]||'')+'"></div>').join('');}else{lf.hidden=true;lf.innerHTML='';}
+ guideExpanded=false;$('guideMore').textContent='使い方のコツ';
+ $('guideMessage').innerHTML=rubify(spec.purpose);
  setNaviImage($('guideNavi'),activeGuideNavi,'hint');
- $('useSteps').innerHTML=spec.steps.map((s,i)=>'<div class="use-step"><span class="step-dot">'+(i+1)+'</span><span>'+escapeHtml(s)+'</span></div>').join('');
- $('useCases').textContent=spec.cases;
+ $('useSteps').innerHTML=spec.steps.map((s,i)=>'<div class="use-step"><span class="step-dot">'+(i+1)+'</span><span>'+rubify(s)+'</span></div>').join('');
+ $('useCases').innerHTML=rubify(spec.cases);
  const subjectExamples={
   mindmap:'国語：物語を読んで気付いたことを広げる\n社会：地域の課題や調べたいことを出す\n総合：探究テーマの候補を広げる',
   venn:'国語：二人の登場人物の共通点と違い\n社会：二つの時代や地域のくらしを比べる\n理科：二つの生き物の特徴を比べる',
@@ -405,17 +480,17 @@ function renderEditor(spec){
   brace:'理科：植物や人体など、全体と部分の関係を捉える\n国語：文章を段落やまとまりに分ける\n社会：社会の仕組みを構成する要素に分ける',
   bridge:'国語：語句どうしの関係や比喩を考える\n算数：数量の関係が同じになる式や場面を探す\n社会：役割や働きが似ているものを結び付ける'
  };
- $('subjectExamples').textContent=subjectExamples[spec.id]||'国語：文章や資料から大切な情報を整理する\n社会：資料を比べ、地域や社会の特色を考える\n理科：観察・実験の結果や理由を整理する\n算数：考え方や数量の関係を見える形にする';
- $('tips').innerHTML=spec.tips.map(t=>'<li>'+escapeHtml(t)+'</li>').join('');
+ $('subjectExamples').innerHTML=rubify(subjectExamples[spec.id]||'国語：文章や資料から大切な情報を整理する\n社会：資料を比べ、地域や社会の特色を考える\n理科：観察・実験の結果や理由を整理する\n算数：考え方や数量の関係を見える形にする');
+ $('tips').innerHTML=spec.tips.map(t=>'<li>'+rubify(t)+'</li>').join('');
  $('blocks').className='blocks layout-'+spec.layout;
  $('blocks').innerHTML=spec.blocks.map(renderBlock).join('');
  $('saveState').textContent='この端末に自動保存';
  window.scrollTo({top:0,behavior:'smooth'});
 }
-function returnHome(){activeTool=null;$('editorView').classList.remove('active');$('listView').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+function returnHome(){activeTool=null;$('editorView').classList.remove('active');$('listView').classList.remove('hidden');renderCards();window.scrollTo({top:0,behavior:'smooth'});}
 function openHelp(){ $('helpModal').classList.add('open');}
 function closeHelp(){ $('helpModal').classList.remove('open');}
-function resetActive(){if(!activeTool)return;if(!window.confirm('このツールに入力した内容をすべて消しますか？'))return;currentState=makeInitialState(activeTool);$('topicInput').value='';$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');saveState();}
+function resetActive(){if(!activeTool)return;if(!window.confirm('このツールに入力した内容をすべて消しますか？'))return;currentState=makeInitialState(activeTool);saveState();renderEditor(activeTool);}
 $('homeBrand').addEventListener('click',e=>{e.preventDefault();returnHome();});
 $('helpOpen').addEventListener('click',openHelp);$('modalClose').addEventListener('click',closeHelp);$('modalStart').addEventListener('click',closeHelp);
 $('helpModal').addEventListener('click',e=>{if(e.target===$('helpModal'))closeHelp();});
@@ -432,10 +507,17 @@ $('blocks').addEventListener('click',e=>{
 });
 $('printButton').addEventListener('click',()=>window.print());
 $('resetButton').addEventListener('click',resetActive);
-$('guideMore').addEventListener('click',()=>{if(!activeTool)return;$('guideMessage').textContent=activeTool.steps.join(' → ')+'。'+activeTool.tips[0];});
+$('guideMore').addEventListener('click',()=>{if(!activeTool)return;guideExpanded=!guideExpanded;if(guideExpanded){$('guideMessage').innerHTML=rubify(activeTool.steps.join(' → ')+'。'+activeTool.tips[0]);$('guideMore').textContent='案内にもどす';}else{$('guideMessage').innerHTML=rubify(activeTool.purpose);$('guideMore').textContent='使い方のコツ';}});
+$('labelFields').addEventListener('input',e=>{const t=e.target;if(!t.matches('input[data-label]')||!currentState)return;currentState.labels[t.dataset.label]=t.value;saveState();});
+$('labelFields').addEventListener('change',e=>{if(!e.target.matches('input[data-label]')||!activeTool)return;$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');});
 activeNavi=pickNavi();setNaviImage($('heroNavi'),activeNavi,'waving');
 const heroLines=[['考えることを楽しもう。','使いたい道具を選んで、考えを入力してみよう。書いた内容は自動で保存されるよ。'],['どの道具で考えてみる？','目的に合う思考ツールを選ぶと、考えが整理しやすくなるよ。'],['思いついたことから始めよう。','うまく書こうとしなくて大丈夫。まずは自分の考えを書いてみよう。']];
 const heroLine=heroLines[Math.floor(Math.random()*heroLines.length)];$('heroNaviTitle').textContent=heroLine[0];$('heroNaviText').textContent=heroLine[1];
+let furiOn=true;try{furiOn=localStorage.getItem('thinklab:furigana')!=='off';}catch(e){}
+function applyFuri(){document.body.classList.toggle('furi-off',!furiOn);$('furiToggle').textContent='ふりがな '+(furiOn?'ON':'OFF');$('furiToggle').setAttribute('aria-pressed',String(furiOn));}
+$('furiToggle').addEventListener('click',()=>{furiOn=!furiOn;try{localStorage.setItem('thinklab:furigana',furiOn?'on':'off');}catch(e){}applyFuri();});
+applyFuri();
+rubifyStatic(document.querySelector('.hero'));rubifyStatic(document.querySelector('.quick-guide'));rubifyStatic(document.querySelector('.modal'));rubifyStatic(document.querySelector('.footer'));
 renderCategories();renderCards();
 })();
 </script>
