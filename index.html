@@ -329,6 +329,62 @@ body.furi-off rt{display:none}
  .diagram-head{display:none!important}
  .d-val{color:#111!important}
 }
+
+/* Round 4: the diagram is the picture itself; text sits on top of it. */
+.diagram-stage{padding:2px}
+.stage{position:relative;width:100%;min-width:430px;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.stage-art{position:absolute;inset:0;width:100%;height:100%}
+.stage-venn{aspect-ratio:4/3}
+.stage-fish{aspect-ratio:16/9}
+.stage-coord{aspect-ratio:1/1}
+.stage-pyr{aspect-ratio:8/5}
+.stage-conc{aspect-ratio:1/1}
+.stage-bfly{aspect-ratio:8/5}
+.stage-y{aspect-ratio:32/21}
+.zone{position:absolute;text-align:center;padding:2px;z-index:1}
+.ztitle{font-size:10.5px;font-weight:850;color:#51617a;margin-bottom:3px}
+.zentry{margin:3px 0}
+.zval{font-size:13px;font-weight:650;line-height:1.5;word-break:break-word;white-space:pre-wrap}
+.zval.sub{font-size:11px;font-weight:500;color:#5a6a80}
+.zval:empty{display:none}
+.zval[data-ph]:empty{display:block}
+.zval[data-ph]:empty::after{content:attr(data-ph);color:#a7b3c2;font-weight:600}
+.stage-pill{position:absolute;top:1%;transform:translateX(-50%);background:#fff;border:2px solid #8a97a8;border-radius:999px;padding:2px 14px;font-weight:850;font-size:13px;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:2}
+.pill-a{left:37%;border-color:#5b8dd0}
+.pill-b{left:63%;border-color:#57a773}
+.stage-venn .zone-a{left:2%;top:15%;width:30%}
+.stage-venn .zone-c{left:36.5%;top:19%;width:27%}
+.stage-venn .zone-b{left:68%;top:15%;width:30%}
+.zone-fb0{left:2%;top:2%;width:27%}
+.zone-fb1{left:25%;top:56%;width:27%}
+.zone-fb2{left:43%;top:2%;width:27%}
+.zone-head{left:81%;top:32%;width:18%}
+.zone-head .stage-topic-val{font-size:12.5px;font-weight:750;word-break:break-word;line-height:1.45}
+.zone-lu{left:3%;top:3%;width:44%}
+.zone-ru{left:53%;top:3%;width:44%}
+.zone-ld{left:3%;top:53%;width:44%}
+.zone-rd{left:53%;top:53%;width:44%}
+.axis-lab{position:absolute;font-size:12px;font-weight:850;color:#42506a;background:rgba(255,255,255,.88);padding:0 5px;border-radius:4px;z-index:2}
+.lab-top{left:51%;top:0}
+.lab-right{right:0;top:48%}
+.zone-py0{left:38%;top:8%;width:24%}
+.zone-py1{left:29%;top:37%;width:42%}
+.zone-py2{left:17%;top:66%;width:66%}
+.zone-cc2{left:27%;top:1.5%;width:46%}
+.zone-cc1{left:29%;top:15%;width:42%}
+.zone-cc0{left:33%;top:36%;width:34%}
+.zone-bf0{left:3%;top:13%;width:33%}
+.zone-bf2{left:64%;top:13%;width:33%}
+.zone-bf1{left:27%;top:84%;width:46%}
+.zone-y0{left:1%;top:2%;width:33%}
+.zone-y1{left:66%;top:2%;width:33%}
+.zone-y2{left:33%;top:60%;width:34%}
+.diagram .thought-block{background:transparent;border:0;box-shadow:none}
+.diagram .entry{background:rgba(255,255,255,.55);border:0;box-shadow:none}
+@media print{
+ .stage{min-width:0}
+ .zone .ztitle{color:#333!important}
+}
 </style>
 </head>
 <body>
@@ -493,9 +549,47 @@ function renderBlock(b,bi){
  const visual=visualOf(bi);
  return '<section class="thought-block" data-block-id="'+escapeHtml(b.id)+'"><div class="block-head"><div><h3 class="block-title">'+rubify(bTitle)+'</h3><p class="block-help">'+rubify(bHelp)+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div>'+visual+'<div class="entry-grid">'+entries+'</div>'+(b.repeat?'<button type="button" class="add-entry" data-add="'+bi+'">＋ 項目を追加する</button>':'')+'</section>';
 }
+function zEntries(b,bi){
+ const rows=currentState.blocks[bi]||[];
+ return rows.map((row,ri)=>'<div class="zentry">'+b.fields.map((f,fi)=>'<div class="zval'+(fi>0?' sub':'')+'" data-diag="'+bi+'-'+ri+'-'+f.id+'">'+escapeHtml(row[f.id]||'')+'</div>').join('')+'</div>').join('');
+}
+function zoneOf(bi,cls){const b=activeTool.blocks[bi];return '<div class="zone '+cls+'"><div class="ztitle">'+rubify(blockTitleHelp(b,bi)[0])+'</div>'+zEntries(b,bi)+'</div>';}
+function stageVenn(){
+ const nmA=(currentState.labels.a||'').trim()||'A',nmB=(currentState.labels.b||'').trim()||'B';
+ return '<div class="stage stage-venn"><svg class="stage-art" viewBox="0 0 640 480" aria-hidden="true"><circle cx="238" cy="252" r="182" fill="rgba(110,160,225,.38)" stroke="#5b8dd0" stroke-width="3"/><circle cx="402" cy="252" r="182" fill="rgba(110,195,130,.38)" stroke="#57a773" stroke-width="3"/></svg><div class="stage-pill pill-a">'+escapeHtml(nmA)+'</div><div class="stage-pill pill-b">'+escapeHtml(nmB)+'</div>'+zoneOf(0,'zone-a')+zoneOf(1,'zone-c')+zoneOf(2,'zone-b')+'</div>';
+}
+function stageFishbone(){
+ const xs=[150,285,420];let lines='';
+ xs.forEach((x,i)=>{const up=i!==1;lines+='<line x1="'+x+'" y1="180" x2="'+(x-78)+'" y2="'+(up?42:318)+'" stroke="#7d8ea6" stroke-width="3"/>';});
+ return '<div class="stage stage-fish"><svg class="stage-art" viewBox="0 0 640 360" aria-hidden="true"><line x1="18" y1="180" x2="512" y2="180" stroke="#42506a" stroke-width="4"/>'+lines+'<path d="M512 180 L548 116 Q624 128 630 180 Q624 232 548 244 Z" fill="#eef3fa" stroke="#42506a" stroke-width="3"/></svg>'+zoneOf(0,'zone-fb0')+zoneOf(1,'zone-fb1')+zoneOf(2,'zone-fb2')+'<div class="zone zone-head"><div class="ztitle">結果</div><div class="stage-topic-val">'+escapeHtml(currentState.topic||'')+'</div></div></div>';
+}
+function stageCoordinate(){
+ const r0=(currentState.blocks[0]||[])[0]||{};
+ const svg='<svg class="stage-art" viewBox="0 0 560 560" aria-hidden="true"><defs><marker id="arrW" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#42506a"/></marker></defs><line x1="280" y1="552" x2="280" y2="8" stroke="#42506a" stroke-width="3" marker-end="url(#arrW)"/><line x1="280" y1="8" x2="280" y2="552" stroke="#42506a" stroke-width="0" marker-end="url(#arrW)"/><line x1="8" y1="280" x2="552" y2="280" stroke="#42506a" stroke-width="3" marker-end="url(#arrW)"/></svg>';
+ return '<div class="stage stage-coord">'+svg+'<div class="axis-lab lab-top zval" data-diag="0-0-vertical" data-ph="縦軸">'+escapeHtml(r0.vertical||'')+'</div><div class="axis-lab lab-right zval" data-diag="0-0-horizontal" data-ph="横軸">'+escapeHtml(r0.horizontal||'')+'</div>'+zoneOf(1,'zone-ru')+zoneOf(2,'zone-lu')+zoneOf(3,'zone-ld')+zoneOf(4,'zone-rd')+'</div>';
+}
+function stagePyramid(){
+ const svg='<svg class="stage-art" viewBox="0 0 640 400" aria-hidden="true"><polygon points="320,18 262,138 378,138" fill="#ffe3a3" stroke="#d9a83f" stroke-width="2.5"/><polygon points="262,138 378,138 430,258 210,258" fill="#ffd2ae" stroke="#dd9463" stroke-width="2.5"/><polygon points="210,258 430,258 578,382 62,382" fill="#cfe8c0" stroke="#7cab63" stroke-width="2.5"/></svg>';
+ return '<div class="stage stage-pyr">'+svg+zoneOf(0,'zone-py0')+zoneOf(1,'zone-py1')+zoneOf(2,'zone-py2')+'</div>';
+}
+function stageConcentric(){
+ const svg='<svg class="stage-art" viewBox="0 0 560 560" aria-hidden="true"><circle cx="280" cy="280" r="266" fill="#e8f1fb" stroke="#7d9cc4" stroke-width="3"/><circle cx="280" cy="280" r="182" fill="#d6e6f8" stroke="#7d9cc4" stroke-width="3"/><circle cx="280" cy="280" r="104" fill="#bcd4f0" stroke="#5b8dd0" stroke-width="3"/></svg>';
+ return '<div class="stage stage-conc">'+svg+zoneOf(2,'zone-cc2')+zoneOf(1,'zone-cc1')+zoneOf(0,'zone-cc0')+'</div>';
+}
+function stageButterfly(){
+ const svg='<svg class="stage-art" viewBox="0 0 640 400" aria-hidden="true"><ellipse cx="188" cy="178" rx="170" ry="152" fill="rgba(245,185,95,.45)" stroke="#dd9a3f" stroke-width="3"/><ellipse cx="452" cy="178" rx="170" ry="152" fill="rgba(110,180,230,.45)" stroke="#5b8dd0" stroke-width="3"/><rect x="302" y="52" width="36" height="252" rx="18" fill="#f4f6f9" stroke="#8a97a8" stroke-width="2.5"/></svg>';
+ return '<div class="stage stage-bfly">'+svg+zoneOf(0,'zone-bf0')+zoneOf(2,'zone-bf2')+zoneOf(1,'zone-bf1')+'</div>';
+}
+function stageY(){
+ const svg='<svg class="stage-art" viewBox="0 0 640 420" aria-hidden="true"><line x1="320" y1="205" x2="105" y2="55" stroke="#7d8ea6" stroke-width="3"/><line x1="320" y1="205" x2="535" y2="55" stroke="#7d8ea6" stroke-width="3"/><line x1="320" y1="205" x2="320" y2="398" stroke="#7d8ea6" stroke-width="3"/><circle cx="320" cy="205" r="10" fill="#4669a8"/></svg>';
+ return '<div class="stage stage-y">'+svg+zoneOf(0,'zone-y0')+zoneOf(1,'zone-y1')+zoneOf(2,'zone-y2')+'</div>';
+}
+const OVERLAY={venn:stageVenn,fishbone:stageFishbone,coordinate:stageCoordinate,pyramid:stagePyramid,concentric:stageConcentric,butterfly:stageButterfly,ychart:stageY};
 function renderDiagram(){
  const d=$('diagram');
  if(!activeTool||!activeTool.split){d.innerHTML='';$('diagramTopic').textContent='';return;}
+ if(OVERLAY[activeTool.id]){d.className='diagram diagram-stage';d.innerHTML=OVERLAY[activeTool.id]();}
+ else{
  d.className='diagram blocks layout-'+activeTool.layout;
  d.innerHTML=activeTool.blocks.map((b,bi)=>{
   const th=blockTitleHelp(b,bi);
@@ -506,6 +600,7 @@ function renderDiagram(){
   }).join('');
   return '<section class="thought-block d-block"><div class="block-head"><div><h3 class="block-title">'+rubify(th[0])+'</h3><p class="block-help">'+rubify(th[1])+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div>'+visualOf(bi)+'<div class="entry-grid">'+entries+'</div></section>';
  }).join('');
+ }
  $('diagramTopic').textContent=currentState.topic||'';
 }
 function renderEditor(spec){
@@ -563,8 +658,8 @@ $('searchInput').addEventListener('input',renderCards);
 $('categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;activeCategory=b.dataset.category;renderCategories();renderCards();});
 $('toolGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const s=specs.find(x=>x.id===b.dataset.open);if(s)renderEditor(s);});
 $('quickPicks').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)renderEditor(spec);});
-$('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;$('diagramTopic').textContent=e.target.value;saveState();});
-$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;const dv=document.querySelector('.d-val[data-diag="'+bi+'-'+ri+'-'+field+'"]');if(dv)dv.textContent=t.value;saveState();}});
+$('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;$('diagramTopic').textContent=e.target.value;document.querySelectorAll('.stage-topic-val').forEach(el=>el.textContent=e.target.value);saveState();});
+$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;const dv=document.querySelector('[data-diag="'+bi+'-'+ri+'-'+field+'"]');if(dv)dv.textContent=t.value;saveState();}});
 $('blocks').addEventListener('click',e=>{
  const add=e.target.closest('[data-add]');if(add){const bi=Number(add.dataset.add),b=activeTool.blocks[bi];currentState.blocks[bi].push(Object.fromEntries(b.fields.map(f=>[f.id,''])));$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();saveState();return;}
  const rem=e.target.closest('[data-remove]');if(rem){const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();saveState();}
