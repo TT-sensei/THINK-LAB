@@ -300,6 +300,35 @@ body.furi-off rt{display:none}
  .layout-venn{gap:8px}
  .layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(3){margin:0}
 }
+
+/* Round 3: diagram and input are separate; typing reflects into the diagram. */
+.split-wrap{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:16px;align-items:start}
+.split-wrap[hidden]{display:none}
+.diagram-panel{position:sticky;top:74px;background:#fbfcfe;border:1px solid var(--line);border-radius:16px;padding:15px;max-height:calc(100vh - 92px);overflow:auto}
+.diagram-head{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.diagram-title{font-size:11px;font-weight:850;color:#fff;background:#4669a8;border-radius:999px;padding:3px 11px;letter-spacing:.06em;white-space:nowrap}
+.diagram-topic{font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.panel-label{font-size:11px;font-weight:850;color:#fff;background:#8a97a8;border-radius:999px;padding:3px 11px;letter-spacing:.06em;display:inline-block;margin:2px 0 10px}
+.input-panel{min-width:0}
+.diagram .block-title{font-size:12px}
+.diagram .block-help{font-size:10.5px}
+.diagram .entry{padding:8px}
+.d-field label{font-size:9.5px}
+.d-val{font-size:12.5px;line-height:1.55;white-space:pre-wrap;word-break:break-word;min-height:1.35em;color:var(--ink)}
+.d-val:empty::after{content:'―';color:#c6cfdb}
+.work-layout.split-mode{grid-template-columns:1fr}
+.work-layout.split-mode .editor-aside{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:900px){
+ .split-wrap{grid-template-columns:1fr}
+ .diagram-panel{position:static;max-height:none}
+}
+@media print{
+ .split-wrap{display:block!important}
+ .split-wrap .input-panel{display:none!important}
+ .diagram-panel{position:static;max-height:none;overflow:visible;border:0!important;padding:0;background:#fff!important}
+ .diagram-head{display:none!important}
+ .d-val{color:#111!important}
+}
 </style>
 </head>
 <body>
@@ -343,11 +372,15 @@ body.furi-off rt{display:none}
   <div class="guide-strip">
    <img id="guideNavi" alt="" src=""><div class="guide-copy"><div class="guide-kicker">NAVI GUIDE / THINKING SUPPORT</div><p id="guideMessage">使い方を確認して、考えを整理してみよう。</p></div><button class="guide-toggle" id="guideMore">使い方のコツ</button>
   </div>
-  <div class="work-layout">
+  <div class="work-layout" id="workLayout">
    <section class="workbench" id="workbench">
     <div class="paper-heading"><div class="paper-overline">THINK LAB / THINKING SHEET</div><h2 id="paperTitle">思考シート</h2><p id="paperSubtitle">考えを書き出して、見える形に整理しよう。</p></div>
     <div class="topic-field"><label id="topicLabel" for="topicInput">テーマ・問い</label><input id="topicInput" type="text" placeholder="考えるテーマを書こう"></div>
     <div class="label-fields" id="labelFields" hidden></div>
+    <div class="split-wrap" id="splitWrap" hidden>
+     <section class="diagram-panel" id="diagramPanel"><div class="diagram-head"><span class="diagram-title">図で見る</span><span class="diagram-topic" id="diagramTopic"></span></div><div class="diagram" id="diagram"></div></section>
+     <div class="input-panel" id="inputPanel"><div class="panel-label">入力する</div></div>
+    </div>
     <div class="blocks" id="blocks"></div>
     <div class="save-state" id="saveState">この端末に自動保存</div>
    </section>
@@ -407,6 +440,8 @@ const specs=[
 {id:'brace',name:'ブレースチャート',symbol:'{ }',category:'analyze',desc:'全体を部分に分け、部分どうしの構成を捉える。',purpose:'一つの全体が、どんな部分からできているかを整理するよ。',steps:['全体となるものを書く','全体を部分に分ける','部分をさらに細かく分けて構成を確かめる'],cases:'生き物や植物の体のつくり、文章の構成、道具や機械の仕組み',tips:['全体と部分の関係を意識する','部分を合わせると全体になるか確かめる','必要に応じて細かい部分へ分ける'],layout:'brace',blocks:[{id:'parts',title:'全体をつくる部分',help:'全体を分けて、部分とその役割を書こう。',initial:5,repeat:true,fields:[{id:'part',label:'部分',placeholder:'どの部分？'},{id:'detail',label:'役割・さらに細かい部分',placeholder:'どんな働き・構成？'}]}]},
 {id:'bridge',name:'ブリッジチャート',symbol:'≒',category:'analyze',desc:'二つの関係を見つけ、別の組み合わせに当てはめる。',purpose:'二つのものの関係を見つけ、同じ関係が成り立つ別の例を考えるよ。',steps:['最初の二つの関係を考える','関係を短い言葉で説明する','同じ関係になる別の組み合わせを探す'],cases:'語彙や概念の理解、比喩表現、算数の数量関係、社会の役割の理解',tips:['似ている見た目ではなく関係に注目する','関係を「〜するもの」「〜の一部」などで説明する','別の例でも同じ関係になるか確かめる'],layout:'bridge',blocks:[{id:'pairs',title:'関係を見つける',help:'二つの言葉の関係を考え、同じ関係の別の例を探そう。',initial:3,repeat:true,fields:[{id:'a',label:'言葉 A',placeholder:'最初の言葉'},{id:'b',label:'言葉 B',placeholder:'関係する言葉'},{id:'relation',label:'二つの関係',placeholder:'AとBはどんな関係？'},{id:'c',label:'言葉 C',placeholder:'別の例の言葉'},{id:'d',label:'言葉 D',placeholder:'対応する言葉'}]}]}
 ];
+const SPLIT_TOOLS=['mindmap','webbing','brainstorm','imagemap','venn','jellyfish','fishbone','cause-effect','pyramid','flowchart','process','timeline','prep','claim','ychart','reflection','coordinate','butterfly','kumade','concentric','candy','concept','tree','brace','bridge'];
+specs.forEach(s=>{if(SPLIT_TOOLS.indexOf(s.id)>=0)s.split=true;});
 const $=id=>document.getElementById(id);
 let activeCategory='all',activeTool=null,activeNavi='sora',activeGuideNavi='kai';
 function pickNavi(){return NAVIS[Math.floor(Math.random()*NAVIS.length)];}
@@ -439,20 +474,39 @@ function readState(spec){
 function saveState(){if(!activeTool)return;try{localStorage.setItem('thinklab:'+activeTool.id,JSON.stringify(currentState));$('saveState').textContent='✓ この端末に自動保存しました';}catch(e){$('saveState').textContent='このブラウザでは保存できません。印刷して残してください。'}}
 let currentState=null;
 let guideExpanded=false;
+function blockTitleHelp(b,bi){
+ let t=b.title,h=b.help||'';
+ if(activeTool&&activeTool.id==='venn'){
+  if(bi===0&&(currentState.labels.a||'').trim()){t=currentState.labels.a.trim()+'に当てはまること';h=currentState.labels.a.trim()+'だけの特徴を書こう。';}
+  if(bi===2&&(currentState.labels.b||'').trim()){t=currentState.labels.b.trim()+'に当てはまること';h=currentState.labels.b.trim()+'だけの特徴を書こう。';}
+ }
+ return [t,h];
+}
+function visualOf(bi){const l=activeTool.layout;const v=l==='concept'?'言葉 → 関係 → 言葉':l==='bridge'?'関係を見つけて、別の例につなぐ':l==='timeline'?'時間の流れ':l==='tree'?'大きな分類から小さな分類へ':l==='brace'?'全体 → 部分 → さらに細かく':l==='coordinate'?(bi===0?'二つの軸を決める':'位置から特徴を読み取る'):'';return v?'<div class="diagram-caption">'+escapeHtml(v)+'</div>':'';}
 function renderBlock(b,bi){
  const rows=currentState.blocks[bi]||[];
- let bTitle=b.title,bHelp=b.help||'';
- if(activeTool.id==='venn'){
-  if(bi===0&&(currentState.labels.a||'').trim()){bTitle=currentState.labels.a.trim()+'に当てはまること';bHelp=currentState.labels.a.trim()+'だけの特徴を書こう。';}
-  if(bi===2&&(currentState.labels.b||'').trim()){bTitle=currentState.labels.b.trim()+'に当てはまること';bHelp=currentState.labels.b.trim()+'だけの特徴を書こう。';}
- }
+ const th=blockTitleHelp(b,bi);const bTitle=th[0],bHelp=th[1];
  const entries=rows.map((row,ri)=>{
   const fields=b.fields.map(f=>{const named=(activeTool.id==='compare'&&(f.id==='a'||f.id==='b')&&(currentState.labels[f.id]||'').trim())?currentState.labels[f.id].trim():f.label;return '<div class="field"><label>'+rubify(named)+'</label><textarea data-block="'+bi+'" data-row="'+ri+'" data-field="'+f.id+'" placeholder="'+escapeHtml(f.placeholder||'')+'">'+escapeHtml(row[f.id]||'')+'</textarea></div>';}).join('');
   return '<div class="entry"><div class="entry-top"><span class="entry-label">'+rubify(bTitle)+' '+String(ri+1).padStart(2,'0')+'</span>'+(b.repeat?'<button type="button" class="remove-entry" data-remove="'+bi+'" data-row="'+ri+'" aria-label="この項目を削除">削除</button>':'')+'</div>'+fields+'</div>';
  }).join('');
- const visualLabel=activeTool.layout==='concept'?'言葉 → 関係 → 言葉':activeTool.layout==='bridge'?'関係を見つけて、別の例につなぐ':activeTool.layout==='timeline'?'時間の流れ':activeTool.layout==='tree'?'大きな分類から小さな分類へ':activeTool.layout==='brace'?'全体 → 部分 → さらに細かく':activeTool.layout==='coordinate'?(bi===0?'二つの軸を決める':'位置から特徴を読み取る'):'';
- const visual=visualLabel?'<div class="diagram-caption">'+escapeHtml(visualLabel)+'</div>':'';
+ const visual=visualOf(bi);
  return '<section class="thought-block" data-block-id="'+escapeHtml(b.id)+'"><div class="block-head"><div><h3 class="block-title">'+rubify(bTitle)+'</h3><p class="block-help">'+rubify(bHelp)+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div>'+visual+'<div class="entry-grid">'+entries+'</div>'+(b.repeat?'<button type="button" class="add-entry" data-add="'+bi+'">＋ 項目を追加する</button>':'')+'</section>';
+}
+function renderDiagram(){
+ const d=$('diagram');
+ if(!activeTool||!activeTool.split){d.innerHTML='';$('diagramTopic').textContent='';return;}
+ d.className='diagram blocks layout-'+activeTool.layout;
+ d.innerHTML=activeTool.blocks.map((b,bi)=>{
+  const th=blockTitleHelp(b,bi);
+  const rows=currentState.blocks[bi]||[];
+  const entries=rows.map((row,ri)=>{
+   const flds=b.fields.map(f=>'<div class="field d-field"><label>'+rubify(f.label)+'</label><div class="d-val" data-diag="'+bi+'-'+ri+'-'+f.id+'">'+escapeHtml(row[f.id]||'')+'</div></div>').join('');
+   return '<div class="entry d-entry">'+flds+'</div>';
+  }).join('');
+  return '<section class="thought-block d-block"><div class="block-head"><div><h3 class="block-title">'+rubify(th[0])+'</h3><p class="block-help">'+rubify(th[1])+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div>'+visualOf(bi)+'<div class="entry-grid">'+entries+'</div></section>';
+ }).join('');
+ $('diagramTopic').textContent=currentState.topic||'';
 }
 function renderEditor(spec){
  activeTool=spec;currentState=readState(spec);activeGuideNavi=pickNavi();
@@ -482,8 +536,18 @@ function renderEditor(spec){
  };
  $('subjectExamples').innerHTML=rubify(subjectExamples[spec.id]||'国語：文章や資料から大切な情報を整理する\n社会：資料を比べ、地域や社会の特色を考える\n理科：観察・実験の結果や理由を整理する\n算数：考え方や数量の関係を見える形にする');
  $('tips').innerHTML=spec.tips.map(t=>'<li>'+rubify(t)+'</li>').join('');
- $('blocks').className='blocks layout-'+spec.layout;
- $('blocks').innerHTML=spec.blocks.map(renderBlock).join('');
+ const blocksEl=$('blocks');
+ if(spec.split){
+  $('splitWrap').hidden=false;$('workLayout').classList.add('split-mode');
+  $('inputPanel').appendChild(blocksEl);
+  blocksEl.className='blocks input-list';
+ }else{
+  $('splitWrap').hidden=true;$('workLayout').classList.remove('split-mode');
+  $('workbench').insertBefore(blocksEl,$('splitWrap'));
+  blocksEl.className='blocks layout-'+spec.layout;
+ }
+ blocksEl.innerHTML=spec.blocks.map(renderBlock).join('');
+ renderDiagram();
  $('saveState').textContent='この端末に自動保存';
  window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -499,17 +563,17 @@ $('searchInput').addEventListener('input',renderCards);
 $('categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;activeCategory=b.dataset.category;renderCategories();renderCards();});
 $('toolGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const s=specs.find(x=>x.id===b.dataset.open);if(s)renderEditor(s);});
 $('quickPicks').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)renderEditor(spec);});
-$('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;saveState();});
-$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;saveState();}});
+$('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;$('diagramTopic').textContent=e.target.value;saveState();});
+$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;const dv=document.querySelector('.d-val[data-diag="'+bi+'-'+ri+'-'+field+'"]');if(dv)dv.textContent=t.value;saveState();}});
 $('blocks').addEventListener('click',e=>{
- const add=e.target.closest('[data-add]');if(add){const bi=Number(add.dataset.add),b=activeTool.blocks[bi];currentState.blocks[bi].push(Object.fromEntries(b.fields.map(f=>[f.id,''])));$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');saveState();return;}
- const rem=e.target.closest('[data-remove]');if(rem){const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');saveState();}
+ const add=e.target.closest('[data-add]');if(add){const bi=Number(add.dataset.add),b=activeTool.blocks[bi];currentState.blocks[bi].push(Object.fromEntries(b.fields.map(f=>[f.id,''])));$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();saveState();return;}
+ const rem=e.target.closest('[data-remove]');if(rem){const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();saveState();}
 });
 $('printButton').addEventListener('click',()=>window.print());
 $('resetButton').addEventListener('click',resetActive);
 $('guideMore').addEventListener('click',()=>{if(!activeTool)return;guideExpanded=!guideExpanded;if(guideExpanded){$('guideMessage').innerHTML=rubify(activeTool.steps.join(' → ')+'。'+activeTool.tips[0]);$('guideMore').textContent='案内にもどす';}else{$('guideMessage').innerHTML=rubify(activeTool.purpose);$('guideMore').textContent='使い方のコツ';}});
 $('labelFields').addEventListener('input',e=>{const t=e.target;if(!t.matches('input[data-label]')||!currentState)return;currentState.labels[t.dataset.label]=t.value;saveState();});
-$('labelFields').addEventListener('change',e=>{if(!e.target.matches('input[data-label]')||!activeTool)return;$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');});
+$('labelFields').addEventListener('change',e=>{if(!e.target.matches('input[data-label]')||!activeTool)return;$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();});
 activeNavi=pickNavi();setNaviImage($('heroNavi'),activeNavi,'waving');
 const heroLines=[['考えることを楽しもう。','使いたい道具を選んで、考えを入力してみよう。書いた内容は自動で保存されるよ。'],['どの道具で考えてみる？','目的に合う思考ツールを選ぶと、考えが整理しやすくなるよ。'],['思いついたことから始めよう。','うまく書こうとしなくて大丈夫。まずは自分の考えを書いてみよう。']];
 const heroLine=heroLines[Math.floor(Math.random()*heroLines.length)];$('heroNaviTitle').textContent=heroLine[0];$('heroNaviText').textContent=heroLine[1];
