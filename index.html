@@ -205,6 +205,22 @@ button{cursor:pointer}
 #subjectExamples{white-space:pre-line}
 @media print{#subjectExamples{display:none}}
 
+
+.quick-guide{display:grid;grid-template-columns:.72fr 1.28fr;gap:18px;align-items:center;margin:0 0 23px;padding:17px 19px;background:#fff;border:1px solid var(--line);border-radius:17px}
+.quick-guide-head h2{font-size:15px;margin:4px 0 3px;letter-spacing:-.02em}
+.quick-guide-head p{font-size:11px;color:var(--muted);margin:0}
+.quick-picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.quick-pick{display:flex;align-items:center;gap:10px;min-width:0;text-align:left;border:1px solid #e3e9f1;background:#fafbfd;border-radius:11px;padding:9px 10px;color:var(--ink)}
+.quick-pick:hover{border-color:#a8b9d5;background:#f4f7fc}
+.quick-icon{width:31px;height:31px;display:grid;place-items:center;flex:none;border-radius:9px;background:#eaf0fa;color:#57749f;font-size:16px;font-weight:800}
+.quick-pick b,.quick-pick small{display:block}
+.quick-pick b{font-size:11px;line-height:1.35}
+.quick-pick small{font-size:10px;color:var(--muted);margin-top:2px}
+.quick-arrow{margin-left:auto;color:#8796aa}
+@media(max-width:700px){.quick-guide{grid-template-columns:1fr;gap:12px;padding:14px}.quick-picks{grid-template-columns:1fr 1fr}}
+@media(max-width:440px){.quick-pick{padding:8px;gap:7px}.quick-pick b{font-size:10px}.quick-pick small{font-size:9px}.quick-icon{width:27px;height:27px}}
+@media print{.quick-guide{display:none!important}}
+
 </style>
 </head>
 <body>
@@ -222,6 +238,15 @@ button{cursor:pointer}
    <div><div class="eyebrow">THINKING TOOLS / IDEAS INTO SHAPE</div><h1>考えを、<br>見える形に。</h1><p>思いついたことを広げる。違いを比べる。理由やつながりを整理する。<br>学びに合わせて道具を選び、自分の考えをつくっていこう。</p></div>
    <div class="hero-note"><img id="heroNavi" alt="" src=""><div><strong id="heroNaviTitle">考えることを楽しもう。</strong><p id="heroNaviText">使いたい道具を選んで、考えを入力してみよう。書いた内容は自動で保存されるよ。</p></div></div>
   </div>
+  <section class="quick-guide" aria-label="目的からツールを選ぶ">
+   <div class="quick-guide-head"><span class="eyebrow">FIND YOUR TOOL</span><h2>迷ったら、考えたいことから選ぼう。</h2><p>ナビアンのおすすめ。タップすると、その思考ツールをすぐに開けるよ。</p></div>
+   <div class="quick-picks" id="quickPicks">
+    <button class="quick-pick" data-open="mindmap"><span class="quick-icon">✳</span><span><b>考えを広げたい</b><small>マインドマップ</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="venn"><span class="quick-icon">◎</span><span><b>共通点と違いを比べたい</b><small>ベン図</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="fishbone"><span class="quick-icon">⑂</span><span><b>理由や原因を探りたい</b><small>フィッシュボーン</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="timeline"><span class="quick-icon">→</span><span><b>順序や変化を整理したい</b><small>タイムライン</small></span><span class="quick-arrow">↗</span></button>
+   </div>
+  </section>
   <div class="search-row">
    <div class="searchbox"><span class="search-icon">⌕</span><input id="searchInput" type="search" placeholder="思考ツールを検索する（例：比べる、理由、順序）" aria-label="思考ツールを検索"></div>
    <span class="count" id="toolCount">30 tools</span>
@@ -379,6 +404,7 @@ $('backButton').addEventListener('click',returnHome);
 $('searchInput').addEventListener('input',renderCards);
 $('categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;activeCategory=b.dataset.category;renderCategories();renderCards();});
 $('toolGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const s=specs.find(x=>x.id===b.dataset.open);if(s)renderEditor(s);});
+$('quickPicks').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)renderEditor(spec);});
 $('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;saveState();});
 $('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;saveState();}});
 $('blocks').addEventListener('click',e=>{
