@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f7fb">
+<meta name="description" content="考えを広げ、比べ、整理する。TT-senseiの思考ツール集 THINK LAB。入力も印刷もできる、授業のための道具箱です。">
+<title>THINK LAB｜図の見本付きデザインプレビュー</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23243956'/><text x='32' y='43' font-size='27' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle'>T.</text></svg>">
+<style>
+:root{--ink:#202b3c;--muted:#657287;--line:#dfe5ee;--paper:#fff;--bg:#f4f7fb;--blue:#4669a8;--blue2:#eaf0fa;--mint:#e8f3ef;--radius:18px;--shadow:0 8px 28px rgba(34,52,79,.07)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"UD Digi Kyokasho N-R","BIZ UDPGothic","Yu Gothic",Meiryo,system-ui,sans-serif;line-height:1.65}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1160px;margin:auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;color:inherit;text-decoration:none}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:#243956;color:white;display:grid;place-items:center;font-weight:800;letter-spacing:-1px;font-size:15px}
+.brand-name{font-size:17px;font-weight:850;letter-spacing:.05em;line-height:1.15}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:.15em}
+.top-actions{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 14px;border-radius:11px;font-weight:700;font-size:13px}
+.btn:hover{border-color:#9eafd0;background:#f8faff}
+.btn-primary{background:#243956;color:white;border-color:#243956}
+.btn-primary:hover{background:#304a70;color:white}
+.btn-quiet{background:transparent}
+.wrap{max-width:1160px;margin:auto;padding:28px 24px 64px}
+.hero{display:grid;grid-template-columns:1.3fr .7fr;gap:24px;align-items:center;padding:26px 4px 30px}
+.eyebrow{color:var(--blue);font-size:11px;font-weight:850;letter-spacing:.18em;text-transform:uppercase}
+.hero h1{font-size:clamp(30px,4vw,48px);line-height:1.2;letter-spacing:-.04em;margin:9px 0 14px}
+.hero p{color:var(--muted);max-width:620px;margin:0;font-size:15px}
+.hero-note{background:#fff;border:1px solid var(--line);border-radius:22px;padding:17px 18px;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow)}
+.hero-note img{width:82px;height:104px;object-fit:contain;object-position:center bottom;flex:none}
+.hero-note strong{display:block;margin-bottom:4px;font-size:14px}
+.hero-note p{font-size:12px;line-height:1.7}
+.search-row{display:flex;gap:12px;align-items:center;margin:4px 0 18px}
+.searchbox{flex:1;position:relative}
+.searchbox input{width:100%;border:1px solid var(--line);border-radius:13px;background:white;padding:13px 16px 13px 43px;outline:none;font-size:14px}
+.searchbox input:focus,.field textarea:focus{border-color:#829ac4;box-shadow:0 0 0 3px rgba(70,105,168,.12)}
+.search-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#8390a3}
+.count{font-size:12px;color:var(--muted);white-space:nowrap}
+.category-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.tab{border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:#fff;color:#566477;font-size:12px;font-weight:750}
+.tab.active{background:#243956;color:#fff;border-color:#243956}
+.section-head{display:flex;align-items:end;justify-content:space-between;margin:20px 0 13px}
+.section-head h2{font-size:18px;margin:0;letter-spacing:-.02em}
+.section-head p{font-size:12px;color:var(--muted);margin:0}
+.tool-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.tool-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px 16px 15px;text-align:left;min-height:156px;display:flex;flex-direction:column;gap:9px;transition:transform .16s,border-color .16s,box-shadow .16s;color:inherit}
+.tool-card:hover{transform:translateY(-2px);border-color:#a6b6d4;box-shadow:var(--shadow)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tool-number{font-size:10px;color:#97a2b2;font-weight:800;letter-spacing:.1em}
+.tool-symbol{width:34px;height:34px;border-radius:11px;background:var(--blue2);color:var(--blue);display:grid;place-items:center;font-size:17px;font-weight:800}
+.tool-card h3{font-size:15px;margin:0}
+.tool-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.65}
+.category-label{font-size:10px;color:#63718a;font-weight:800;letter-spacing:.04em;margin-top:auto}
+.empty{padding:32px;text-align:center;color:var(--muted);background:white;border:1px dashed var(--line);border-radius:16px}
+.footer{margin-top:34px;border-top:1px solid var(--line);padding:18px 2px;color:#8993a2;font-size:11px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.footer a{color:#687b9f}
+.editor{display:none}
+.editor.active{display:block}
+.list-view.hidden{display:none}
+.editor-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:6px 0 18px}
+.back-link{border:0;background:none;color:#526783;font-weight:750;padding:8px 0;font-size:13px}
+.editor-title{display:flex;align-items:center;gap:12px}
+.editor-title .tool-symbol{width:44px;height:44px;border-radius:14px}
+.editor-title h1{font-size:24px;margin:0;line-height:1.2}
+.editor-title p{font-size:12px;color:var(--muted);margin:4px 0 0}
+.action-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.guide-strip{display:flex;gap:15px;align-items:center;background:#edf2fa;border:1px solid #dce5f3;border-radius:17px;padding:13px 17px;margin:0 0 17px}
+.guide-strip img{width:64px;height:78px;object-fit:contain;object-position:center bottom;flex:none}
+.guide-copy{flex:1}
+.guide-kicker{font-size:10px;font-weight:850;color:#637da8;letter-spacing:.1em}
+.guide-copy p{margin:3px 0 0;font-size:13px;font-weight:650}
+.guide-toggle{border:1px solid #ccd8ea;background:white;border-radius:10px;color:#4f6485;padding:7px 10px;font-size:11px;font-weight:750;white-space:nowrap}
+.work-layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:17px;align-items:start}
+.workbench{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);min-width:0}
+.paper-heading{border-bottom:1px solid var(--line);padding-bottom:15px;margin-bottom:17px}
+.paper-overline{font-size:10px;color:#8793a5;font-weight:800;letter-spacing:.16em}
+.paper-heading h2{font-size:21px;margin:3px 0 5px}
+.paper-heading p{font-size:12px;color:var(--muted);margin:0}
+.topic-field{margin:15px 0 19px;padding:12px 14px;background:#f7f9fc;border:1px solid #e7ebf1;border-radius:12px}
+.topic-field label{display:block;font-size:11px;font-weight:850;color:#65758e;margin-bottom:5px}
+.topic-field input{width:100%;border:0;border-bottom:1px solid #aab6c7;background:transparent;outline:none;padding:7px 2px;font-size:16px;font-weight:700;color:var(--ink)}
+.topic-field input:focus{border-color:var(--blue)}
+.blocks{display:grid;gap:14px}
+.thought-block{border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0;background:#fff}
+.block-head{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:10px}
+.block-title{font-size:13px;font-weight:850;margin:0}
+.block-help{font-size:11px;color:var(--muted);margin:2px 0 0}
+.block-index{font-size:10px;color:#9aa5b4;font-weight:800}
+.entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.entry{border:1px solid #e6ebf2;background:#fafbfd;border-radius:10px;padding:10px;min-width:0;position:relative}
+.entry-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.entry-label{font-size:10px;font-weight:800;color:#6c7b91}
+.field{min-width:0}
+.field label{display:block;font-size:10px;color:#6c7b91;font-weight:800;margin-bottom:4px}
+.field textarea{display:block;width:100%;min-height:62px;resize:vertical;border:1px solid #dce3ec;border-radius:8px;background:white;padding:8px;font-size:12px;line-height:1.55;color:var(--ink);outline:none}
+.field textarea::placeholder{color:#b0bac7}
+.remove-entry{border:0;background:transparent;color:#9aa5b4;font-size:10px;padding:2px 4px}
+.remove-entry:hover{color:#bc5b5b}
+.add-entry{margin-top:10px;border:1px dashed #b9c6d8;background:#fbfcfe;color:#5f7395;border-radius:9px;padding:8px 12px;font-size:11px;font-weight:800}
+.add-entry:hover{background:#f0f4fa}
+.layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(2){background:#f6f8fd;border-color:#d3deef;border-radius:48% 48% 15px 15px}
+.layout-venn .thought-block:nth-child(3){background:#f2f8f5;border-color:#d3e7dc}
+.layout-branches .blocks{position:relative}
+.layout-branches .thought-block{border-left:4px solid #adc0dd}
+.layout-matrix .entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.layout-y .thought-block{border-top:4px solid #b5c8e0}
+.layout-fishbone .thought-block{border-left:4px solid #aebfd8}
+.layout-branches .entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))};.layout-branches .entry{border-left:4px solid #adc0dd};.layout-web .entry-grid{grid-template-columns:repeat(4,minmax(0,1fr))};.layout-radial .entry-grid{grid-template-columns:repeat(4,minmax(0,1fr))};.layout-ideas .entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))};.layout-venn{display:grid;grid-template-columns:1fr 1fr;gap:12px};.layout-venn .thought-block:nth-child(1){grid-column:1;grid-row:1;border-radius:48% 42% 42% 48%;margin-right:-12%;z-index:1;background:#edf2fb;min-height:200px};.layout-venn .thought-block:nth-child(2){grid-column:1 / 3;grid-row:2;width:74%;margin:-7px auto 0;z-index:2;background:#f0f7f3;border-color:#cfe2d7};.layout-venn .thought-block:nth-child(3){grid-column:2;grid-row:1;border-radius:42% 48% 48% 42%;margin-left:-12%;z-index:1;background:#f5effa;min-height:200px};.layout-venn .entry-grid{grid-template-columns:1fr};.layout-matrix .entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))};.layout-matrix .thought-block{background:#f9fbfe};.layout-steps .entry-grid,.layout-timeline .entry-grid{grid-template-columns:1fr};.layout-steps .entry{max-width:720px;width:100%;margin:0 auto 8px;border-left:4px solid #9db3d4;position:relative};.layout-steps .entry:not(:last-child):after{content:'↓';position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);z-index:3;color:#718bb1;font-size:17px;font-weight:900};.layout-timeline .entry{border-left:4px solid #9db3d4;position:relative;margin-left:12px};.layout-timeline .entry:before{content:'';position:absolute;width:10px;height:10px;border-radius:50%;background:#5879ac;left:-7px;top:13px;box-shadow:0 0 0 4px #e8eef7};.layout-pyramid .thought-block{margin:0 auto};.layout-pyramid .thought-block:nth-child(1){max-width:42%;background:#f3f6fc;border-bottom:4px solid #8199bd};.layout-pyramid .thought-block:nth-child(2){max-width:70%;background:#f7f9fc;border-bottom:4px solid #a5b7d0};.layout-pyramid .thought-block:nth-child(3){max-width:100%;background:#fafbfd};.layout-y{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:start};.layout-y .thought-block{border-top:4px solid #9db7d5;min-height:160px};.layout-y .entry-grid{grid-template-columns:1fr};.layout-fishbone .thought-block{position:relative;border-left:4px solid #aebfd8};.layout-prep .thought-block{max-width:820px;margin:auto;border-left:5px solid #9fb4d4};.layout-prep .thought-block:nth-child(odd){background:#f8faff};.layout-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:start};.layout-columns .thought-block{height:100%};.layout-columns .entry-grid{grid-template-columns:1fr}.layout-coordinate .thought-block:nth-child(n+2){min-height:150px;background:#f8faff}.layout-coordinate .thought-block:nth-child(2){border-top:4px solid #8fa9d1}.layout-coordinate .thought-block:nth-child(3){border-top:4px solid #c4a5a5}.layout-coordinate .thought-block:nth-child(4){border-top:4px solid #a9bba9}.layout-coordinate .thought-block:nth-child(5){border-top:4px solid #d2c19a}.layout-diamond .entry-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;max-width:850px;margin:auto}.layout-diamond .entry{grid-column:span 2;min-height:62px}.layout-diamond .entry:nth-child(1){grid-column:3 / span 2}.layout-diamond .entry:nth-child(2){grid-column:2 / span 2}.layout-diamond .entry:nth-child(3){grid-column:4 / span 2}.layout-diamond .entry:nth-child(4){grid-column:1 / span 2}.layout-diamond .entry:nth-child(5){grid-column:3 / span 2}.layout-diamond .entry:nth-child(6){grid-column:5 / span 2}.layout-diamond .entry:nth-child(7){grid-column:2 / span 2}.layout-diamond .entry:nth-child(8){grid-column:4 / span 2}.layout-diamond .entry:nth-child(9){grid-column:3 / span 2}.layout-diamond .entry .field textarea{min-height:46px}.layout-butterfly{display:grid;grid-template-columns:1fr 1fr;gap:12px}.layout-butterfly .thought-block:nth-child(1){grid-column:1;background:#f2f6fc;border-top:4px solid #8da8d0}.layout-butterfly .thought-block:nth-child(2){grid-column:1 / 3;grid-row:2;background:#f4f8f4;border:1px solid #c9ddcf}.layout-butterfly .thought-block:nth-child(3){grid-column:2;grid-row:1;background:#faf4f1;border-top:4px solid #d4a99b}.layout-kumade .entry-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.layout-kumade .entry{border-radius:18px 18px 7px 7px;border-top:4px solid #9eb4d4}.layout-concentric .thought-block:nth-child(1){max-width:42%;margin:0 auto;background:#edf2fa;border-radius:50%;text-align:center}.layout-concentric .thought-block:nth-child(2){max-width:72%;margin:0 auto;background:#f2f6fb;border-radius:28px}.layout-concentric .thought-block:nth-child(3){max-width:100%;background:#f8fafc;border-radius:20px}.layout-candy .thought-block:nth-child(1){border-left:5px solid #93abc9}.layout-candy .thought-block:nth-child(2){border-left:5px solid #d1b47d}.layout-candy .thought-block:nth-child(3){border-left:5px solid #9bbba8}.layout-concept .entry-grid{grid-template-columns:1fr}.layout-concept .entry{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:start;border-left:4px solid #9db4d6}.layout-tree .thought-block:nth-child(2) .entry{border-left:4px solid #9eb8a8;margin-left:8%;width:92%}.layout-brace .entry{border-left:4px solid #9db4d6;margin-left:8%;width:92%;position:relative}.layout-brace .entry:before{content:'↳';position:absolute;left:-22px;top:8px;color:#7791b7;font-weight:900}.layout-bridge .entry{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:start}.layout-bridge .entry .field:nth-child(3){background:#edf3fa;border-radius:8px;padding:6px}@media(max-width:700px){.layout-kumade .entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.layout-concept .entry{grid-template-columns:1fr 1fr}.layout-bridge .entry{grid-template-columns:repeat(2,minmax(0,1fr))}.layout-bridge .entry .field:nth-child(3){grid-column:1 / -1}.layout-diamond .entry-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.layout-concentric .thought-block:nth-child(1){max-width:72%}.layout-concentric .thought-block:nth-child(2){max-width:88%}}@media(max-width:440px){.layout-kumade .entry-grid{grid-template-columns:1fr}.layout-diamond .entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.layout-diamond .entry:nth-child(n){grid-column:auto}.layout-butterfly{grid-template-columns:1fr}.layout-butterfly .thought-block:nth-child(1),.layout-butterfly .thought-block:nth-child(2),.layout-butterfly .thought-block:nth-child(3){grid-column:1;grid-row:auto}.layout-concentric .thought-block:nth-child(1),.layout-concentric .thought-block:nth-child(2){max-width:100%;border-radius:16px}.layout-bridge .entry{grid-template-columns:1fr}.layout-bridge .entry .field:nth-child(3){grid-column:auto}}
+.editor-aside{display:grid;gap:13px}
+.aside-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
+.aside-card h3{font-size:13px;margin:0 0 10px}
+.aside-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.75}
+.use-steps{display:grid;gap:9px}
+.use-step{display:flex;gap:9px;align-items:start}
+.step-dot{width:21px;height:21px;display:grid;place-items:center;border-radius:50%;background:#edf2fa;color:#55719e;font-size:10px;font-weight:850;flex:none}
+.use-step span:last-child{font-size:11px;color:#5f6d81;line-height:1.55}
+.tip-list{padding-left:17px;margin:0;display:grid;gap:6px}
+.tip-list li{font-size:11px;color:#5e6b7e}
+.save-state{font-size:10px;color:#8b96a6;margin-top:10px}
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(22,34,51,.48);z-index:60;padding:20px;overflow:auto;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal{width:min(600px,100%);background:white;border-radius:20px;padding:23px;box-shadow:0 20px 70px rgba(0,0,0,.18);position:relative}
+.modal h2{font-size:21px;margin:0 0 7px}
+.modal-intro{font-size:12px;color:var(--muted);margin:0 0 17px}
+.modal-steps{display:grid;gap:12px}
+.modal-step{display:flex;gap:12px;padding:12px;border:1px solid var(--line);border-radius:13px}
+.modal-step b{font-size:12px}
+.modal-step p{font-size:11px;color:var(--muted);margin:3px 0 0}
+.modal-close{position:absolute;top:15px;right:15px;border:0;background:#f0f3f7;border-radius:8px;width:30px;height:30px;font-size:16px}
+.modal-footer{display:flex;justify-content:flex-end;margin-top:17px}
+@media(max-width:900px){.tool-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.work-layout{grid-template-columns:minmax(0,1fr) 235px}.hero{grid-template-columns:1fr .8fr}}
+@media(max-width:700px){.layout-y,.layout-columns{grid-template-columns:1fr}.layout-y .thought-block{min-height:auto}.layout-web .entry-grid,.layout-radial .entry-grid,.layout-branches .entry-grid,.layout-ideas .entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(3){min-height:unset}.topbar-inner{padding:10px 15px}.wrap{padding:20px 15px 44px}.hero{grid-template-columns:1fr;padding:14px 0 22px;gap:17px}.hero-note{max-width:520px}.hero-note img{width:66px;height:82px}.tool-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.tool-card{padding:13px;min-height:150px}.work-layout{grid-template-columns:1fr}.editor-aside{grid-template-columns:repeat(2,minmax(0,1fr))}.editor-head{align-items:flex-start;flex-direction:column}.action-buttons{width:100%}.action-buttons .btn{flex:1}.editor-title h1{font-size:21px}.workbench{padding:15px}.guide-strip{padding:10px 12px}.guide-strip img{width:49px;height:64px}.guide-copy p{font-size:12px}.guide-toggle{font-size:10px;padding:6px 8px}}
+@media(max-width:440px){.layout-web .entry-grid,.layout-radial .entry-grid,.layout-branches .entry-grid,.layout-ideas .entry-grid{grid-template-columns:1fr}.layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(3){border-radius:18px;margin:0}.tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tool-card h3{font-size:13px}.tool-card p{font-size:10px}.entry-grid{grid-template-columns:1fr}.editor-aside{grid-template-columns:1fr}.count{display:none}.guide-toggle{display:none}.search-row{gap:6px}.footer{font-size:10px}}
+@page{size:A4 portrait;margin:13mm}
+@media print{
+ body{background:#fff!important;color:#111!important;font-size:11pt}
+ .topbar,.list-view,.editor-head,.guide-strip,.editor-aside,.action-buttons,.back-link,.add-entry,.remove-entry,.modal-backdrop,.save-state,.footer{display:none!important}
+ .wrap{max-width:none;padding:0!important;margin:0!important}
+ .editor{display:block!important}
+ .work-layout{display:block!important}
+ .workbench{border:0!important;box-shadow:none!important;padding:0!important;border-radius:0!important}
+ .paper-heading{padding-bottom:8mm;margin-bottom:5mm}
+ .paper-heading h2{font-size:19pt}
+ .paper-heading p{font-size:9pt}
+ .topic-field{background:#fff!important;border:1px solid #999!important;margin:5mm 0;padding:3mm}
+ .topic-field input{border-bottom:1px solid #777!important;color:#111!important}
+ .thought-block{break-inside:avoid;border:1px solid #aaa!important;background:#fff!important;padding:3mm;margin-bottom:3mm}
+ .entry{background:#fff!important;border:1px solid #bbb!important;min-height:23mm}
+ .field textarea{border:0!important;background:transparent!important;resize:none!important;min-height:16mm;color:#111!important;padding:2px!important}
+ .block-title,.entry-label,.field label{color:#111!important}
+ .block-help{color:#444!important}
+ .entry-grid{gap:2.5mm}
+ .layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(2){border-radius:12px!important}
+}
+
+/* Diagram-first refinements: input cards become parts of a visible thinking structure. */
+.diagram-caption{display:flex;align-items:center;justify-content:center;min-height:30px;margin:0 0 10px;padding:5px 10px;border-radius:8px;background:#f1f5fb;color:#627795;font-size:10px;font-weight:850;letter-spacing:.08em;text-align:center}
+.layout-coordinate{display:grid;grid-template-columns:1fr 1fr;gap:12px;position:relative;isolation:isolate}
+.layout-coordinate:before,.layout-coordinate:after{content:"";position:absolute;z-index:-1;pointer-events:none;background:#9aacc6;opacity:.65}
+.layout-coordinate:before{width:2px;top:78px;bottom:10px;left:50%;transform:translateX(-50%)}
+.layout-coordinate:after{height:2px;left:8px;right:8px;top:calc(50% + 20px)}
+.layout-coordinate .thought-block:first-child{grid-column:1/-1;background:#edf3fb;border:1px solid #d4e0f1}
+.layout-coordinate .thought-block:nth-child(n+2){min-height:170px;background:rgba(255,255,255,.96);border:1px solid #d8e1ed;box-shadow:0 2px 8px rgba(35,55,85,.04)}
+.layout-coordinate .thought-block:nth-child(2){border-top:4px solid #7f9dc8}
+.layout-coordinate .thought-block:nth-child(3){border-top:4px solid #b69bc8}
+.layout-coordinate .thought-block:nth-child(4){border-top:4px solid #9eb9a8}
+.layout-coordinate .thought-block:nth-child(5){border-top:4px solid #d0b27d}
+.layout-coordinate .thought-block:nth-child(n+2) .block-head{min-height:44px}
+.layout-coordinate .thought-block:nth-child(n+2) .entry-grid{grid-template-columns:1fr}
+.layout-concept .entry{position:relative;background:#f8faff;border:1px solid #d9e3f1;border-left:4px solid #9bb1d2}
+.layout-concept .entry:after{content:"→";position:absolute;right:8px;top:50%;transform:translate(50%,-50%);color:#8097b9;font-size:18px;font-weight:900}
+.layout-concept .entry .field{min-width:0}
+.layout-concept .entry .field:nth-child(2){padding:7px;border-radius:8px;background:#eaf0f8}
+.layout-concept .entry .field:nth-child(2) label{color:#536d93}
+.layout-tree .thought-block:first-child{max-width:620px;margin:0 auto 12px;background:#edf3fb;border:1px solid #d5e0ef;text-align:center}
+.layout-tree .thought-block:nth-child(2) .entry-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.layout-tree .thought-block:nth-child(2) .entry{position:relative;margin-top:8px;border-top:3px solid #a4bba9;background:#f7faf8}
+.layout-tree .thought-block:nth-child(2) .entry:before{content:"";position:absolute;width:2px;height:12px;background:#a4bba9;left:50%;top:-15px}
+.layout-brace .thought-block .entry{position:relative;background:#f8faff;border-left:4px solid #9db4d6;border-radius:8px 12px 12px 8px}
+.layout-brace .thought-block .entry:before{content:"";position:absolute;left:-13px;top:8px;bottom:8px;width:8px;border-left:2px solid #9db4d6;border-top:2px solid #9db4d6;border-bottom:2px solid #9db4d6;border-radius:7px 0 0 7px}
+.layout-bridge .entry{position:relative;background:#f8faff;border:1px solid #d9e3f1}
+.layout-bridge .entry .field:nth-child(3){background:#eaf0f8;border-radius:8px;padding:8px;position:relative}
+.layout-bridge .entry .field:nth-child(3):after{content:"同じ関係";display:block;color:#617b9f;font-size:9px;font-weight:850;text-align:center;margin-top:4px}
+.layout-timeline .entry{background:#fbfcfe;border-color:#dce4ef;border-radius:8px 13px 13px 8px}
+.layout-diamond .entry{background:#f8faff;border-color:#d9e3f1;text-align:center}
+.layout-diamond .entry:nth-child(1),.layout-diamond .entry:nth-child(5),.layout-diamond .entry:nth-child(9){background:#edf3fb;border-color:#b9cbe3}
+.layout-diamond .entry .field textarea{text-align:center}
+@media(max-width:700px){
+ .layout-coordinate{gap:8px}
+ .layout-coordinate:before{top:86px}
+ .layout-coordinate:after{top:calc(50% + 22px)}
+ .layout-tree .thought-block:nth-child(2) .entry-grid{grid-template-columns:1fr}
+}
+@media print{
+ .diagram-caption{background:#f1f4f8!important;color:#34445b!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .layout-coordinate:before,.layout-coordinate:after{background:#667!important}
+ .layout-tree .thought-block:nth-child(2) .entry{break-inside:avoid}
+}
+
+
+#subjectExamples{white-space:pre-line}
+@media print{#subjectExamples{display:none}}
+
+
+.quick-guide{display:grid;grid-template-columns:.72fr 1.28fr;gap:18px;align-items:center;margin:0 0 23px;padding:17px 19px;background:#fff;border:1px solid var(--line);border-radius:17px}
+.quick-guide-head h2{font-size:15px;margin:4px 0 3px;letter-spacing:-.02em}
+.quick-guide-head p{font-size:11px;color:var(--muted);margin:0}
+.quick-picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.quick-pick{display:flex;align-items:center;gap:10px;min-width:0;text-align:left;border:1px solid #e3e9f1;background:#fafbfd;border-radius:11px;padding:9px 10px;color:var(--ink)}
+.quick-pick:hover{border-color:#a8b9d5;background:#f4f7fc}
+.quick-icon{width:31px;height:31px;display:grid;place-items:center;flex:none;border-radius:9px;background:#eaf0fa;color:#57749f;font-size:16px;font-weight:800}
+.quick-pick b,.quick-pick small{display:block}
+.quick-pick b{font-size:11px;line-height:1.35}
+.quick-pick small{font-size:10px;color:var(--muted);margin-top:2px}
+.quick-arrow{margin-left:auto;color:#8796aa}
+@media(max-width:700px){.quick-guide{grid-template-columns:1fr;gap:12px;padding:14px}.quick-picks{grid-template-columns:1fr 1fr}}
+@media(max-width:440px){.quick-pick{padding:8px;gap:7px}.quick-pick b{font-size:10px}.quick-pick small{font-size:9px}.quick-icon{width:27px;height:27px}}
+@media print{.quick-guide{display:none!important}}
+
+/* Layout corrections: quadrant positions, matrix grid, table rows, sequence flow. */
+.layout-coordinate .thought-block:nth-child(2){grid-column:2;grid-row:2}
+.layout-coordinate .thought-block:nth-child(3){grid-column:1;grid-row:2}
+.layout-coordinate .thought-block:nth-child(4){grid-column:1;grid-row:3}
+.layout-coordinate .thought-block:nth-child(5){grid-column:2;grid-row:3}
+.layout-matrix{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.layout-matrix .entry-grid{grid-template-columns:1fr}
+.layout-table .entry-grid{grid-template-columns:1fr}
+.layout-table .entry{display:grid;grid-template-columns:.75fr 1fr 1fr;gap:9px;align-items:start}
+.layout-table .entry-top{grid-column:1/-1}
+.layout-sequence{gap:24px}
+.layout-sequence .thought-block{position:relative}
+.layout-sequence .thought-block:not(:last-child):after{content:'↓';position:absolute;left:50%;bottom:-21px;transform:translateX(-50%);color:#718bb1;font-size:16px;font-weight:900;z-index:2;line-height:1}
+@media(max-width:700px){
+ .layout-matrix{grid-template-columns:1fr}
+ .layout-table .entry{grid-template-columns:1fr}
+ .layout-table .entry-top{grid-column:auto}
+}
+
+/* Round 2: diagram-first layouts, tablet writing space, furigana, label fields. */
+ruby rt{font-size:.52em;color:#7a8798;letter-spacing:.02em;font-weight:600}
+body.furi-off rt{display:none}
+.label-fields{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 17px}
+.label-fields[hidden]{display:none}
+.label-field{flex:1;min-width:200px;padding:10px 13px;background:#f7f9fc;border:1px solid #e7ebf1;border-radius:12px}
+.label-field label{display:block;font-size:11px;font-weight:850;color:#65758e;margin-bottom:4px}
+.label-field input{width:100%;border:0;border-bottom:1px solid #aab6c7;background:transparent;outline:none;padding:5px 2px;font-size:15px;font-weight:700;color:var(--ink)}
+.label-field input:focus{border-color:var(--blue)}
+.saved-badge{color:#3f7a4e;font-weight:850;white-space:nowrap}
+.field textarea{font-size:14px;min-height:78px}
+.block-help{font-size:12px}
+.entry-label{font-size:11px}
+.aside-card p{font-size:12px}
+.tip-list li{font-size:12px}
+.use-step span:last-child{font-size:12px}
+.guide-copy p{font-size:14px}
+.remove-entry{font-size:11px;padding:7px 10px;min-height:32px}
+.add-entry{padding:11px 14px;font-size:12px}
+/* Venn: two overlapping circles with the shared area in the middle. */
+.layout-venn{grid-template-columns:1fr .74fr 1fr;gap:0;position:relative;padding:8px 2px}
+.layout-venn::before,.layout-venn::after{content:'';position:absolute;top:0;bottom:0;width:57%;border:2px solid #a9c0e0;border-radius:50%;background:rgba(70,105,168,.05);pointer-events:none}
+.layout-venn::before{left:0}
+.layout-venn::after{right:0;border-color:#a9cdb6;background:rgba(90,150,110,.05)}
+.layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(2),.layout-venn .thought-block:nth-child(3){grid-column:auto;grid-row:auto;width:auto;min-height:0;background:transparent;border-color:transparent;box-shadow:none;position:relative;z-index:1}
+.layout-venn .thought-block:nth-child(1){margin:26px -4% 26px 6%;border-radius:18px}
+.layout-venn .thought-block:nth-child(3){margin:26px 6% 26px -4%;border-radius:18px}
+.layout-venn .thought-block:nth-child(2){margin:auto 0;background:rgba(255,255,255,.82);border:1px dashed #9db4d4;border-radius:16px;z-index:2}
+.layout-venn .entry-grid{grid-template-columns:1fr}
+/* Fishbone: spine, head and diagonal bones. */
+.layout-fishbone{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;position:relative;padding-top:46px}
+.layout-fishbone::before{content:'';position:absolute;top:17px;left:8px;right:66px;height:3px;background:#8fa9cf;border-radius:2px}
+.layout-fishbone::after{content:'結果';position:absolute;top:2px;right:0;width:58px;height:33px;display:grid;place-items:center;background:#243956;color:#fff;font-size:12px;font-weight:850;border-radius:6px 16px 16px 6px}
+.layout-fishbone .thought-block{position:relative;border-left:1px solid var(--line);border-top:4px solid #aebfd8}
+.layout-fishbone .thought-block::before{content:'';position:absolute;top:-31px;left:30px;width:3px;height:36px;background:#8fa9cf;border-radius:2px;transform:rotate(38deg);transform-origin:top center}
+/* Branches: entries hang from a trunk line under the block head. */
+.layout-branches .entry-grid{position:relative;margin-top:12px}
+.layout-branches .entry-grid::before{content:'';position:absolute;top:-9px;left:5%;right:5%;height:2px;background:#c3d2e6;border-radius:2px}
+.layout-branches .entry::before{content:'';position:absolute;top:-9px;left:50%;width:2px;height:9px;background:#c3d2e6}
+@media(max-width:1200px){
+ .work-layout{grid-template-columns:1fr}
+ .editor-aside{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .layout-venn{grid-template-columns:1fr;padding:0}
+ .layout-venn::before,.layout-venn::after{display:none}
+ .layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(3){margin:0}
+ .layout-fishbone{grid-template-columns:1fr;padding-top:0}
+ .layout-fishbone::before,.layout-fishbone::after,.layout-fishbone .thought-block::before{display:none}
+}
+@media(max-width:440px){.editor-aside{grid-template-columns:1fr}}
+@media print{
+ .label-field{border:1px solid #999!important;background:#fff!important}
+ .layout-fishbone::before{background:#667!important}
+ .layout-fishbone::after{background:#fff!important;color:#111!important;border:1.5px solid #667!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .layout-venn::before,.layout-venn::after{border:1.5px solid #999!important;background:transparent!important}
+ .layout-venn{gap:8px}
+ .layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(3){margin:0}
+}
+
+/* Round 3: diagram and input are separate; typing reflects into the diagram. */
+.split-wrap{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:16px;align-items:start}
+.split-wrap[hidden]{display:none}
+.diagram-panel{position:sticky;top:74px;background:#fbfcfe;border:1px solid var(--line);border-radius:16px;padding:15px;max-height:calc(100vh - 92px);overflow:auto}
+.diagram-head{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.diagram-title{font-size:11px;font-weight:850;color:#fff;background:#4669a8;border-radius:999px;padding:3px 11px;letter-spacing:.06em;white-space:nowrap}
+.diagram-topic{font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.panel-label{font-size:11px;font-weight:850;color:#fff;background:#8a97a8;border-radius:999px;padding:3px 11px;letter-spacing:.06em;display:inline-block;margin:2px 0 10px}
+.input-panel{min-width:0}
+.diagram .block-title{font-size:12px}
+.diagram .block-help{font-size:10.5px}
+.diagram .entry{padding:8px}
+.d-field label{font-size:9.5px}
+.d-val{font-size:12.5px;line-height:1.55;white-space:pre-wrap;word-break:break-word;min-height:1.35em;color:var(--ink)}
+.d-val:empty::after{content:'―';color:#c6cfdb}
+.work-layout.split-mode{grid-template-columns:1fr}
+.work-layout.split-mode .editor-aside{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:900px){
+ .split-wrap{grid-template-columns:1fr}
+ .diagram-panel{position:static;max-height:none}
+}
+@media print{
+ .split-wrap{display:block!important}
+ .split-wrap .input-panel{display:none!important}
+ .diagram-panel{position:static;max-height:none;overflow:visible;border:0!important;padding:0;background:#fff!important}
+ .diagram-head{display:none!important}
+ .d-val{color:#111!important}
+}
+
+/* Round 4: the diagram is the picture itself; text sits on top of it. */
+.diagram-stage{padding:2px}
+.stage{position:relative;width:100%;min-width:430px;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.stage-art{position:absolute;inset:0;width:100%;height:100%}
+.stage-venn{aspect-ratio:4/3}
+.stage-fish{aspect-ratio:16/9}
+.stage-coord{aspect-ratio:1/1}
+.stage-pyr{aspect-ratio:8/5}
+.stage-conc{aspect-ratio:1/1}
+.stage-bfly{aspect-ratio:8/5}
+.stage-y{aspect-ratio:32/21}
+.zone{position:absolute;text-align:center;padding:2px;z-index:1}
+.ztitle{font-size:10.5px;font-weight:850;color:#51617a;margin-bottom:3px}
+.zentry{margin:3px 0}
+.zval{font-size:13px;font-weight:650;line-height:1.5;word-break:break-word;white-space:pre-wrap}
+.zval.sub{font-size:11px;font-weight:500;color:#5a6a80}
+.zval:empty{display:none}
+.zval[data-ph]:empty{display:block}
+.zval[data-ph]:empty::after{content:attr(data-ph);color:#a7b3c2;font-weight:600}
+.stage-pill{position:absolute;top:1%;transform:translateX(-50%);background:#fff;border:2px solid #8a97a8;border-radius:999px;padding:2px 14px;font-weight:850;font-size:13px;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:2}
+.pill-a{left:37%;border-color:#5b8dd0}
+.pill-b{left:63%;border-color:#57a773}
+.stage-venn .zone-a{left:2%;top:15%;width:30%}
+.stage-venn .zone-c{left:36.5%;top:19%;width:27%}
+.stage-venn .zone-b{left:68%;top:15%;width:30%}
+.zone-fb0{left:2%;top:2%;width:27%}
+.zone-fb1{left:25%;top:56%;width:27%}
+.zone-fb2{left:43%;top:2%;width:27%}
+.zone-head{left:81%;top:32%;width:18%}
+.zone-head .stage-topic-val{font-size:12.5px;font-weight:750;word-break:break-word;line-height:1.45}
+.zone-lu{left:3%;top:3%;width:44%}
+.zone-ru{left:53%;top:3%;width:44%}
+.zone-ld{left:3%;top:53%;width:44%}
+.zone-rd{left:53%;top:53%;width:44%}
+.axis-lab{position:absolute;font-size:12px;font-weight:850;color:#42506a;background:rgba(255,255,255,.88);padding:0 5px;border-radius:4px;z-index:2}
+.lab-top{left:51%;top:0}
+.lab-right{right:0;top:48%}
+.zone-py0{left:38%;top:8%;width:24%}
+.zone-py1{left:29%;top:37%;width:42%}
+.zone-py2{left:17%;top:66%;width:66%}
+.zone-cc2{left:27%;top:1.5%;width:46%}
+.zone-cc1{left:29%;top:15%;width:42%}
+.zone-cc0{left:33%;top:36%;width:34%}
+.zone-bf0{left:3%;top:13%;width:33%}
+.zone-bf2{left:64%;top:13%;width:33%}
+.zone-bf1{left:27%;top:84%;width:46%}
+.zone-y0{left:1%;top:2%;width:33%}
+.zone-y1{left:66%;top:2%;width:33%}
+.zone-y2{left:33%;top:60%;width:34%}
+.diagram .thought-block{background:transparent;border:0;box-shadow:none}
+.diagram .entry{background:rgba(255,255,255,.55);border:0;box-shadow:none}
+@media print{
+ .stage{min-width:0}
+ .zone .ztitle{color:#333!important}
+}
+
+/* VISUAL REFRESH PREVIEW: make the tool's diagram visible before opening it. */
+.preview-notice{max-width:1160px;margin:14px auto 0;padding:9px 24px;display:flex;align-items:center;gap:12px;color:#536681;font-size:11px}
+.preview-notice strong{flex:none;padding:4px 8px;border-radius:6px;background:#e8eef8;color:#45628f;font-size:9px;letter-spacing:.12em}
+.preview-notice p{margin:0;flex:1}
+.preview-notice a{color:#526f9d;font-weight:800;text-decoration:none;white-space:nowrap}
+.preview-notice a:hover{text-decoration:underline}
+.tool-card{overflow:hidden;padding:0;gap:0;min-height:0;border-radius:17px}
+.tool-preview{height:104px;display:grid;place-items:center;padding:10px 18px 5px;flex:none;overflow:hidden;position:relative;background:linear-gradient(135deg,#f0f4fb 0%,#f8fafc 58%,#edf4f0 100%);border-bottom:1px solid #edf0f5}
+.tool-preview:after{content:"";position:absolute;width:110px;height:110px;border-radius:50%;right:-54px;top:-58px;background:rgba(255,255,255,.58);pointer-events:none}
+.tool-preview svg{display:block;width:100%;height:100%;max-width:260px;overflow:visible;transition:transform .2s ease}
+.tool-card:hover .tool-preview svg{transform:scale(1.045)}
+.tool-card-body{display:flex;flex:1;flex-direction:column;gap:7px;padding:11px 15px 14px;min-width:0}
+.tool-card .card-top{min-height:26px}
+.tool-card .tool-number{font-size:9px;letter-spacing:.14em;color:#8b98ab}
+.tool-card .tool-symbol{width:28px;height:28px;border-radius:9px;font-size:14px}
+.tool-card h3{font-size:15px;line-height:1.35;margin:0}
+.tool-card p{font-size:11px;line-height:1.58;min-height:2.9em;margin:0}
+.tool-card .category-label{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;padding-top:7px;border-top:1px solid #f0f2f6;font-size:10px}
+.tool-card:focus-visible{outline:3px solid rgba(70,105,168,.32);outline-offset:3px}
+@media(max-width:700px){
+ .preview-notice{margin-top:8px;padding:8px 15px;gap:8px;font-size:10px;flex-wrap:wrap}
+ .tool-preview{height:88px;padding:8px 13px 4px}
+ .tool-card-body{padding:10px 11px 12px;gap:6px}
+ .tool-card h3{font-size:13px}
+ .tool-card p{font-size:10px;min-height:3.1em}
+}
+@media(max-width:440px){
+ .preview-notice p{flex-basis:100%;order:3}
+ .tool-preview{height:76px;padding:7px 10px 3px}
+ .tool-card-body{padding:9px 10px 11px}
+ .tool-card .tool-number{font-size:8px}
+ .tool-card .tool-symbol{width:24px;height:24px;font-size:12px}
+ .tool-card h3{font-size:12px}
+ .tool-card p{font-size:9.5px}
+ .tool-card .category-label{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){.tool-preview svg{transition:none}.tool-card:hover .tool-preview svg{transform:none}}
+/* Let each original diagram scale to the available tablet/phone width. */
+.split-wrap{grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:18px}
+.diagram-panel{background:#fff;border-color:#d5deea;padding:17px}
+.diagram-panel:after{content:"入力すると、文字が図の中に反映されます";display:block;margin-top:10px;padding-top:9px;border-top:1px solid #edf0f5;color:#8794a8;font-size:10px;text-align:center}
+.stage{min-width:0}
+.stage .ztitle{font-size:clamp(9px,1vw,11px)}
+.stage .zval{font-size:clamp(10px,1.15vw,13px)}
+.stage .zval.sub{font-size:clamp(9px,.98vw,11px)}
+@media(max-width:900px){
+ .split-wrap{grid-template-columns:minmax(0,1fr);gap:13px}
+ .diagram-panel{position:static;max-height:none}
+ .diagram-panel:after{margin-top:8px}
+}
+@media(max-width:520px){
+ .diagram-panel{padding:10px}
+ .diagram-stage{padding:0}
+ .stage-pill{font-size:10px;padding:2px 8px;max-width:36%}
+ .stage .ztitle{font-size:9px}
+ .stage .zval{font-size:10px;line-height:1.35}
+ .stage .zval.sub{font-size:9px}
+ .zone{padding:1px}
+ .zentry{margin:2px 0}
+}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="topbar-inner">
+  <a class="brand" href="#" id="homeBrand" aria-label="THINK LAB ホーム">
+   <span class="brand-mark">T.</span><span><span class="brand-name">THINK LAB</span><span class="brand-sub">THINKING TOOLS BY TT-SENSEI</span></span>
+  </a>
+  <div class="top-actions"><button class="btn btn-quiet" id="furiToggle" aria-pressed="true">ふりがな ON</button><button class="btn btn-quiet" id="helpOpen">使い方</button><a class="btn" href="https://tt-sensei.github.io/learning-portal/" target="_blank" rel="noopener">TT-sensei</a></div>
+ </div>
+</header>
+<div class="preview-notice"><strong>DESIGN PREVIEW</strong><p>図の見本をカードに加えた改善案です。公開中のページはそのまま残しています。</p><a href="./">公開版を見る ↗</a></div>
+<main class="wrap">
+ <section class="list-view" id="listView">
+  <div class="hero">
+   <div><div class="eyebrow">THINKING TOOLS / IDEAS INTO SHAPE</div><h1>考えを、<br>見える形に。</h1><p>思いついたことを広げる。違いを比べる。理由やつながりを整理する。<br>学びに合わせて道具を選び、自分の考えをつくっていこう。</p></div>
+   <div class="hero-note"><img id="heroNavi" alt="" src=""><div><strong id="heroNaviTitle">考えることを楽しもう。</strong><p id="heroNaviText">使いたい道具を選んで、考えを入力してみよう。書いた内容は自動で保存されるよ。</p></div></div>
+  </div>
+  <section class="quick-guide" aria-label="目的からツールを選ぶ">
+   <div class="quick-guide-head"><span class="eyebrow">FIND YOUR TOOL</span><h2>迷ったら、考えたいことから選ぼう。</h2><p>ナビアンのおすすめ。タップすると、その思考ツールをすぐに開けるよ。</p></div>
+   <div class="quick-picks" id="quickPicks">
+    <button class="quick-pick" data-open="mindmap"><span class="quick-icon">✳</span><span><b>考えを広げたい</b><small>マインドマップ</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="venn"><span class="quick-icon">◎</span><span><b>共通点と違いを比べたい</b><small>ベン図</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="fishbone"><span class="quick-icon">⑂</span><span><b>理由や原因を探りたい</b><small>フィッシュボーン</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="timeline"><span class="quick-icon">→</span><span><b>順序や変化を整理したい</b><small>タイムライン</small></span><span class="quick-arrow">↗</span></button>
+   </div>
+  </section>
+  <div class="search-row">
+   <div class="searchbox"><span class="search-icon">⌕</span><input id="searchInput" type="search" placeholder="思考ツールを検索する（例：比べる、理由、順序）" aria-label="思考ツールを検索"></div>
+   <span class="count" id="toolCount">30 tools</span>
+  </div>
+  <nav class="category-tabs" id="categoryTabs" aria-label="分類"></nav>
+  <div class="section-head"><h2 id="listHeading">思考ツールを選ぶ</h2><p>図の形を見比べて選べます</p></div>
+  <div class="tool-grid" id="toolGrid"></div>
+  <div class="footer"><span>THINK LAB — 考えるための道具箱</span><span>入力内容はこの端末のブラウザに保存されます。<a href="./references.html">先生向け参考資料</a></span></div>
+ </section>
+ <section class="editor" id="editorView" aria-live="polite">
+  <div class="editor-head">
+   <div><button class="back-link" id="backButton">← ツール一覧へ戻る</button><div class="editor-title"><span class="tool-symbol" id="editorSymbol">✳</span><div><h1 id="editorName">思考ツール</h1><p id="editorDesc"></p></div></div></div>
+   <div class="action-buttons"><button class="btn" id="resetButton">入力をリセット</button><button class="btn btn-primary" id="printButton">印刷・PDF保存 ↗</button></div>
+  </div>
+  <div class="guide-strip">
+   <img id="guideNavi" alt="" src=""><div class="guide-copy"><div class="guide-kicker">NAVI GUIDE / THINKING SUPPORT</div><p id="guideMessage">使い方を確認して、考えを整理してみよう。</p></div><button class="guide-toggle" id="guideMore">使い方のコツ</button>
+  </div>
+  <div class="work-layout" id="workLayout">
+   <section class="workbench" id="workbench">
+    <div class="paper-heading"><div class="paper-overline">THINK LAB / THINKING SHEET</div><h2 id="paperTitle">思考シート</h2><p id="paperSubtitle">考えを書き出して、見える形に整理しよう。</p></div>
+    <div class="topic-field"><label id="topicLabel" for="topicInput">テーマ・問い</label><input id="topicInput" type="text" placeholder="考えるテーマを書こう"></div>
+    <div class="label-fields" id="labelFields" hidden></div>
+    <div class="split-wrap" id="splitWrap" hidden>
+     <section class="diagram-panel" id="diagramPanel"><div class="diagram-head"><span class="diagram-title">図で見る</span><span class="diagram-topic" id="diagramTopic"></span></div><div class="diagram" id="diagram"></div></section>
+     <div class="input-panel" id="inputPanel"><div class="panel-label">入力する</div></div>
+    </div>
+    <div class="blocks" id="blocks"></div>
+    <div class="save-state" id="saveState">この端末に自動保存</div>
+   </section>
+   <aside class="editor-aside">
+    <div class="aside-card"><h3>このツールの使い方</h3><div class="use-steps" id="useSteps"></div></div>
+    <div class="aside-card"><h3>こんな学習におすすめ</h3><p id="useCases"></p></div>
+    <div class="aside-card"><h3>教科での活用例</h3><p id="subjectExamples"></p></div>
+    <div class="aside-card"><h3>考えるときのヒント</h3><ul class="tip-list" id="tips"></ul></div>
+   </aside>
+  </div>
+ </section>
+</main>
+<div class="modal-backdrop" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal"><button class="modal-close" id="modalClose" aria-label="閉じる">×</button><div class="eyebrow">WELCOME TO THINK LAB</div><h2 id="modalTitle">思考ツールの使い方</h2><p class="modal-intro">考えを整理するための道具を、学習に合わせて選んで使おう。</p>
+  <div class="modal-steps">
+   <div class="modal-step"><span class="step-dot">1</span><div><b>目的に合うツールを選ぶ</b><p>考えを広げたい？ 比べたい？ 理由を整理したい？ 目的から選んでみよう。</p></div></div>
+   <div class="modal-step"><span class="step-dot">2</span><div><b>枠の中に直接入力する</b><p>入力欄をタップして、自分の考えを書こう。必要に応じて項目を追加できるよ。</p></div></div>
+   <div class="modal-step"><span class="step-dot">3</span><div><b>印刷して学習に生かす</b><p>「印刷・PDF保存」から紙に印刷したり、PDFに保存したりできるよ。</p></div></div>
+  </div><div class="modal-footer"><button class="btn btn-primary" id="modalStart">使ってみる</button></div>
+ </div>
+</div>
+<script>
+(function(){
+'use strict';
+const NAVI_BASE='https://tt-sensei.github.io/navi-character-/assets/web/characters/';
+const NAVIS=['riku','sora','kai','saku','tsuki','nami'];
+const categories=[{id:'all',name:'すべて'},{id:'expand',name:'広げる'},{id:'compare',name:'比べる'},{id:'analyze',name:'分析する'},{id:'perspective',name:'視点を変える'},{id:'sequence',name:'順序立てる'},{id:'organize',name:'まとめる'}];
+const specs=[
+{id:'mindmap',name:'マインドマップ',symbol:'✳',category:'expand',desc:'中心のテーマから、考えを枝分かれさせて広げる。',purpose:'一つのテーマから、関連する言葉や考えをたくさん見つけたいときに使うよ。',steps:['中央にテーマを書く','思いついたことを枝ごとに分ける','枝からさらに考えを広げる'],cases:'総合的な学習の課題設定、社会科の調べ学習、読書後の考えの整理',tips:['正解を気にせず、まずは思いつくことを書く','似ている考えは近くにまとめる','言葉だけでなく短い説明を加えてもよい'],layout:'branches',blocks:[{id:'branches',title:'考えを広げる',help:'テーマにつながる考えを枝ごとに書こう。',initial:6,repeat:true,fields:[{id:'idea',label:'キーワード・考え',placeholder:'思いついたこと'},{id:'detail',label:'説明・具体例',placeholder:'もう少し詳しく'}]}]},
+{id:'webbing',name:'ウェビング',symbol:'◎',category:'expand',desc:'中心の言葉から連想をつなぎ、関係を見つける。',purpose:'一つの言葉から連想を広げ、言葉どうしのつながりを見つけるためのツールだよ。',steps:['中心に言葉を書く','周りに連想した言葉を書く','言葉どうしのつながりを線で結ぶつもりで整理する'],cases:'国語の語彙を増やす、理科の性質を整理する、総合の探究テーマを見つける',tips:['思いついた順に書いてよい','一つの言葉から別の言葉へつなげる','つながりが見えたら仲間分けする'],layout:'web',blocks:[{id:'web',title:'連想した言葉',help:'中心の言葉から思いついたことを書こう。',initial:8,repeat:true,fields:[{id:'word',label:'言葉・考え',placeholder:'連想した言葉'},{id:'link',label:'つながり',placeholder:'どんな関係かな？'}]}]},
+{id:'brainstorm',name:'ブレインストーミング',symbol:'☼',category:'expand',desc:'自由にアイデアを出し、考えの材料を集める。',purpose:'一人ひとりのアイデアをたくさん出して、考える材料を集めるよ。',steps:['テーマや問いを確認する','思いついたアイデアを一つずつ書く','似たアイデアをまとめ、次に考えることを決める'],cases:'学級活動の話合い、行事の企画、問題解決のアイデア出し',tips:['すぐに良し悪しを決めない','短い言葉でも書き残す','友達の考えから新しい考えが生まれることもある'],layout:'ideas',blocks:[{id:'ideas',title:'アイデア',help:'思いついたことを一つずつ書こう。',initial:8,repeat:true,fields:[{id:'idea',label:'アイデア',placeholder:'こんな方法はどうかな？'}]}]},
+{id:'imagemap',name:'イメージマップ',symbol:'✺',category:'expand',desc:'テーマから連想する場面や言葉を視覚的に広げる。',purpose:'テーマから思い浮かぶ場面、もの、気持ちなどを広げていくよ。',steps:['中央にテーマを書く','思い浮かぶ言葉や場面を書く','似たイメージを近くに集める'],cases:'物語を書く前の発想、詩や短歌の題材探し、地域や自然の観察',tips:['見たこと・聞いたこと・感じたことを分けてもよい','絵や簡単な図をあとから書き足してもよい','似たイメージを線でつなぐ'],layout:'radial',blocks:[{id:'images',title:'思い浮かぶこと',help:'言葉・場面・気持ちなどを自由に書こう。',initial:8,repeat:true,fields:[{id:'image',label:'イメージ',placeholder:'どんなことが思い浮かぶ？'},{id:'memo',label:'気づき',placeholder:'その理由や様子'}]}]},
+{id:'venn',name:'ベン図',symbol:'◉',category:'compare',desc:'二つのものの共通点と相違点を整理する。',purpose:'二つのものを比べて、同じところと違うところを見つけるよ。',steps:['比べる二つのものを書く','それぞれにしかない特徴を書く','共通する特徴を真ん中に書く'],cases:'物語の人物比較、昔と今の暮らし、動植物や地域の比較',tips:['見た目だけでなく、働きや理由も比べる','共通点は両方に当てはまるものだけを書く','違いが見つからないときは視点を変える'],layout:'venn',labels:[{id:'a',label:'A｜比べるもの',placeholder:'例：昔の人のくらし'},{id:'b',label:'B｜比べるもの',placeholder:'例：今の人のくらし'}],blocks:[{id:'a',title:'Aに当てはまること',help:'Aだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Aの特徴'}]},{id:'both',title:'共通すること',help:'AとBの両方に当てはまること。',initial:3,repeat:true,fields:[{id:'item',label:'共通点',placeholder:'同じところ'}]},{id:'b',title:'Bに当てはまること',help:'Bだけの特徴を書こう。',initial:3,repeat:true,fields:[{id:'item',label:'特徴',placeholder:'Bの特徴'}]}]},
+{id:'compare',name:'比較表',symbol:'▤',category:'compare',desc:'同じ視点で並べて、違いや共通点を見つける。',purpose:'比べるものを同じ視点で見て、違いと共通点をはっきりさせるよ。',steps:['比べるものを決める','比べる視点をそろえる','それぞれの特徴を書き、気づきをまとめる'],cases:'地域・時代・人物・生き物・実験結果などの比較',tips:['同じ視点で比べる','資料や観察を根拠にする','最後に一番大きな違いや共通点を書く'],layout:'table',labels:[{id:'a',label:'A｜比べるもの',placeholder:'例：昔の人のくらし'},{id:'b',label:'B｜比べるもの',placeholder:'例：今の人のくらし'}],blocks:[{id:'rows',title:'比べる視点',help:'同じ視点でAとBの様子を書こう。',initial:4,repeat:true,fields:[{id:'view',label:'視点',placeholder:'例：くらし・気候・役割'},{id:'a',label:'A',placeholder:'Aの特徴'},{id:'b',label:'B',placeholder:'Bの特徴'}]}]},
+{id:'matrix',name:'マトリックス',symbol:'▦',category:'compare',desc:'二つの視点を組み合わせて、情報を分類する。',purpose:'二つの視点を組み合わせて、情報を4つのまとまりに分けるよ。',steps:['縦と横の視点を決める','4つの枠の意味を確認する','情報を当てはまる枠に整理する'],cases:'情報の分類、案の比較、事実と意見の整理、優先順位の検討',tips:['縦軸と横軸の意味をはっきりさせる','どの枠にも入らないものは視点を見直す','枠ごとの特徴を比べる'],layout:'matrix',labels:[{id:'v',label:'縦の条件',placeholder:'例：あてはまる ↔ あてはまらない'},{id:'h',label:'横の条件',placeholder:'例：自分でできる ↔ 助けがいる'}],blocks:[{id:'q1',title:'左上の枠',help:'二つの条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q2',title:'右上の枠',help:'横の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q3',title:'左下の枠',help:'縦の条件に当てはまる情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]},{id:'q4',title:'右下の枠',help:'どちらの条件にも当てはまらない情報。',initial:2,repeat:true,fields:[{id:'item',label:'情報',placeholder:'当てはまること'}]}]},
+{id:'pmi',name:'PMIシート',symbol:'＋',category:'analyze',desc:'よい点・気になる点・おもしろい点から考える。',purpose:'一つの考えや提案を、いろいろな角度から見直すよ。',steps:['考えや提案を決める','よい点・気になる点を書く','おもしろい点や新しい可能性を考える'],cases:'話合いでの意見検討、提案の改善、社会の課題について考える',tips:['すぐに賛成・反対を決めない','気になる点は改善のヒントにもなる','おもしろい点から新しい案を考える'],layout:'columns',blocks:[{id:'plus',title:'P｜よい点・プラス',help:'よいところ、役立つところ。',initial:3,repeat:true,fields:[{id:'item',label:'よい点',placeholder:'よいところは？'}]},{id:'minus',title:'M｜気になる点・マイナス',help:'心配なところ、課題になりそうなこと。',initial:3,repeat:true,fields:[{id:'item',label:'気になる点',placeholder:'心配なところは？'}]},{id:'interesting',title:'I｜おもしろい点',help:'意外なこと、新しい可能性。',initial:3,repeat:true,fields:[{id:'item',label:'おもしろい点',placeholder:'新しい発見は？'}]}]},
+{id:'jellyfish',name:'クラゲチャート',symbol:'♧',category:'analyze',desc:'中心となる考えを、理由や具体例で支える。',purpose:'中心の考えに対して、理由や具体例をいくつも考えて整理するよ。',steps:['頭の部分に中心の考えを書く','足の部分に理由や具体例を書く','どの理由が大切か考える'],cases:'説明文の要点整理、意見文の理由探し、調べ学習のまとめ',tips:['理由と具体例を混ぜずに整理する','理由を支える事実や資料を探す','大切なものに印を付ける'],layout:'branches',blocks:[{id:'reasons',title:'理由・具体例',help:'中心の考えを支える理由や事実を書こう。',initial:6,repeat:true,fields:[{id:'reason',label:'理由・事実',placeholder:'なぜそう考える？'},{id:'example',label:'具体例・資料',placeholder:'たとえば？'}]}]},
+{id:'fishbone',name:'フィッシュボーン',symbol:'⌁',category:'analyze',desc:'結果につながる原因を、視点ごとに整理する。',purpose:'起きていることの原因を、いくつかの視点から整理するよ。',steps:['魚の頭に結果や問題を書く','原因の大きなまとまりを決める','それぞれの原因を細かく書き出す'],cases:'理科の実験結果、生活上の問題、地域の課題、学級の改善',tips:['一つの原因だけで決めつけない','人・環境・方法・時間など視点を変える','事実と予想を区別する'],layout:'fishbone',blocks:[{id:'cause1',title:'原因のまとまり 1',help:'原因を一つずつ具体的に書こう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'考えられる原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]},{id:'cause2',title:'原因のまとまり 2',help:'別の視点から原因を探そう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'別の原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]},{id:'cause3',title:'原因のまとまり 3',help:'さらに別の視点から考えよう。',initial:2,repeat:true,fields:[{id:'cause',label:'原因',placeholder:'ほかの原因'},{id:'detail',label:'根拠・具体例',placeholder:'そう考えた理由'}]}]},
+{id:'cause-effect',name:'原因と結果',symbol:'→',category:'analyze',desc:'原因・できごと・結果のつながりを整理する。',purpose:'何が原因で、どんなことが起き、どのような結果になったのかを整理するよ。',steps:['起きた結果を確かめる','その前に起きたことをたどる','原因と結果を矢印でつなぐ'],cases:'歴史上のできごと、自然現象、物語の展開、社会の課題',tips:['時間の前後と原因・結果を区別する','一つの結果に複数の原因がないか考える','資料をもとに関係を確かめる'],layout:'sequence',blocks:[{id:'causes',title:'原因',help:'きっかけになったこと。',initial:3,repeat:true,fields:[{id:'item',label:'原因',placeholder:'何がきっかけ？'}]},{id:'events',title:'途中のできごと',help:'原因のあとに起きたこと。',initial:3,repeat:true,fields:[{id:'item',label:'できごと',placeholder:'何が起きた？'}]},{id:'results',title:'結果',help:'最後にどうなったか。',initial:2,repeat:true,fields:[{id:'item',label:'結果',placeholder:'どうなった？'}]}]},
+{id:'pyramid',name:'ピラミッドチャート',symbol:'△',category:'analyze',desc:'情報を整理し、根拠から結論へ積み上げる。',purpose:'いくつかの情報をまとめ、根拠をもとに大切な結論へつなげるよ。',steps:['一番伝えたい結論を決める','結論を支える理由を整理する','理由のもとになる事実や情報を集める'],cases:'調べ学習のまとめ、発表内容の構成、意見文の組み立て',tips:['下の段ほど具体的な事実や情報にする','同じ段の情報をまとめて上の段につなぐ','結論が根拠から導けるか確かめる'],layout:'pyramid',blocks:[{id:'top',title:'上段｜結論・一番伝えたいこと',help:'根拠をもとに導く結論を書く。',initial:1,repeat:false,fields:[{id:'item',label:'結論',placeholder:'一番伝えたいこと'}]},{id:'middle',title:'中段｜理由・まとまり',help:'結論を支える理由を書く。',initial:3,repeat:true,fields:[{id:'item',label:'理由',placeholder:'結論を支える理由'}]},{id:'base',title:'下段｜事実・情報・具体例',help:'理由のもとになる事実を書く。',initial:5,repeat:true,fields:[{id:'item',label:'根拠・情報',placeholder:'資料・事実・具体例'}]}]},
+{id:'flowchart',name:'フローチャート',symbol:'⇩',category:'sequence',desc:'手順や判断の流れを順番に表す。',purpose:'何をどの順番で行うか、途中の判断も含めて見える形にするよ。',steps:['始まりと終わりを決める','手順を順番に並べる','分かれ道や条件があれば書き加える'],cases:'実験の手順、問題解決の方法、情報モラルや安全な行動の確認',tips:['一つの枠には一つの行動を書く','「はい・いいえ」など判断の分かれ道を示す','初めての人にも分かる順序か確認する'],layout:'steps',blocks:[{id:'steps',title:'流れ・手順',help:'上から順に書こう。必要な分だけ追加できるよ。',initial:5,repeat:true,fields:[{id:'step',label:'すること・判断',placeholder:'次に何をする？'},{id:'condition',label:'条件・分かれ道',placeholder:'必要なら条件を書く'}]}]},
+{id:'process',name:'ステップチャート',symbol:'①',category:'sequence',desc:'作業や学習の手順を段階ごとに整理する。',purpose:'いくつかの手順に分けて、何をするかを順番に整理するよ。',steps:['取り組みのゴールを確認する','必要な手順を順番に書く','終わったか確かめる方法を考える'],cases:'実験・観察の手順、作品づくり、調べ学習の進め方',tips:['一つの手順を細かくしすぎない','順番を入れ替えられないか考える','各段階の確認ポイントを書く'],layout:'steps',blocks:[{id:'steps',title:'手順',help:'一つずつ、具体的な行動を書こう。',initial:5,repeat:true,fields:[{id:'action',label:'すること',placeholder:'何をする？'},{id:'check',label:'確認すること',placeholder:'できたかどう確かめる？'}]}]},
+{id:'timeline',name:'年表・タイムライン',symbol:'⌛',category:'sequence',desc:'できごとを時間の流れに沿って並べる。',purpose:'いつ、どんなことが起きたのかを時間の順に並べて、変化を見つけるよ。',steps:['期間や時間の範囲を決める','できごとと時期を書く','前後のつながりや変化を考える'],cases:'歴史学習、人物の生涯、物語の構成、観察記録の変化',tips:['時期をそろえて並べる','大切なできごとに印を付ける','前と後で何が変わったか考える'],layout:'timeline',blocks:[{id:'events',title:'できごと',help:'時期とできごとをセットで書こう。',initial:5,repeat:true,fields:[{id:'time',label:'時期・年月',placeholder:'いつ？'},{id:'event',label:'できごと・変化',placeholder:'何が起きた？'}]}]},
+{id:'prep',name:'PREPシート',symbol:'P',category:'organize',desc:'主張・理由・具体例・主張の順で考えを伝える。',purpose:'自分の考えを、理由や具体例と組み合わせて分かりやすく伝えるよ。',steps:['自分の考えを一文で書く','そう考える理由を書く','具体例を挙げ、最後に考えをまとめる'],cases:'意見文、スピーチ、話合い、振り返りで自分の考えを伝える',tips:['最初の主張をはっきりさせる','理由と具体例を区別する','最後は最初の主張とつながるようにする'],layout:'prep',blocks:[{id:'point1',title:'P｜Point：自分の考え',help:'まず、伝えたいことをはっきり書く。',initial:1,repeat:false,fields:[{id:'text',label:'主張',placeholder:'私は〜と考えます。'}]},{id:'reason',title:'R｜Reason：理由',help:'どうしてそう考えるのか。',initial:1,repeat:false,fields:[{id:'text',label:'理由',placeholder:'なぜなら〜だからです。'}]},{id:'example',title:'E｜Example：具体例',help:'理由を支える経験や事実を書く。',initial:1,repeat:false,fields:[{id:'text',label:'具体例',placeholder:'たとえば〜。'}]},{id:'point2',title:'P｜Point：もう一度まとめる',help:'考えをもう一度伝える。',initial:1,repeat:false,fields:[{id:'text',label:'まとめ',placeholder:'だから私は〜と考えます。'}]}]},
+{id:'claim',name:'主張と根拠シート',symbol:'✓',category:'organize',desc:'主張を根拠や資料で支え、説得力を高める。',purpose:'自分の主張が、どんな事実や資料に支えられているかを整理するよ。',steps:['伝えたい主張を書く','根拠となる事実や資料を集める','根拠と主張がつながっているか確かめる'],cases:'社会科の資料活用、理科の考察、国語の意見文・討論',tips:['根拠は事実や資料から選ぶ','自分の感想と事実を分ける','反対の見方も考えると主張が深まる'],layout:'branches',blocks:[{id:'claim',title:'主張',help:'自分が伝えたい考えを書く。',initial:1,repeat:false,fields:[{id:'text',label:'主張',placeholder:'私は〜と考える。'}]},{id:'evidence',title:'根拠・資料',help:'主張を支える事実や資料を書く。',initial:3,repeat:true,fields:[{id:'fact',label:'事実・根拠',placeholder:'資料から分かること'},{id:'source',label:'資料・出典',placeholder:'どの資料から？'}]},{id:'reasoning',title:'根拠と主張のつながり',help:'その根拠から、なぜ主張が言えるのか。',initial:1,repeat:false,fields:[{id:'text',label:'説明',placeholder:'このことから〜と言える。'}]}]},
+{id:'kwl',name:'KWLシート',symbol:'K',category:'organize',desc:'知っていること・知りたいこと・分かったことを整理する。',purpose:'学習の前と後で、自分の知識や疑問がどう変わったかを見える形にするよ。',steps:['学習前に知っていることを書く','知りたいことや疑問を書く','学習後に分かったことを書く'],cases:'単元の導入とまとめ、探究学習、調べ学習の振り返り',tips:['最初は予想や疑問も書いてよい','学習後に最初の疑問へ戻る','新しく生まれた疑問も残しておく'],layout:'columns',blocks:[{id:'know',title:'K｜知っていること',help:'学習前に知っていること。',initial:3,repeat:true,fields:[{id:'item',label:'知っていること',placeholder:'前から知っていること'}]},{id:'want',title:'W｜知りたいこと',help:'調べたいこと・疑問。',initial:3,repeat:true,fields:[{id:'item',label:'知りたいこと',placeholder:'疑問や調べたいこと'}]},{id:'learn',title:'L｜分かったこと',help:'学習後に分かったこと。',initial:3,repeat:true,fields:[{id:'item',label:'分かったこと',placeholder:'学習して分かったこと'}]}]},
+{id:'ychart',name:'Yチャート',symbol:'Y',category:'organize',desc:'見る・聞く・感じるなど、三つの視点で整理する。',purpose:'一つのものや場面を、三つの異なる視点から見つめ直すよ。',steps:['テーマや対象を決める','三つの視点から気づきを書く','三つを合わせて分かったことをまとめる'],cases:'作品鑑賞、自然観察、人物の様子、地域の調査',tips:['視点ごとに違うことを書く','事実と感じたことを分けてもよい','最後に全体を見て気づいたことをまとめる'],layout:'y',blocks:[{id:'see',title:'見る｜見たこと',help:'目で見て分かったこと。',initial:3,repeat:true,fields:[{id:'item',label:'気づき',placeholder:'見て分かったこと'}]},{id:'hear',title:'聞く｜聞こえたこと',help:'聞いて分かったこと。',initial:3,repeat:true,fields:[{id:'item',label:'気づき',placeholder:'聞いて分かったこと'}]},{id:'feel',title:'感じる｜思ったこと',help:'感じたこと・考えたこと。',initial:3,repeat:true,fields:[{id:'item',label:'気づき',placeholder:'感じたこと・考えたこと'}]}]},
+{id:'reflection',name:'ふり返りシート',symbol:'↗',category:'organize',desc:'学び・気づき・次に取り組みたいことを整理する。',purpose:'学習を振り返り、自分の成長や次に考えたいことを見つけるよ。',steps:['今日の学習で取り組んだことを書く','分かったことや気づきを整理する','次に取り組みたいことを考える'],cases:'授業の終末、単元のまとめ、探究活動、協働学習の振り返り',tips:['できたことだけでなく、途中の工夫を書く','具体的な場面を思い出して書く','次に何をするかを小さく決める'],layout:'reflection',blocks:[{id:'activity',title:'取り組んだこと',help:'今日、何をした？',initial:1,repeat:false,fields:[{id:'text',label:'活動',placeholder:'今日取り組んだこと'}]},{id:'learning',title:'分かったこと・気づいたこと',help:'どんな学びがあった？',initial:2,repeat:true,fields:[{id:'text',label:'学び・気づき',placeholder:'分かったこと、気づいたこと'}]},{id:'next',title:'次に取り組みたいこと',help:'これからどうしたい？',initial:1,repeat:false,fields:[{id:'text',label:'次の一歩',placeholder:'次にやってみたいこと'}]}]},
+{id:'coordinate',name:'座標軸チャート',symbol:'✣',category:'perspective',desc:'二つの視点を組み合わせ、情報や考えを位置で比べる。',purpose:'二つのものさしを使って、考えや情報の位置を見つけるよ。',steps:['縦軸と横軸にする視点を決める','それぞれの枠に情報や考えを書く','位置の違いから特徴や優先度を考える'],cases:'意見の整理、課題の優先順位、地域や生き物の特徴の比較',tips:['軸の両端が何を表すか決める','どちらにも当てはまる位置を考える','位置を決めた理由も説明する'],layout:'coordinate',blocks:[{id:'axis',title:'縦軸・横軸の視点',help:'どんな二つの視点で整理する？',initial:1,repeat:false,fields:[{id:'vertical',label:'縦軸',placeholder:'例：影響が大きい ↕ 小さい'},{id:'horizontal',label:'横軸',placeholder:'例：すぐできる ↔ 時間がかかる'}]},{id:'q1',title:'右上｜両方の条件が強い',help:'横軸・縦軸の両方で右上に当てはまるもの。',initial:2,repeat:true,fields:[{id:'item',label:'考え・情報',placeholder:'ここに当てはまるもの'}]},{id:'q2',title:'左上｜縦の条件が強い',help:'縦の条件は強いが、横の条件は弱いもの。',initial:2,repeat:true,fields:[{id:'item',label:'考え・情報',placeholder:'ここに当てはまるもの'}]},{id:'q3',title:'左下｜両方の条件が弱い',help:'両方の条件が弱いもの。',initial:2,repeat:true,fields:[{id:'item',label:'考え・情報',placeholder:'ここに当てはまるもの'}]},{id:'q4',title:'右下｜横の条件が強い',help:'横の条件は強いが、縦の条件は弱いもの。',initial:2,repeat:true,fields:[{id:'item',label:'考え・情報',placeholder:'ここに当てはまるもの'}]}]},
+{id:'diamond',name:'ダイヤモンドランキング',symbol:'◇',category:'compare',desc:'大切さや優先度を考え、情報を順位付けする。',purpose:'いくつかの考えを比べて、自分なりの大切さの順番を決めるよ。',steps:['順位を決める対象を集める','何を基準に順位を決めるか考える','理由を話し合いながら並べる'],cases:'課題解決の優先順位、人物や出来事の重要度、話合いでの合意形成',tips:['順位の基準をはっきりさせる','一番と二番の差を説明できるようにする','友達と順位が違う理由を比べる'],layout:'diamond',blocks:[{id:'ranking',title:'順位を決める',help:'上にいくほど大切・優先したいものとして並べよう。',initial:9,repeat:false,fields:[{id:'item',label:'考え・項目',placeholder:'項目を書く'}]}]},
+{id:'butterfly',name:'バタフライチャート',symbol:'❖',category:'perspective',desc:'二つの立場や方向から情報を集め、中央で結び付ける。',purpose:'二つの立場や視点から考え、共通する課題や結論を見つけるよ。',steps:['中央にテーマや問いを書く','左右それぞれの立場から考える','両方を見比べて中央のまとめを書く'],cases:'賛成・反対の検討、地域の課題、登場人物の立場の比較',tips:['一方の立場だけで決めない','相手側の理由も具体的に考える','両方に共通する願いや課題を探す'],layout:'butterfly',blocks:[{id:'left',title:'左の立場・視点',help:'一つ目の立場から考えよう。',initial:3,repeat:true,fields:[{id:'idea',label:'考え・理由',placeholder:'この立場から見ると？'}]},{id:'center',title:'中央｜共通点・まとめ',help:'二つの立場を見比べて分かったこと。',initial:1,repeat:false,fields:[{id:'summary',label:'共通点・まとめ',placeholder:'両方を見て考えたこと'}]},{id:'right',title:'右の立場・視点',help:'もう一つの立場から考えよう。',initial:3,repeat:true,fields:[{id:'idea',label:'考え・理由',placeholder:'別の立場から見ると？'}]}]},
+{id:'kumade',name:'くまでチャート',symbol:'✳',category:'expand',desc:'一つのテーマを複数の観点から見て、考えを広げる。',purpose:'テーマをいくつかの観点に分けて、見落としていることがないか考えるよ。',steps:['中央にテーマを書く','周りの観点から考えを出す','観点を比べて新しい気づきを見つける'],cases:'人物や地域の多面的な理解、課題の原因探し、作品の読み取り',tips:['同じような観点に偏らないようにする','人・場所・時間・方法など視点を変える','観点どうしのつながりも考える'],layout:'kumade',blocks:[{id:'viewpoints',title:'いろいろな観点',help:'違う角度からテーマを見てみよう。',initial:8,repeat:true,fields:[{id:'view',label:'観点',placeholder:'どんな角度から見る？'},{id:'idea',label:'考え・気づき',placeholder:'その観点から分かること'}]}]},
+{id:'concentric',name:'同心円チャート',symbol:'◎',category:'perspective',desc:'中心から周囲へ範囲を広げ、関係や影響を整理する。',purpose:'中心にあるものから、近い関係・広い関係へと考えを広げるよ。',steps:['中心となる人・もの・課題を決める','近い関係から外側へ広げる','どこまで影響やつながりがあるか考える'],cases:'地域の広がり、環境問題の影響、身近な生活と社会のつながり',tips:['内側と外側の違いを意識する','距離だけでなく関係の深さで分けてもよい','外側に広げると新しい関係が見つかる'],layout:'concentric',blocks:[{id:'near',title:'中心に近い関係',help:'直接関わる人・もの・場所。',initial:3,repeat:true,fields:[{id:'item',label:'関係・影響',placeholder:'身近なつながり'}]},{id:'middle',title:'少し広い関係',help:'間接的につながる人・もの・場所。',initial:3,repeat:true,fields:[{id:'item',label:'関係・影響',placeholder:'もう少し広いつながり'}]},{id:'far',title:'さらに広い関係',help:'社会や未来など、広い範囲へのつながり。',initial:3,repeat:true,fields:[{id:'item',label:'関係・影響',placeholder:'広い範囲へのつながり'}]}]},
+{id:'candy',name:'キャンディチャート',symbol:'◇',category:'analyze',desc:'条件や手がかりから、起こりそうなことを予想する。',purpose:'分かっている条件を整理し、その先に何が起こるかを予想するよ。',steps:['分かっている条件や事実を書く','条件から考えられる変化を予想する','予想を確かめる方法を考える'],cases:'理科の実験予想、社会の変化の見通し、物語の展開予想',tips:['事実と予想を分けて書く','なぜそう予想したのか理由を添える','確かめる方法も考える'],layout:'candy',blocks:[{id:'known',title:'分かっていること・条件',help:'資料や観察から確かなことを書く。',initial:3,repeat:true,fields:[{id:'fact',label:'事実・条件',placeholder:'分かっていること'}]},{id:'predict',title:'予想',help:'この先どうなると考える？',initial:2,repeat:true,fields:[{id:'prediction',label:'予想',placeholder:'こうなるのでは？'},{id:'reason',label:'理由',placeholder:'そう考えたわけ'}]},{id:'check',title:'確かめ方',help:'予想が正しいか、どうすれば確かめられる？',initial:2,repeat:true,fields:[{id:'method',label:'方法',placeholder:'調べる・実験する・比べる'}]}]},
+{id:'concept',name:'コンセプトマップ',symbol:'⌘',category:'analyze',desc:'言葉や概念をつなぎ、関係を説明する。',purpose:'言葉を並べるだけでなく、言葉どうしがどうつながるかを考えるよ。',steps:['大切な言葉や概念を選ぶ','言葉どうしの関係を考える','つなぐ言葉を入れて関係を説明する'],cases:'理科の概念理解、社会の仕組み、単元の知識をつなぐまとめ',tips:['言葉の間に関係を表す言葉を入れる','一つの言葉が複数の言葉とつながってもよい','つながりが正しいか資料で確かめる'],layout:'concept',blocks:[{id:'links',title:'言葉どうしのつながり',help:'「AはBの一部」「AによってBが起こる」など、関係も書こう。',initial:5,repeat:true,fields:[{id:'from',label:'言葉 A',placeholder:'つなぐ言葉'},{id:'relation',label:'関係を表す言葉',placeholder:'どんな関係？'},{id:'to',label:'言葉 B',placeholder:'つながる言葉'}]}]},
+{id:'tree',name:'ツリーチャート',symbol:'♧',category:'organize',desc:'大きなまとまりから小さな分類へ、情報を整理する。',purpose:'大きな仲間から小さな仲間へと分けて、情報を整理するよ。',steps:['分類するテーマを決める','大きな仲間に分ける','さらに細かい仲間へ分ける'],cases:'生き物の分類、資料の整理、物語の登場人物や出来事の分類',tips:['何を基準に分けたのか書く','同じ段では同じ基準で分ける','どこにも入らない情報があれば分類を見直す'],layout:'tree',blocks:[{id:'criteria',title:'分類の基準',help:'何をもとに分ける？',initial:1,repeat:false,fields:[{id:'item',label:'基準',placeholder:'例：すみか・特徴・役割'}]},{id:'groups',title:'大きな仲間',help:'まずは大きく分けよう。',initial:4,repeat:true,fields:[{id:'group',label:'仲間',placeholder:'大きな分類'},{id:'members',label:'具体例・さらに細かい分類',placeholder:'その仲間に入るもの'}]}]},
+{id:'brace',name:'ブレースチャート',symbol:'{ }',category:'analyze',desc:'全体を部分に分け、部分どうしの構成を捉える。',purpose:'一つの全体が、どんな部分からできているかを整理するよ。',steps:['全体となるものを書く','全体を部分に分ける','部分をさらに細かく分けて構成を確かめる'],cases:'生き物や植物の体のつくり、文章の構成、道具や機械の仕組み',tips:['全体と部分の関係を意識する','部分を合わせると全体になるか確かめる','必要に応じて細かい部分へ分ける'],layout:'brace',blocks:[{id:'parts',title:'全体をつくる部分',help:'全体を分けて、部分とその役割を書こう。',initial:5,repeat:true,fields:[{id:'part',label:'部分',placeholder:'どの部分？'},{id:'detail',label:'役割・さらに細かい部分',placeholder:'どんな働き・構成？'}]}]},
+{id:'bridge',name:'ブリッジチャート',symbol:'≒',category:'analyze',desc:'二つの関係を見つけ、別の組み合わせに当てはめる。',purpose:'二つのものの関係を見つけ、同じ関係が成り立つ別の例を考えるよ。',steps:['最初の二つの関係を考える','関係を短い言葉で説明する','同じ関係になる別の組み合わせを探す'],cases:'語彙や概念の理解、比喩表現、算数の数量関係、社会の役割の理解',tips:['似ている見た目ではなく関係に注目する','関係を「〜するもの」「〜の一部」などで説明する','別の例でも同じ関係になるか確かめる'],layout:'bridge',blocks:[{id:'pairs',title:'関係を見つける',help:'二つの言葉の関係を考え、同じ関係の別の例を探そう。',initial:3,repeat:true,fields:[{id:'a',label:'言葉 A',placeholder:'最初の言葉'},{id:'b',label:'言葉 B',placeholder:'関係する言葉'},{id:'relation',label:'二つの関係',placeholder:'AとBはどんな関係？'},{id:'c',label:'言葉 C',placeholder:'別の例の言葉'},{id:'d',label:'言葉 D',placeholder:'対応する言葉'}]}]}
+];
+const SPLIT_TOOLS=['mindmap','webbing','brainstorm','imagemap','venn','jellyfish','fishbone','cause-effect','pyramid','flowchart','process','timeline','prep','claim','ychart','reflection','coordinate','butterfly','kumade','concentric','candy','concept','tree','brace','bridge'];
+specs.forEach(s=>{if(SPLIT_TOOLS.indexOf(s.id)>=0)s.split=true;});
+const $=id=>document.getElementById(id);
+let activeCategory='all',activeTool=null,activeNavi='sora',activeGuideNavi='kai';
+function pickNavi(){return NAVIS[Math.floor(Math.random()*NAVIS.length)];}
+function naviSrc(id,pose){return NAVI_BASE+id+'/fullbody/'+pose+'.webp';}
+function setNaviImage(img,id,pose){img.src=naviSrc(id,pose);img.onerror=function(){this.style.visibility='hidden';};}
+function escapeHtml(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const FURI={'優先順位':'ゆうせんじゅんい','登場人物':'とうじょうじんぶつ','問題解決':'もんだいかいけつ','学級活動':'がっきゅうかつどう','自然現象':'しぜんげんしょう','実験結果':'じっけんけっか','座標軸':'ざひょうじく','具体例':'ぐたいてれい','共通点':'きょうつうてん','相違点':'そういてん','動植物':'どうしょくぶつ','優先度':'ゆうせんど','意見文':'いけんぶん','説明文':'せつめいぶん','社会科':'しゃかいか','出来事':'できごと','具体的':'ぐたいてき','話し合い':'はなしあい','使い方':'つかいかた','言葉':'ことば','関係':'かんけい','理由':'りゆう','情報':'じょうほう','整理':'せいり','視点':'してん','原因':'げんいん','条件':'じょうけん','事実':'じじつ','根拠':'こんきょ','資料':'しりょう','主張':'しゅちょう','特徴':'とくちょう','部分':'ぶぶん','中心':'ちゅうしん','立場':'たちば','学習':'がくしゅう','結果':'けっか','予想':'よそう','結論':'けつろん','分類':'ぶんるい','課題':'かだい','手順':'てじゅん','自分':'じぶん','説明':'せつめい','地域':'ちいき','両方':'りょうほう','全体':'ぜんたい','観点':'かんてん','方法':'ほうほう','中央':'ちゅうおう','確認':'かくにん','社会':'しゃかい','時間':'じかん','順番':'じゅんばん','疑問':'ぎもん','影響':'えいきょう','仲間':'なかま','連想':'れんそう','場面':'ばめん','物語':'ものがたり','構成':'こうせい','変化':'へんか','最初':'さいしょ','基準':'きじゅん','理科':'りか','比較':'ひかく','人物':'じんぶつ','最後':'さいご','役割':'やくわり','縦軸':'たてじく','横軸':'よこじく','位置':'いち','順位':'じゅんい','観察':'かんさつ','共通':'きょうつう','判断':'はんだん','必要':'ひつよう','範囲':'はんい','時期':'じき','様子':'ようす','提案':'ていあん','角度':'かくど','改善':'かいぜん','反対':'はんたい','区別':'くべつ','複数':'ふくすう','途中':'とちゅう','実験':'じっけん','行動':'こうどう','単元':'たんげん','理解':'りかい','場所':'ばしょ','外側':'そとがわ','概念':'がいねん','国語':'こくご','語彙':'ごい','自由':'じゆう','材料':'ざいりょう','友達':'ともだち','意見':'いけん','検討':'けんとう','意味':'いみ','可能性':'かのうせい','賛成':'さんせい','心配':'しんぱい','問題':'もんだい','前後':'ぜんご','作品':'さくひん','知識':'ちしき','対象':'たいしょう','項目':'こうもく','身近':'みぢか','意識':'いしき','仕組み':'しくみ','一部':'いちぶ','関連':'かんれん','総合':'そうごう','探究':'たんきゅう','正解':'せいかい','性質':'せいしつ','行事':'ぎょうじ','企画':'きかく','発想':'はっそう','短歌':'たんか','自然':'しぜん','時代':'じだい','気候':'きこう','意外':'いがい','発見':'はっけん','環境':'かんきょう','展開':'てんかい','矢印':'やじるし','発表':'はっぴょう','安全':'あんぜん','順序':'じゅんじょ','追加':'ついか','作業':'さぎょう','段階':'だんかい','気持ち':'きもち','大切':'たいせつ','学級':'がっきゅう','歴史':'れきし','上段':'じょうだん','中段':'ちゅうだん','下段':'げだん','思考':'しこう','印刷':'いんさつ','保存':'ほぞん','検索':'けんさく','入力':'にゅうりょく','自動':'じどう','参考':'さんこう','教科':'きょうか','活用':'かつよう','目的':'もくてき','読書':'どくしょ','内容':'ないよう','先生':'せんせい','優先':'ゆうせん'};
+const FURI_KEYS=Object.keys(FURI).sort((a,b)=>b.length-a.length);
+function rubify(text){const s=String(text==null?'':text);let out='',i=0;while(i<s.length){let m=null;for(const k of FURI_KEYS){if(s.startsWith(k,i)){m=k;break;}}if(m){out+='<ruby>'+escapeHtml(m)+'<rt>'+FURI[m]+'</rt></ruby>';i+=m.length;}else{out+=escapeHtml(s[i]);i++;}}return out;}
+function rubifyStatic(root){if(!root)return;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{if(!n.nodeValue||!n.nodeValue.trim())return NodeFilter.FILTER_REJECT;const p=n.parentElement;if(!p||/^(SCRIPT|STYLE|TEXTAREA|INPUT|RUBY|RT)$/.test(p.tagName))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);for(const n of nodes){const s=n.nodeValue;if(!FURI_KEYS.some(k=>s.includes(k)))continue;const span=document.createElement('span');span.innerHTML=rubify(s);n.replaceWith(span);}}
+function hasData(s){try{const v=JSON.parse(localStorage.getItem('thinklab:'+s.id));if(!v)return false;if(String(v.topic||'').trim())return true;if(v.labels&&Object.values(v.labels).some(x=>String(x||'').trim()))return true;return (v.blocks||[]).some(rows=>(rows||[]).some(r=>Object.values(r||{}).some(x=>String(x||'').trim())));}catch(e){return false;}}
+function categoryName(id){const x=categories.find(c=>c.id===id);return x?x.name:'';}
+function renderCategories(){
+ $('categoryTabs').innerHTML=categories.map(c=>'<button class="tab '+(activeCategory===c.id?'active':'')+'" data-category="'+c.id+'">'+c.name+'</button>').join('');
+}
+
+const previewColors={blue:'#7694bd',blueFill:'#e7eef8',mint:'#8eb4a0',mintFill:'#e8f2ec',amber:'#c7a467',amberFill:'#f7f0df',rose:'#c99c91',roseFill:'#f6ebe8',violet:'#a69ac6',violetFill:'#f0edf7',ink:'#60738f',pale:'#f9fbfe'};
+function pvLine(x1,y1,x2,y2,c=previewColors.blue,w=3){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+w+'" stroke-linecap="round"/>';}
+function pvDot(x,y,r=7,fill=previewColors.blueFill,stroke=previewColors.blue){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2"/>';}
+function pvBox(x,y,w,h,fill=previewColors.blueFill,stroke=previewColors.blue,rx=8){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+rx+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2"/>';}
+function previewArt(id){
+ const C=previewColors;
+ const art={
+  mindmap:pvLine(110,48,45,20)+pvLine(110,48,48,77)+pvLine(110,48,176,18)+pvLine(110,48,177,77)+pvLine(110,48,110,12,C.mint)+pvDot(110,48,12,C.blueFill,C.blue)+pvDot(43,18,8,C.mintFill,C.mint)+pvDot(44,79,8,C.amberFill,C.amber)+pvDot(178,17,8,C.roseFill,C.rose)+pvDot(178,79,8,C.violetFill,C.violet)+pvDot(110,11,7,C.mintFill,C.mint),
+  webbing:pvLine(110,49,48,18)+pvLine(110,49,33,68)+pvLine(110,49,91,13)+pvLine(110,49,170,17)+pvLine(110,49,188,65)+pvLine(110,49,111,86)+pvLine(48,18,91,13,C.mint,2)+pvLine(170,17,188,65,C.rose,2)+pvDot(110,49,12,C.blueFill,C.blue)+pvDot(48,18)+pvDot(33,68,7,C.mintFill,C.mint)+pvDot(91,13,7,C.amberFill,C.amber)+pvDot(170,17,7,C.roseFill,C.rose)+pvDot(188,65,7,C.violetFill,C.violet)+pvDot(111,86,7,C.mintFill,C.mint),
+  brainstorm:pvBox(55,26,110,48,C.pale,C.blue,15)+'<path d="M78 74 L69 86 L96 74" fill="'+C.pale+'" stroke="'+C.blue+'" stroke-width="2"/>'+pvDot(44,22,8,C.amberFill,C.amber)+pvDot(176,25,8,C.mintFill,C.mint)+pvDot(179,75,6,C.violetFill,C.violet)+pvLine(89,44,131,44,C.blue,4)+pvLine(89,56,119,56,C.mint,4),
+  imagemap:pvLine(110,50,110,12)+pvLine(110,50,44,24)+pvLine(110,50,176,24)+pvLine(110,50,55,83)+pvLine(110,50,167,83)+pvDot(110,50,14,C.amberFill,C.amber)+pvDot(110,12,10)+pvDot(44,24,10,C.mintFill,C.mint)+pvDot(176,24,10,C.roseFill,C.rose)+pvDot(55,83,10,C.violetFill,C.violet)+pvDot(167,83,10,C.blueFill,C.blue),
+  venn:'<circle cx="88" cy="50" r="35" fill="rgba(109,157,218,.32)" stroke="#6d9dda" stroke-width="2.5"/><circle cx="132" cy="50" r="35" fill="rgba(115,181,137,.32)" stroke="#73b589" stroke-width="2.5"/>',
+  compare:[20,43,66].map((y,i)=>pvLine(30,y,190,y,C.blue,1.6)+pvBox(25,y-9,54,17,i===1?C.mintFill:C.blueFill,C.blue,4)+pvBox(141,y-9,54,17,i===1?C.roseFill:C.mintFill,C.mint,4)+pvLine(84,y,136,y,C.ink,1.5)).join(''),
+  matrix:pvBox(51,12,58,34,C.blueFill,C.blue,4)+pvBox(111,12,58,34,C.mintFill,C.mint,4)+pvBox(51,49,58,34,C.amberFill,C.amber,4)+pvBox(111,49,58,34,C.roseFill,C.rose,4)+pvLine(110,5,110,91,C.ink,1.5)+pvLine(40,48,181,48,C.ink,1.5),
+  pmi:[C.mint,C.rose,C.blue].map((col,i)=>pvBox(22+i*60,18,52,65,[C.mintFill,C.roseFill,C.blueFill][i],col,7)+'<path d="M'+(48+i*60)+' 34 v20 M'+(38+i*60)+' 44 h20" stroke="'+col+'" stroke-width="3" stroke-linecap="round"/>').join(''),
+  jellyfish:'<path d="M76 42 C76 12 144 12 144 42 Z" fill="'+C.violetFill+'" stroke="'+C.violet+'" stroke-width="2.5"/>'+pvLine(88,43,68,82,C.blue,2)+pvLine(103,43,98,88,C.mint,2)+pvLine(117,43,124,88,C.amber,2)+pvLine(132,43,154,82,C.rose,2)+pvDot(68,82,5,C.blueFill,C.blue)+pvDot(98,88,5,C.mintFill,C.mint)+pvDot(124,88,5,C.amberFill,C.amber)+pvDot(154,82,5,C.roseFill,C.rose),
+  fishbone:pvLine(20,51,185,51,C.ink,3)+'<path d="M178 39 L198 51 L178 63" fill="none" stroke="'+C.ink+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+pvLine(62,51,43,20,C.blue,2.5)+pvLine(98,51,80,81,C.mint,2.5)+pvLine(132,51,115,20,C.amber,2.5)+pvLine(163,51,147,81,C.rose,2.5)+pvDot(43,20,5,C.blueFill,C.blue)+pvDot(80,81,5,C.mintFill,C.mint)+pvDot(115,20,5,C.amberFill,C.amber)+pvDot(147,81,5,C.roseFill,C.rose),
+  'cause-effect':pvBox(14,33,48,34,C.blueFill,C.blue,8)+pvBox(86,33,48,34,C.amberFill,C.amber,8)+pvBox(158,33,48,34,C.mintFill,C.mint,8)+pvLine(64,50,82,50,C.ink,2)+pvLine(136,50,154,50,C.ink,2)+'<path d="M77 44 L84 50 L77 56 M149 44 L156 50 L149 56" fill="none" stroke="'+C.ink+'" stroke-width="2" stroke-linecap="round"/>',
+  pyramid:'<polygon points="110,8 91,35 129,35" fill="'+C.amberFill+'" stroke="'+C.amber+'" stroke-width="2"/><polygon points="91,38 129,38 151,66 69,66" fill="'+C.roseFill+'" stroke="'+C.rose+'" stroke-width="2"/><polygon points="69,69 151,69 185,91 35,91" fill="'+C.mintFill+'" stroke="'+C.mint+'" stroke-width="2"/>',
+  flowchart:pvBox(82,5,56,19,C.blueFill,C.blue,5)+'<path d="M110 24 V34 M110 34 L132 48 L110 62 L88 48 Z" fill="'+C.amberFill+'" stroke="'+C.amber+'" stroke-width="2"/>'+pvLine(110,63,110,74,C.ink,2)+pvBox(82,75,56,18,C.mintFill,C.mint,5),
+  process:[0,1,2,3].map((n)=>pvBox(5+n*54,35,43,29,[C.blueFill,C.mintFill,C.amberFill,C.roseFill][n],[C.blue,C.mint,C.amber,C.rose][n],6)+(n<3?pvLine(48+n*54,50,57+n*54,50,C.ink,1.7):'')).join(''),
+  timeline:pvLine(18,53,202,53,C.ink,2.5)+[28,82,137,191].map((x,i)=>pvLine(x,53,x,i%2?24:78,[C.blue,C.mint,C.amber,C.rose][i],2)+pvDot(x,53,6,[C.blueFill,C.mintFill,C.amberFill,C.roseFill][i],[C.blue,C.mint,C.amber,C.rose][i])).join(''),
+  prep:[C.blue,C.mint,C.amber,C.rose].map((col,i)=>pvBox(15,8+i*21,190,16,[C.blueFill,C.mintFill,C.amberFill,C.roseFill][i],col,5)+pvDot(27,16+i*21,4,'#fff',col)).join(''),
+  claim:pvBox(43,7,134,30,C.blueFill,C.blue,7)+pvLine(110,38,110,53,C.ink,2)+pvLine(53,53,167,53,C.ink,2)+pvBox(22,61,78,27,C.mintFill,C.mint,6)+pvBox(120,61,78,27,C.amberFill,C.amber,6),
+  kwl:[C.blue,C.mint,C.amber].map((col,i)=>pvBox(12+i*67,13,61,74,[C.blueFill,C.mintFill,C.amberFill][i],col,6)+pvLine(24+i*67,39,61+i*67,39,col,2)+pvLine(24+i*67,52,61+i*67,52,col,2)+pvLine(24+i*67,65,55+i*67,65,col,2)).join(''),
+  ychart:pvLine(110,49,42,10,C.blue,3)+pvLine(110,49,178,10,C.mint,3)+pvLine(110,49,110,91,C.amber,3)+pvDot(110,49,8,C.blueFill,C.blue)+pvDot(42,10,6,C.mintFill,C.mint)+pvDot(178,10,6,C.roseFill,C.rose)+pvDot(110,91,6,C.amberFill,C.amber),
+  reflection:'<path d="M71 22 C96 2 144 10 153 34" fill="none" stroke="'+C.blue+'" stroke-width="4" stroke-linecap="round"/><path d="M146 24 L155 36 L160 21" fill="none" stroke="'+C.blue+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M150 69 C125 94 76 87 67 62" fill="none" stroke="'+C.mint+'" stroke-width="4" stroke-linecap="round"/><path d="M74 72 L65 60 L60 75" fill="none" stroke="'+C.mint+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+pvDot(110,48,18,C.amberFill,C.amber),
+  coordinate:pvLine(110,8,110,92,C.ink,2)+pvLine(24,50,196,50,C.ink,2)+'<path d="M105 15 L110 7 L115 15 M188 45 L197 50 L188 55" fill="none" stroke="'+C.ink+'" stroke-width="2"/>'+pvDot(67,26,7,C.blueFill,C.blue)+pvDot(148,28,7,C.mintFill,C.mint)+pvDot(71,73,7,C.amberFill,C.amber)+pvDot(157,72,7,C.roseFill,C.rose),
+  diamond:[{x:92,y:3,w:36},{x:61,y:24,w:36},{x:123,y:24,w:36},{x:30,y:45,w:36},{x:92,y:45,w:36},{x:154,y:45,w:36},{x:61,y:66,w:36},{x:123,y:66,w:36},{x:92,y:87,w:36}].map((p,i)=>pvBox(p.x,p.y,p.w,11,[C.blueFill,C.mintFill,C.amberFill,C.roseFill][i%4],[C.blue,C.mint,C.amber,C.rose][i%4],4)).join(''),
+  butterfly:'<ellipse cx="71" cy="46" rx="48" ry="34" fill="'+C.amberFill+'" stroke="'+C.amber+'" stroke-width="2.5"/><ellipse cx="149" cy="46" rx="48" ry="34" fill="'+C.blueFill+'" stroke="'+C.blue+'" stroke-width="2.5"/>'+pvBox(104,13,12,66,C.pale,C.ink,5),
+  kumade:pvLine(110,88,110,17,C.ink,2.5)+pvLine(110,42,55,20,C.blue,2.5)+pvLine(110,42,165,20,C.mint,2.5)+pvLine(110,67,42,54,C.amber,2.5)+pvLine(110,67,178,54,C.rose,2.5)+pvDot(55,20,7,C.blueFill,C.blue)+pvDot(165,20,7,C.mintFill,C.mint)+pvDot(42,54,7,C.amberFill,C.amber)+pvDot(178,54,7,C.roseFill,C.rose),
+  concentric:'<circle cx="110" cy="50" r="45" fill="'+C.blueFill+'" stroke="'+C.blue+'" stroke-width="2"/><circle cx="110" cy="50" r="30" fill="'+C.mintFill+'" stroke="'+C.mint+'" stroke-width="2"/><circle cx="110" cy="50" r="15" fill="'+C.amberFill+'" stroke="'+C.amber+'" stroke-width="2"/>',
+  candy:[C.blue,C.mint,C.rose].map((col,i)=>pvBox(20+i*67,35,50,52,[C.blueFill,C.mintFill,C.roseFill][i],col,8)+'<circle cx="'+(45+i*67)+'" cy="35" r="13" fill="'+[C.blueFill,C.mintFill,C.roseFill][i]+'" stroke="'+col+'" stroke-width="2"/>').join(''),
+  concept:pvLine(40,28,98,17)+pvLine(40,28,74,75)+pvLine(98,17,160,28)+pvLine(74,75,160,28)+pvLine(160,28,181,75)+pvLine(74,75,181,75,C.mint,2)+pvDot(40,28,9,C.blueFill,C.blue)+pvDot(98,17,9,C.amberFill,C.amber)+pvDot(160,28,9,C.mintFill,C.mint)+pvDot(74,75,9,C.roseFill,C.rose)+pvDot(181,75,9,C.violetFill,C.violet),
+  tree:pvBox(82,5,56,19,C.blueFill,C.blue,5)+pvLine(110,24,110,39,C.ink,2)+pvLine(45,39,175,39,C.ink,2)+[45,110,175].map((x,i)=>pvLine(x,39,x,51,C.ink,2)+pvBox(x-22,52,44,27,[C.mintFill,C.amberFill,C.roseFill][i],[C.mint,C.amber,C.rose][i],5)).join(''),
+  brace:pvBox(10,29,66,40,C.blueFill,C.blue,7)+pvLine(77,49,104,49,C.ink,2)+pvLine(104,18,104,80,C.ink,2)+pvLine(104,18,119,18,C.ink,2)+pvLine(104,80,119,80,C.ink,2)+pvBox(122,7,82,24,C.mintFill,C.mint,6)+pvBox(122,57,82,24,C.amberFill,C.amber,6),
+  bridge:pvBox(17,21,46,22,C.blueFill,C.blue,6)+pvLine(64,32,156,32,C.ink,2)+pvBox(157,21,46,22,C.mintFill,C.mint,6)+pvLine(110,32,110,62,C.amber,2)+pvBox(82,62,56,26,C.amberFill,C.amber,6)+pvDot(40,79,5,C.blueFill,C.blue)+pvDot(180,79,5,C.mintFill,C.mint)
+ };
+ const fallback=pvBox(25,19,170,62,C.blueFill,C.blue,10)+pvLine(45,38,175,38,C.blue,2)+pvLine(45,60,150,60,C.mint,2);
+ return '<svg viewBox="0 0 220 100" role="img" aria-label="'+( {mindmap:'中心から枝分かれする図',webbing:'言葉をつなぐ図',venn:'重なる二つの円',fishbone:'骨の形で原因を整理する図',matrix:'四つの枠に分類する図',coordinate:'縦軸と横軸で位置を表す図',timeline:'時間の流れを表す図',pyramid:'段で構造を表す図',ychart:'三つの視点に分かれる図'}[id]||'思考の形を表す図')+'" focusable="false">'+(art[id]||fallback)+'</svg>';
+}
+
+function renderCards(){
+ const q=$('searchInput').value.trim().toLowerCase();
+ const list=specs.filter(s=>(activeCategory==='all'||s.category===activeCategory)&&(!q||(s.name+' '+s.desc+' '+categoryName(s.category)+' '+s.purpose).toLowerCase().includes(q)));
+ $('toolCount').textContent=list.length+' / '+specs.length+' tools';
+ $('listHeading').textContent=activeCategory==='all'?'思考ツールを選ぶ':categoryName(activeCategory)+'ためのツール';
+ $('toolGrid').innerHTML=list.length?list.map((s)=>'<button class="tool-card" data-open="'+s.id+'"><div class="tool-preview">'+previewArt(s.id)+'</div><div class="tool-card-body"><div class="card-top"><span class="tool-number">TOOL '+String(specs.indexOf(s)+1).padStart(2,'0')+'</span><span class="tool-symbol">'+s.symbol+'</span></div><h3>'+rubify(s.name)+'</h3><p>'+rubify(s.desc)+'</p><span class="category-label"><span>'+categoryName(s.category)+'</span><span>開く ↗'+(hasData(s)?'　<span class="saved-badge">● 入力あり</span>':'')+'</span></span></div></button>').join(''):'<div class="empty">条件に合うツールが見つかりません。検索語を変えてみてね。</div>';
+}
+function makeInitialState(spec){
+ return {topic:'',labels:Object.fromEntries((spec.labels||[]).map(l=>[l.id,''])),blocks:spec.blocks.map(b=>Array.from({length:b.initial},()=>Object.fromEntries(b.fields.map(f=>[f.id,'']))))};
+}
+function readState(spec){
+ try{const v=JSON.parse(localStorage.getItem('thinklab:'+spec.id));if(v&&Array.isArray(v.blocks)&&v.blocks.length===spec.blocks.length){if(!v.labels||typeof v.labels!=='object')v.labels={};return v;}}catch(e){}
+ return makeInitialState(spec);
+}
+function saveState(){if(!activeTool)return;try{localStorage.setItem('thinklab:'+activeTool.id,JSON.stringify(currentState));$('saveState').textContent='✓ この端末に自動保存しました';}catch(e){$('saveState').textContent='このブラウザでは保存できません。印刷して残してください。'}}
+let currentState=null;
+let guideExpanded=false;
+function blockTitleHelp(b,bi){
+ let t=b.title,h=b.help||'';
+ if(activeTool&&activeTool.id==='venn'){
+  if(bi===0&&(currentState.labels.a||'').trim()){t=currentState.labels.a.trim()+'に当てはまること';h=currentState.labels.a.trim()+'だけの特徴を書こう。';}
+  if(bi===2&&(currentState.labels.b||'').trim()){t=currentState.labels.b.trim()+'に当てはまること';h=currentState.labels.b.trim()+'だけの特徴を書こう。';}
+ }
+ return [t,h];
+}
+function visualOf(bi){const l=activeTool.layout;const v=l==='concept'?'言葉 → 関係 → 言葉':l==='bridge'?'関係を見つけて、別の例につなぐ':l==='timeline'?'時間の流れ':l==='tree'?'大きな分類から小さな分類へ':l==='brace'?'全体 → 部分 → さらに細かく':l==='coordinate'?(bi===0?'二つの軸を決める':'位置から特徴を読み取る'):'';return v?'<div class="diagram-caption">'+escapeHtml(v)+'</div>':'';}
+function renderBlock(b,bi){
+ const rows=currentState.blocks[bi]||[];
+ const th=blockTitleHelp(b,bi);const bTitle=th[0],bHelp=th[1];
+ const entries=rows.map((row,ri)=>{
+  const fields=b.fields.map(f=>{const named=(activeTool.id==='compare'&&(f.id==='a'||f.id==='b')&&(currentState.labels[f.id]||'').trim())?currentState.labels[f.id].trim():f.label;return '<div class="field"><label>'+rubify(named)+'</label><textarea data-block="'+bi+'" data-row="'+ri+'" data-field="'+f.id+'" placeholder="'+escapeHtml(f.placeholder||'')+'">'+escapeHtml(row[f.id]||'')+'</textarea></div>';}).join('');
+  return '<div class="entry"><div class="entry-top"><span class="entry-label">'+rubify(bTitle)+' '+String(ri+1).padStart(2,'0')+'</span>'+(b.repeat?'<button type="button" class="remove-entry" data-remove="'+bi+'" data-row="'+ri+'" aria-label="この項目を削除">削除</button>':'')+'</div>'+fields+'</div>';
+ }).join('');
+ const visual=visualOf(bi);
+ return '<section class="thought-block" data-block-id="'+escapeHtml(b.id)+'"><div class="block-head"><div><h3 class="block-title">'+rubify(bTitle)+'</h3><p class="block-help">'+rubify(bHelp)+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div>'+visual+'<div class="entry-grid">'+entries+'</div>'+(b.repeat?'<button type="button" class="add-entry" data-add="'+bi+'">＋ 項目を追加する</button>':'')+'</section>';
+}
+function zEntries(b,bi){
+ const rows=currentState.blocks[bi]||[];
+ return rows.map((row,ri)=>'<div class="zentry">'+b.fields.map((f,fi)=>'<div class="zval'+(fi>0?' sub':'')+'" data-diag="'+bi+'-'+ri+'-'+f.id+'">'+escapeHtml(row[f.id]||'')+'</div>').join('')+'</div>').join('');
+}
+function zoneOf(bi,cls){const b=activeTool.blocks[bi];return '<div class="zone '+cls+'"><div class="ztitle">'+rubify(blockTitleHelp(b,bi)[0])+'</div>'+zEntries(b,bi)+'</div>';}
+function stageVenn(){
+ const nmA=(currentState.labels.a||'').trim()||'A',nmB=(currentState.labels.b||'').trim()||'B';
+ return '<div class="stage stage-venn"><svg class="stage-art" viewBox="0 0 640 480" aria-hidden="true"><circle cx="238" cy="252" r="182" fill="rgba(110,160,225,.38)" stroke="#5b8dd0" stroke-width="3"/><circle cx="402" cy="252" r="182" fill="rgba(110,195,130,.38)" stroke="#57a773" stroke-width="3"/></svg><div class="stage-pill pill-a">'+escapeHtml(nmA)+'</div><div class="stage-pill pill-b">'+escapeHtml(nmB)+'</div>'+zoneOf(0,'zone-a')+zoneOf(1,'zone-c')+zoneOf(2,'zone-b')+'</div>';
+}
+function stageFishbone(){
+ const xs=[150,285,420];let lines='';
+ xs.forEach((x,i)=>{const up=i!==1;lines+='<line x1="'+x+'" y1="180" x2="'+(x-78)+'" y2="'+(up?42:318)+'" stroke="#7d8ea6" stroke-width="3"/>';});
+ return '<div class="stage stage-fish"><svg class="stage-art" viewBox="0 0 640 360" aria-hidden="true"><line x1="18" y1="180" x2="512" y2="180" stroke="#42506a" stroke-width="4"/>'+lines+'<path d="M512 180 L548 116 Q624 128 630 180 Q624 232 548 244 Z" fill="#eef3fa" stroke="#42506a" stroke-width="3"/></svg>'+zoneOf(0,'zone-fb0')+zoneOf(1,'zone-fb1')+zoneOf(2,'zone-fb2')+'<div class="zone zone-head"><div class="ztitle">結果</div><div class="stage-topic-val">'+escapeHtml(currentState.topic||'')+'</div></div></div>';
+}
+function stageCoordinate(){
+ const r0=(currentState.blocks[0]||[])[0]||{};
+ const svg='<svg class="stage-art" viewBox="0 0 560 560" aria-hidden="true"><defs><marker id="arrW" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#42506a"/></marker></defs><line x1="280" y1="552" x2="280" y2="8" stroke="#42506a" stroke-width="3" marker-end="url(#arrW)"/><line x1="280" y1="8" x2="280" y2="552" stroke="#42506a" stroke-width="0" marker-end="url(#arrW)"/><line x1="8" y1="280" x2="552" y2="280" stroke="#42506a" stroke-width="3" marker-end="url(#arrW)"/></svg>';
+ return '<div class="stage stage-coord">'+svg+'<div class="axis-lab lab-top zval" data-diag="0-0-vertical" data-ph="縦軸">'+escapeHtml(r0.vertical||'')+'</div><div class="axis-lab lab-right zval" data-diag="0-0-horizontal" data-ph="横軸">'+escapeHtml(r0.horizontal||'')+'</div>'+zoneOf(1,'zone-ru')+zoneOf(2,'zone-lu')+zoneOf(3,'zone-ld')+zoneOf(4,'zone-rd')+'</div>';
+}
+function stagePyramid(){
+ const svg='<svg class="stage-art" viewBox="0 0 640 400" aria-hidden="true"><polygon points="320,18 262,138 378,138" fill="#ffe3a3" stroke="#d9a83f" stroke-width="2.5"/><polygon points="262,138 378,138 430,258 210,258" fill="#ffd2ae" stroke="#dd9463" stroke-width="2.5"/><polygon points="210,258 430,258 578,382 62,382" fill="#cfe8c0" stroke="#7cab63" stroke-width="2.5"/></svg>';
+ return '<div class="stage stage-pyr">'+svg+zoneOf(0,'zone-py0')+zoneOf(1,'zone-py1')+zoneOf(2,'zone-py2')+'</div>';
+}
+function stageConcentric(){
+ const svg='<svg class="stage-art" viewBox="0 0 560 560" aria-hidden="true"><circle cx="280" cy="280" r="266" fill="#e8f1fb" stroke="#7d9cc4" stroke-width="3"/><circle cx="280" cy="280" r="182" fill="#d6e6f8" stroke="#7d9cc4" stroke-width="3"/><circle cx="280" cy="280" r="104" fill="#bcd4f0" stroke="#5b8dd0" stroke-width="3"/></svg>';
+ return '<div class="stage stage-conc">'+svg+zoneOf(2,'zone-cc2')+zoneOf(1,'zone-cc1')+zoneOf(0,'zone-cc0')+'</div>';
+}
+function stageButterfly(){
+ const svg='<svg class="stage-art" viewBox="0 0 640 400" aria-hidden="true"><ellipse cx="188" cy="178" rx="170" ry="152" fill="rgba(245,185,95,.45)" stroke="#dd9a3f" stroke-width="3"/><ellipse cx="452" cy="178" rx="170" ry="152" fill="rgba(110,180,230,.45)" stroke="#5b8dd0" stroke-width="3"/><rect x="302" y="52" width="36" height="252" rx="18" fill="#f4f6f9" stroke="#8a97a8" stroke-width="2.5"/></svg>';
+ return '<div class="stage stage-bfly">'+svg+zoneOf(0,'zone-bf0')+zoneOf(2,'zone-bf2')+zoneOf(1,'zone-bf1')+'</div>';
+}
+function stageY(){
+ const svg='<svg class="stage-art" viewBox="0 0 640 420" aria-hidden="true"><line x1="320" y1="205" x2="105" y2="55" stroke="#7d8ea6" stroke-width="3"/><line x1="320" y1="205" x2="535" y2="55" stroke="#7d8ea6" stroke-width="3"/><line x1="320" y1="205" x2="320" y2="398" stroke="#7d8ea6" stroke-width="3"/><circle cx="320" cy="205" r="10" fill="#4669a8"/></svg>';
+ return '<div class="stage stage-y">'+svg+zoneOf(0,'zone-y0')+zoneOf(1,'zone-y1')+zoneOf(2,'zone-y2')+'</div>';
+}
+const OVERLAY={venn:stageVenn,fishbone:stageFishbone,coordinate:stageCoordinate,pyramid:stagePyramid,concentric:stageConcentric,butterfly:stageButterfly,ychart:stageY};
+function renderDiagram(){
+ const d=$('diagram');
+ if(!activeTool||!activeTool.split){d.innerHTML='';$('diagramTopic').textContent='';return;}
+ if(OVERLAY[activeTool.id]){d.className='diagram diagram-stage';d.innerHTML=OVERLAY[activeTool.id]();}
+ else{
+ d.className='diagram blocks layout-'+activeTool.layout;
+ d.innerHTML=activeTool.blocks.map((b,bi)=>{
+  const th=blockTitleHelp(b,bi);
+  const rows=currentState.blocks[bi]||[];
+  const entries=rows.map((row,ri)=>{
+   const flds=b.fields.map(f=>'<div class="field d-field"><label>'+rubify(f.label)+'</label><div class="d-val" data-diag="'+bi+'-'+ri+'-'+f.id+'">'+escapeHtml(row[f.id]||'')+'</div></div>').join('');
+   return '<div class="entry d-entry">'+flds+'</div>';
+  }).join('');
+  return '<section class="thought-block d-block"><div class="block-head"><div><h3 class="block-title">'+rubify(th[0])+'</h3><p class="block-help">'+rubify(th[1])+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div>'+visualOf(bi)+'<div class="entry-grid">'+entries+'</div></section>';
+ }).join('');
+ }
+ $('diagramTopic').textContent=currentState.topic||'';
+}
+function renderEditor(spec){
+ activeTool=spec;currentState=readState(spec);activeGuideNavi=pickNavi();
+ $('listView').classList.add('hidden');$('editorView').classList.add('active');
+ $('editorSymbol').textContent=spec.symbol;$('editorName').innerHTML=rubify(spec.name);$('editorDesc').innerHTML=rubify(spec.desc);
+ $('paperTitle').innerHTML=rubify(spec.name);$('paperSubtitle').innerHTML=rubify(spec.purpose);
+ $('topicLabel').textContent=spec.id==='timeline'?'テーマ・期間':'テーマ・問い';
+ $('topicInput').value=currentState.topic||'';
+ const lf=$('labelFields');
+ if(spec.labels&&spec.labels.length){lf.hidden=false;lf.innerHTML=spec.labels.map(l=>'<div class="label-field"><label for="lf-'+l.id+'">'+rubify(l.label)+'</label><input id="lf-'+l.id+'" data-label="'+l.id+'" type="text" placeholder="'+escapeHtml(l.placeholder||'')+'" value="'+escapeHtml(currentState.labels[l.id]||'')+'"></div>').join('');}else{lf.hidden=true;lf.innerHTML='';}
+ guideExpanded=false;$('guideMore').textContent='使い方のコツ';
+ $('guideMessage').innerHTML=rubify(spec.purpose);
+ setNaviImage($('guideNavi'),activeGuideNavi,'hint');
+ $('useSteps').innerHTML=spec.steps.map((s,i)=>'<div class="use-step"><span class="step-dot">'+(i+1)+'</span><span>'+rubify(s)+'</span></div>').join('');
+ $('useCases').innerHTML=rubify(spec.cases);
+ const subjectExamples={
+  mindmap:'国語：物語を読んで気付いたことを広げる\n社会：地域の課題や調べたいことを出す\n総合：探究テーマの候補を広げる',
+  venn:'国語：二人の登場人物の共通点と違い\n社会：二つの時代や地域のくらしを比べる\n理科：二つの生き物の特徴を比べる',
+  fishbone:'国語：登場人物の行動の理由を整理する\n社会：地域の課題が起きる原因を探る\n理科：実験結果につながる条件を考える',
+  timeline:'社会：歴史上の出来事を時間順に整理する\n国語：物語の出来事の順序を捉える\n理科：観察や実験の変化を記録する',
+  coordinate:'社会：二つの観点から地域や資料を位置付ける\n理科：条件の違いと結果の関係を整理する\n学級活動：課題の優先度を考える',
+  diamond:'学級活動：解決したい課題の優先順位を決める\n社会：出来事や人物の重要度を根拠とともに考える\n国語：伝えたい内容の大切さを比べる',
+  concept:'理科：用語をつなぎ、現象の仕組みを説明する\n社会：人・もの・制度の関係を整理する\n算数：数量や図形の性質のつながりを説明する',
+  tree:'理科：生き物や物質を特徴ごとに分類する\n国語：文章の内容や情報を観点別に整理する\n社会：産業や地域の特色を分類する',
+  brace:'理科：植物や人体など、全体と部分の関係を捉える\n国語：文章を段落やまとまりに分ける\n社会：社会の仕組みを構成する要素に分ける',
+  bridge:'国語：語句どうしの関係や比喩を考える\n算数：数量の関係が同じになる式や場面を探す\n社会：役割や働きが似ているものを結び付ける'
+ };
+ $('subjectExamples').innerHTML=rubify(subjectExamples[spec.id]||'国語：文章や資料から大切な情報を整理する\n社会：資料を比べ、地域や社会の特色を考える\n理科：観察・実験の結果や理由を整理する\n算数：考え方や数量の関係を見える形にする');
+ $('tips').innerHTML=spec.tips.map(t=>'<li>'+rubify(t)+'</li>').join('');
+ const blocksEl=$('blocks');
+ if(spec.split){
+  $('splitWrap').hidden=false;$('workLayout').classList.add('split-mode');
+  $('inputPanel').appendChild(blocksEl);
+  blocksEl.className='blocks input-list';
+ }else{
+  $('splitWrap').hidden=true;$('workLayout').classList.remove('split-mode');
+  $('workbench').insertBefore(blocksEl,$('splitWrap'));
+  blocksEl.className='blocks layout-'+spec.layout;
+ }
+ blocksEl.innerHTML=spec.blocks.map(renderBlock).join('');
+ renderDiagram();
+ $('saveState').textContent='この端末に自動保存';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function returnHome(){activeTool=null;$('editorView').classList.remove('active');$('listView').classList.remove('hidden');renderCards();window.scrollTo({top:0,behavior:'smooth'});}
+function openHelp(){ $('helpModal').classList.add('open');}
+function closeHelp(){ $('helpModal').classList.remove('open');}
+function resetActive(){if(!activeTool)return;if(!window.confirm('このツールに入力した内容をすべて消しますか？'))return;currentState=makeInitialState(activeTool);saveState();renderEditor(activeTool);}
+$('homeBrand').addEventListener('click',e=>{e.preventDefault();returnHome();});
+$('helpOpen').addEventListener('click',openHelp);$('modalClose').addEventListener('click',closeHelp);$('modalStart').addEventListener('click',closeHelp);
+$('helpModal').addEventListener('click',e=>{if(e.target===$('helpModal'))closeHelp();});
+$('backButton').addEventListener('click',returnHome);
+$('searchInput').addEventListener('input',renderCards);
+$('categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;activeCategory=b.dataset.category;renderCategories();renderCards();});
+$('toolGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const s=specs.find(x=>x.id===b.dataset.open);if(s)renderEditor(s);});
+$('quickPicks').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)renderEditor(spec);});
+$('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;$('diagramTopic').textContent=e.target.value;document.querySelectorAll('.stage-topic-val').forEach(el=>el.textContent=e.target.value);saveState();});
+$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;const dv=document.querySelector('[data-diag="'+bi+'-'+ri+'-'+field+'"]');if(dv)dv.textContent=t.value;saveState();}});
+$('blocks').addEventListener('click',e=>{
+ const add=e.target.closest('[data-add]');if(add){const bi=Number(add.dataset.add),b=activeTool.blocks[bi];currentState.blocks[bi].push(Object.fromEntries(b.fields.map(f=>[f.id,''])));$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();saveState();return;}
+ const rem=e.target.closest('[data-remove]');if(rem){const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();saveState();}
+});
+$('printButton').addEventListener('click',()=>window.print());
+$('resetButton').addEventListener('click',resetActive);
+$('guideMore').addEventListener('click',()=>{if(!activeTool)return;guideExpanded=!guideExpanded;if(guideExpanded){$('guideMessage').innerHTML=rubify(activeTool.steps.join(' → ')+'。'+activeTool.tips[0]);$('guideMore').textContent='案内にもどす';}else{$('guideMessage').innerHTML=rubify(activeTool.purpose);$('guideMore').textContent='使い方のコツ';}});
+$('labelFields').addEventListener('input',e=>{const t=e.target;if(!t.matches('input[data-label]')||!currentState)return;currentState.labels[t.dataset.label]=t.value;saveState();});
+$('labelFields').addEventListener('change',e=>{if(!e.target.matches('input[data-label]')||!activeTool)return;$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();});
+activeNavi=pickNavi();setNaviImage($('heroNavi'),activeNavi,'waving');
+const heroLines=[['考えることを楽しもう。','使いたい道具を選んで、考えを入力してみよう。書いた内容は自動で保存されるよ。'],['どの道具で考えてみる？','目的に合う思考ツールを選ぶと、考えが整理しやすくなるよ。'],['思いついたことから始めよう。','うまく書こうとしなくて大丈夫。まずは自分の考えを書いてみよう。']];
+const heroLine=heroLines[Math.floor(Math.random()*heroLines.length)];$('heroNaviTitle').textContent=heroLine[0];$('heroNaviText').textContent=heroLine[1];
+let furiOn=true;try{furiOn=localStorage.getItem('thinklab:furigana')!=='off';}catch(e){}
+function applyFuri(){document.body.classList.toggle('furi-off',!furiOn);$('furiToggle').textContent='ふりがな '+(furiOn?'ON':'OFF');$('furiToggle').setAttribute('aria-pressed',String(furiOn));}
+$('furiToggle').addEventListener('click',()=>{furiOn=!furiOn;try{localStorage.setItem('thinklab:furigana',furiOn?'on':'off');}catch(e){}applyFuri();});
+applyFuri();
+rubifyStatic(document.querySelector('.hero'));rubifyStatic(document.querySelector('.quick-guide'));rubifyStatic(document.querySelector('.modal'));rubifyStatic(document.querySelector('.footer'));
+renderCategories();renderCards();
+})();
+</script>
+</body>
+</html>
