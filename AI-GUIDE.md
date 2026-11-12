@@ -106,3 +106,21 @@ Design references:
 - EEF guidance on teaching planning, monitoring, and evaluating strategies in the context of curriculum learning.
 
 Do not imply that a graphic organizer alone guarantees learning gains. The teacher should introduce, model, and revisit a tool in connection with the learning goal.
+
+## Diagram-first layout patterns
+
+The visual preview lives in `preview.html`; do not silently replace `index.html` before review.
+
+Four tools have purpose-built diagram renderers in the preview:
+- `mindmap`: center theme with connected branches; render `idea` and `detail` from each row.
+- `webbing`: central theme with radial association nodes; render `word` and `link` from each row.
+- `jellyfish`: central proposition in the dome and supporting `reason` / `example` pairs in the tentacles.
+- `concept`: render each `from` / `relation` / `to` triple as a connected proposition.
+
+Implementation constraints:
+- Render learner text into the diagram using the existing `data-diag` convention so typing updates the diagram immediately.
+- Read from the existing state object. Do not change the tool IDs, block/field IDs, or the localStorage schema to improve appearance.
+- Escape all learner-provided text before inserting HTML.
+- Keep each diagram's characteristic geometry visible; avoid replacing a diagram with generic rectangular input cards.
+- Preserve blank-state hints, responsive sizing, print readability, keyboard access, and the existing add/remove actions.
+- Keep Navi characters subordinate to the thinking area; never let guidance art cover or shrink the diagram.
