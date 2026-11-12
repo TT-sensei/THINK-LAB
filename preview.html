@@ -704,6 +704,25 @@ body.furi-off rt{display:none}
  .bridge-relation{font-size:9px;gap:5px}
 }
 
+
+.afterthought{margin-top:18px;padding:18px 19px;border:1px solid #dce5ef;border-radius:17px;background:linear-gradient(145deg,#fff 0%,#f6f9fd 100%);box-shadow:0 5px 18px rgba(39,58,88,.045)}
+.afterthought-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}
+.afterthought-kicker{font-size:9px;font-weight:900;letter-spacing:.16em;color:#8293ad}
+.afterthought-head h3{margin:4px 0 2px;font-size:16px;color:#293c59}
+.afterthought-head p{margin:0;font-size:11px;color:#78869a}
+.thought-progress{flex:none;min-width:88px;padding:8px 12px;border:1px solid #dce5ef;border-radius:12px;background:#fff;text-align:center}
+.thought-progress strong{display:block;font-size:24px;line-height:1.1;color:#4669a8;font-variant-numeric:tabular-nums}
+.thought-progress span{font-size:9px;font-weight:800;color:#8190a4}
+.afterthought-prompts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.afterthought-prompt{min-width:0;padding:11px 12px 10px;border:1px solid #e3e9f0;border-radius:12px;background:rgba(255,255,255,.88)}
+.afterthought-prompt>span{display:inline-grid;place-items:center;width:21px;height:21px;margin-bottom:6px;border-radius:7px;background:#edf2fa;color:#59749d;font-size:9px;font-weight:900}
+.afterthought-prompt b{display:block;font-size:11px;color:#40516b}
+.afterthought-prompt p{margin:4px 0 0;font-size:10px;line-height:1.55;color:#7a8799}
+.afterthought-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:11px;padding-top:9px;border-top:1px solid #e8edf3;color:#8592a4;font-size:9px}
+.afterthought-foot span:first-child{font-weight:750;color:#637894}
+@media(max-width:600px){.afterthought{padding:14px 12px}.afterthought-head{align-items:flex-start}.afterthought-head h3{font-size:14px}.afterthought-prompts{grid-template-columns:1fr;gap:7px}.afterthought-prompt{display:grid;grid-template-columns:25px 1fr;column-gap:7px;align-items:start;padding:9px}.afterthought-prompt>span{grid-row:1/3;margin:0}.afterthought-prompt b{font-size:11px}.afterthought-prompt p{grid-column:2;margin-top:2px}.afterthought-foot{font-size:9px}}
+@media print{.afterthought{break-inside:avoid;box-shadow:none;background:#fff!important;border:1px solid #aaa!important}.afterthought-prompt{background:#fff!important;border-color:#bbb!important}.afterthought-prompt>span{background:#eee!important;color:#333!important}.afterthought-foot{color:#444!important}}
+
 </style>
 </head>
 <body>
@@ -759,6 +778,15 @@ body.furi-off rt{display:none}
     </div>
     <div class="blocks" id="blocks"></div>
     <div class="save-state" id="saveState">この端末に自動保存</div>
+   <section class="afterthought" id="afterthought" aria-live="polite">
+    <div class="afterthought-head"><div><span class="afterthought-kicker">LOOK BACK / NEXT THINKING</span><h3>考えのあとを見てみよう</h3><p>書いたことを見直すと、新しい気づきが生まれるよ。</p></div><div class="thought-progress"><strong id="thoughtCount">0</strong><span>入力した項目</span></div></div>
+    <div class="afterthought-prompts">
+     <div class="afterthought-prompt"><span>01</span><b>つながりはあるかな？</b><p>似ている考えや、関係していることを探そう。</p></div>
+     <div class="afterthought-prompt"><span>02</span><b>理由や根拠は十分かな？</b><p>「どうして？」と問い直してみよう。</p></div>
+     <div class="afterthought-prompt"><span>03</span><b>次に考えたいことは？</b><p>まだ分からないことや、新しい疑問を見つけよう。</p></div>
+    </div>
+    <div class="afterthought-foot"><span id="thoughtProgressText">まずは一つ、考えを書いてみよう。</span><span>書いた内容は図に反映されています</span></div>
+   </section>
    </section>
    <aside class="editor-aside">
     <div class="aside-card"><h3>このツールの使い方</h3><div class="use-steps" id="useSteps"></div></div>
@@ -1101,6 +1129,18 @@ function renderDiagram(){
  }
  $('diagramTopic').textContent=currentState.topic||'';
 }
+function updateThoughtProgress(){
+ if(!activeTool||!currentState)return;
+ let filled=0,completed=0,entries=0;
+ activeTool.blocks.forEach((b,bi)=>(currentState.blocks[bi]||[]).forEach(row=>{
+  entries++;
+  const n=b.fields.filter(f=>String(row[f.id]||'').trim()).length;
+  filled+=n;if(n===b.fields.length)completed++;
+ }));
+ const count=$('thoughtCount'),msg=$('thoughtProgressText');
+ if(count)count.textContent=filled;
+ if(msg)msg.textContent=filled===0?'まずは一つ、考えを書いてみよう。':completed>0?completed+'項目がそろったよ。理由やつながりも見直してみよう。':entries+'項目の中に、'+filled+'つの考えが書けているよ。続きを書いてみよう。';
+}
 function renderEditor(spec){
  activeTool=spec;currentState=readState(spec);activeGuideNavi=pickNavi();
  $('listView').classList.add('hidden');$('editorView').classList.add('active');
@@ -1141,6 +1181,7 @@ function renderEditor(spec){
  }
  blocksEl.innerHTML=spec.blocks.map(renderBlock).join('');
  renderDiagram();
+ updateThoughtProgress();
  $('saveState').textContent='この端末に自動保存';
  window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1157,10 +1198,10 @@ $('categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-c
 $('toolGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const s=specs.find(x=>x.id===b.dataset.open);if(s)renderEditor(s);});
 $('quickPicks').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)renderEditor(spec);});
 $('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;$('diagramTopic').textContent=e.target.value;document.querySelectorAll('.stage-topic-val').forEach(el=>el.textContent=e.target.value);saveState();});
-$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;const dv=document.querySelector('[data-diag="'+bi+'-'+ri+'-'+field+'"]');if(dv)dv.textContent=t.value;saveState();}});
+$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;const dv=document.querySelector('[data-diag="'+bi+'-'+ri+'-'+field+'"]');if(dv)dv.textContent=t.value;updateThoughtProgress();saveState();}});
 $('blocks').addEventListener('click',e=>{
- const add=e.target.closest('[data-add]');if(add){const bi=Number(add.dataset.add),b=activeTool.blocks[bi];currentState.blocks[bi].push(Object.fromEntries(b.fields.map(f=>[f.id,''])));$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();saveState();return;}
- const rem=e.target.closest('[data-remove]');if(rem){const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();saveState();}
+ const add=e.target.closest('[data-add]');if(add){const bi=Number(add.dataset.add),b=activeTool.blocks[bi];currentState.blocks[bi].push(Object.fromEntries(b.fields.map(f=>[f.id,''])));$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();updateThoughtProgress();saveState();}
+ const rem=e.target.closest('[data-remove]');if(rem){const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();updateThoughtProgress();saveState();}
 });
 $('printButton').addEventListener('click',()=>window.print());
 $('resetButton').addEventListener('click',resetActive);
