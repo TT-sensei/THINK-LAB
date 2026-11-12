@@ -447,6 +447,67 @@ body.furi-off rt{display:none}
  .zentry{margin:2px 0}
 }
 
+
+/* Purpose-built diagrams for maps, supporting reasons, and concept relations. */
+.stage-mindmap{aspect-ratio:760/480;min-height:250px}
+.mind-node{position:absolute;z-index:2;transform:translate(-50%,-50%);width:21.8%;min-height:54px;padding:7px 9px;border:1.5px solid var(--node-color,#8ca5c8);border-radius:12px;background:rgba(255,255,255,.94);box-shadow:0 3px 12px rgba(39,58,88,.09);text-align:center;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.mind-node strong{font-size:clamp(10px,1.2vw,13px);line-height:1.35;color:#34445c;overflow-wrap:anywhere}
+.mind-node small{font-size:clamp(9px,1vw,11px);line-height:1.35;color:#75839a;overflow-wrap:anywhere}
+.mind-node strong:empty:after{content:"考えを広げる";color:#b2bdcb;font-weight:600}
+.mind-node small:empty:after{content:"具体例・説明";color:#c2cad5}
+.stage-center{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%);width:23%;min-height:82px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px;border-radius:50%;border:2px solid #6e88b2;background:linear-gradient(145deg,#f5f8fd,#e6eef9);box-shadow:0 4px 16px rgba(39,58,88,.12);text-align:center}
+.stage-center .center-kicker{font-size:clamp(8px,.9vw,10px);font-weight:850;letter-spacing:.1em;color:#7185a5}
+.stage-center .center-value{font-size:clamp(11px,1.35vw,15px);font-weight:850;line-height:1.35;color:#293c59;overflow-wrap:anywhere}
+.stage-center .center-value:empty:after{content:"テーマ・問い";color:#9cabc0}
+.stage-web{aspect-ratio:760/480;min-height:250px}
+.web-node{position:absolute;z-index:2;transform:translate(-50%,-50%);width:19.5%;min-height:51px;padding:6px 8px;border:1.5px solid var(--node-color,#8ca5c8);border-radius:12px;background:rgba(255,255,255,.95);box-shadow:0 3px 11px rgba(39,58,88,.08);display:flex;flex-direction:column;justify-content:center;gap:2px;text-align:center}
+.web-node strong{font-size:clamp(10px,1.12vw,13px);line-height:1.35;color:#34445c;overflow-wrap:anywhere}
+.web-node small{font-size:clamp(9px,.95vw,10px);line-height:1.3;color:#7c899e;overflow-wrap:anywhere}
+.web-node strong:empty:after{content:"連想した言葉";color:#b2bdcb;font-weight:600}
+.web-node small:empty:after{content:"つながり";color:#c2cad5}
+.stage-web .stage-center{width:20%;min-height:92px;border-radius:18px}
+.stage-jelly{min-height:340px}
+.jelly-head{position:absolute;z-index:2;left:22%;top:2%;width:56%;height:33%;border:2px solid #8e85b3;border-radius:52% 52% 18% 18% / 76% 76% 24% 24%;background:linear-gradient(155deg,#f1eef9,#e3eaf7);box-shadow:0 4px 15px rgba(62,62,103,.09);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:12px 22px;text-align:center}
+.jelly-head:after{content:"";position:absolute;left:8%;right:8%;bottom:-9px;height:15px;border-bottom:2px solid rgba(142,133,179,.6);border-radius:50%}
+.jelly-kicker{font-size:clamp(9px,.95vw,11px);font-weight:850;color:#8276a8;letter-spacing:.1em}
+.jelly-topic{font-size:clamp(12px,1.45vw,17px);font-weight:850;line-height:1.35;color:#37435c;margin-top:4px;overflow-wrap:anywhere}
+.jelly-topic:empty:after{content:"中心となる考え";color:#9e9ab0}
+.jelly-leg{position:absolute;z-index:2;transform:translateX(-50%);width:27%;min-height:94px;padding:8px 10px;border:1px solid #d9deea;border-radius:14px;background:rgba(255,255,255,.96);box-shadow:0 3px 11px rgba(39,58,88,.07);text-align:left}
+.jelly-leg-head{font-size:10px;font-weight:850;color:#7e83a2;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.jelly-leg-head span{font-size:9px;color:#a2aabc}
+.jelly-reason{font-size:clamp(10px,1.1vw,12px);font-weight:750;color:#35445b;line-height:1.4;overflow-wrap:anywhere}
+.jelly-example{font-size:clamp(9px,.98vw,11px);color:#77849a;line-height:1.35;margin-top:4px;overflow-wrap:anywhere}
+.jelly-reason:empty:after{content:"理由・事実";color:#b8c1ce;font-weight:600}
+.jelly-example:empty:after{content:"具体例・資料";color:#c3cad4}
+.stage-concept{aspect-ratio:760/480;min-height:250px;padding:3% 3.5%;display:flex;flex-direction:column;justify-content:center;gap:9px}
+.concept-backbone{position:absolute;left:7%;top:10%;bottom:10%;width:3px;border-radius:2px;background:linear-gradient(#89a4cc,#9ebaa9,#c8ac80);opacity:.8}
+.concept-row{position:relative;z-index:1;margin-left:2%;width:96%;min-height:58px;display:grid;grid-template-columns:minmax(0,1fr) 1.15fr minmax(0,1fr);align-items:center;gap:12px;padding:7px 10px;border:1px solid #e1e7ef;border-radius:13px;background:rgba(255,255,255,.95);box-shadow:0 2px 8px rgba(38,57,88,.05)}
+.concept-row:nth-child(even){margin-left:6%;width:90%}
+.concept-node{min-width:0;min-height:37px;padding:6px 8px;border:1.5px solid #8da5c7;border-radius:9px;background:#edf3fb;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(10px,1.1vw,13px);font-weight:800;color:#3f536f;line-height:1.35;overflow-wrap:anywhere}
+.concept-node.to{border-color:#91b29e;background:#edf5ef;color:#456452}
+.concept-node:empty:after{content:"言葉";color:#aab8c9}
+.concept-rel{min-width:0;display:flex;align-items:center;justify-content:center;gap:5px;color:#8a98ad}
+.concept-rel:before,.concept-rel:after{content:"";height:1.5px;flex:1;background:#aebbd0}
+.concept-rel span{max-width:100%;padding:5px 8px;border-radius:999px;background:#f6f0e2;color:#836c43;border:1px solid #dfc99d;font-size:clamp(9px,.98vw,11px);font-weight:800;text-align:center;overflow-wrap:anywhere}
+@media(max-width:520px){
+ .mind-node,.web-node{padding:4px 5px;min-height:42px;border-radius:8px}
+ .mind-node strong,.web-node strong{font-size:10px}
+ .mind-node small,.web-node small{font-size:9px}
+ .stage-center{min-height:68px;padding:6px}
+ .stage-center .center-value{font-size:11px}
+ .stage-web .stage-center{min-height:75px}
+ .jelly-head{padding:7px 12px}
+ .jelly-leg{min-height:80px;padding:6px 7px;border-radius:10px}
+ .jelly-leg-head{font-size:9px;margin-bottom:3px}
+ .concept-row{gap:5px;padding:5px 6px;min-height:52px}
+ .concept-node{min-height:33px;padding:4px 5px;font-size:10px}
+ .concept-rel{gap:2px}
+ .concept-rel span{padding:4px 5px;font-size:9px}
+}
+@media print{
+ .mind-node,.web-node,.jelly-leg,.concept-row,.jelly-head,.stage-center{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
 </style>
 </head>
 <body>
@@ -690,7 +751,63 @@ function stageY(){
  const svg='<svg class="stage-art" viewBox="0 0 640 420" aria-hidden="true"><line x1="320" y1="205" x2="105" y2="55" stroke="#7d8ea6" stroke-width="3"/><line x1="320" y1="205" x2="535" y2="55" stroke="#7d8ea6" stroke-width="3"/><line x1="320" y1="205" x2="320" y2="398" stroke="#7d8ea6" stroke-width="3"/><circle cx="320" cy="205" r="10" fill="#4669a8"/></svg>';
  return '<div class="stage stage-y">'+svg+zoneOf(0,'zone-y0')+zoneOf(1,'zone-y1')+zoneOf(2,'zone-y2')+'</div>';
 }
-const OVERLAY={venn:stageVenn,fishbone:stageFishbone,coordinate:stageCoordinate,pyramid:stagePyramid,concentric:stageConcentric,butterfly:stageButterfly,ychart:stageY};
+
+const NODE_PALETTE=[
+ {line:'#8ba4c8',fill:'#edf3fb'},
+ {line:'#92b8a0',fill:'#edf5ef'},
+ {line:'#d0ad72',fill:'#faf3e5'},
+ {line:'#c79a92',fill:'#f8efed'},
+ {line:'#a99bc5',fill:'#f2eff8'},
+ {line:'#7daeb0',fill:'#edf6f5'},
+ {line:'#92a4b6',fill:'#f0f3f7'},
+ {line:'#c0a1b8',fill:'#f7eff5'}
+];
+function pointStyle(x,y,w){return 'left:'+(x/760*100).toFixed(3)+'%;top:'+(y/480*100).toFixed(3)+'%;width:'+(w/760*100).toFixed(3)+'%';}
+function nodePath(x,y,c){const cx=x+88,cy=y+34;return '<path d="M380 240 Q '+((380+cx)/2)+' '+((240+cy)/2-18)+' '+cx+' '+cy+'" fill="none" stroke="'+c+'" stroke-width="3" stroke-linecap="round"/><circle cx="'+cx+'" cy="'+cy+'" r="5" fill="#fff" stroke="'+c+'" stroke-width="2"/>';}
+function stageMindmap(){
+ const rows=currentState.blocks[0]||[];
+ const base=[[296,10],[520,82],[520,330],[296,402],[72,330],[72,82],[574,207],[10,207]];
+ const paths=rows.map((row,i)=>{const [x,y]=base[i%base.length];return nodePath(x,y,NODE_PALETTE[i%8].line);}).join('');
+ const nodes=rows.map((row,i)=>{
+  const [x,y]=base[i%base.length],c=NODE_PALETTE[i%8];
+  return '<div class="mind-node" style="'+pointStyle(x,y,168)+';--node-color:'+c.line+';background:'+c.fill+'"><strong class="zval" data-diag="0-'+i+'-idea">'+escapeHtml(row.idea||'')+'</strong><small class="zval" data-diag="0-'+i+'-detail">'+escapeHtml(row.detail||'')+'</small></div>';
+ }).join('');
+ return '<div class="stage stage-mindmap"><svg class="stage-art" viewBox="0 0 760 480" aria-hidden="true">'+paths+'</svg>'+nodes+'<div class="stage-center"><span class="center-kicker">MIND MAP</span><span class="center-value stage-topic-val">'+escapeHtml(currentState.topic||'')+'</span></div></div>';
+}
+function stageWebbing(){
+ const rows=currentState.blocks[0]||[];
+ const base=[[305,7],[535,78],[568,207],[535,337],[305,405],[75,337],[42,207],[75,78]];
+ const paths=rows.map((row,i)=>{const [x,y]=base[i%base.length];const cx=x+75,cy=y+30;return '<path d="M380 240 Q '+((380+cx)/2)+' '+((240+cy)/2)+' '+cx+' '+cy+'" fill="none" stroke="'+NODE_PALETTE[i%8].line+'" stroke-width="3" stroke-linecap="round"/>';}).join('');
+ const nodes=rows.map((row,i)=>{
+  const [x,y]=base[i%base.length],c=NODE_PALETTE[i%8];
+  return '<div class="web-node" style="'+pointStyle(x,y,150)+';--node-color:'+c.line+';background:'+c.fill+'"><strong class="zval" data-diag="0-'+i+'-word">'+escapeHtml(row.word||'')+'</strong><small class="zval" data-diag="0-'+i+'-link">'+escapeHtml(row.link||'')+'</small></div>';
+ }).join('');
+ return '<div class="stage stage-web"><svg class="stage-art" viewBox="0 0 760 480" aria-hidden="true">'+paths+'</svg>'+nodes+'<div class="stage-center"><span class="center-kicker">WEBBING</span><span class="center-value stage-topic-val">'+escapeHtml(currentState.topic||'')+'</span></div></div>';
+}
+function stageJellyfish(){
+ const rows=currentState.blocks[0]||[];
+ const colX=[145,380,615],cardY=rows.map((r,i)=>210+Math.floor(i/3)*145);
+ const totalRows=Math.max(1,Math.ceil(rows.length/3));
+ const height=210+totalRows*145+10;
+ const legs=rows.map((row,i)=>{
+  const x=colX[i%3],y=cardY[i],startX=270+(i%3)*110;
+  return '<path d="M'+startX+' 163 C '+(startX-25)+' 205 '+(x-30)+' '+(y-28)+' '+x+' '+(y-6)+'" fill="none" stroke="'+NODE_PALETTE[i%8].line+'" stroke-width="4" stroke-linecap="round"/><circle cx="'+x+'" cy="'+(y-6)+'" r="5" fill="#fff" stroke="'+NODE_PALETTE[i%8].line+'" stroke-width="2"/>';
+ }).join('');
+ const cards=rows.map((row,i)=>{
+  const col=i%3,x=colX[col],y=cardY[i];
+  return '<div class="jelly-leg" style="left:'+(x/760*100)+'%;top:'+(y/height*100)+'%;--node-color:'+NODE_PALETTE[i%8].line+'"><div class="jelly-leg-head">理由 '+String(i+1).padStart(2,'0')+'<span>支える情報</span></div><div class="jelly-reason zval" data-diag="0-'+i+'-reason">'+escapeHtml(row.reason||'')+'</div><div class="jelly-example zval" data-diag="0-'+i+'-example">'+escapeHtml(row.example||'')+'</div></div>';
+ }).join('');
+ return '<div class="stage stage-jelly" style="aspect-ratio:760/'+height+';height:auto"><svg class="stage-art" viewBox="0 0 760 '+height+'" aria-hidden="true"><path d="M158 165 C145 56 246 17 380 17 C514 17 615 56 602 165 Q380 207 158 165Z" fill="#ebe8f5" stroke="#9288b5" stroke-width="3"/>'+legs+'</svg><div class="jelly-head" style="height:'+(165/height*100)+'%"><span class="jelly-kicker">中心となる考え</span><span class="jelly-topic stage-topic-val">'+escapeHtml(currentState.topic||'')+'</span></div>'+cards+'</div>';
+}
+function stageConcept(){
+ const rows=currentState.blocks[0]||[];
+ const cards=rows.map((row,i)=>{
+  return '<div class="concept-row"><div class="concept-node zval" data-diag="0-'+i+'-from">'+escapeHtml(row.from||'')+'</div><div class="concept-rel"><span class="zval" data-diag="0-'+i+'-relation">'+escapeHtml(row.relation||'')+'</span></div><div class="concept-node to zval" data-diag="0-'+i+'-to">'+escapeHtml(row.to||'')+'</div></div>';
+ }).join('');
+ return '<div class="stage stage-concept"><div class="concept-backbone"></div>'+cards+'</div>';
+}
+
+const OVERLAY={mindmap:stageMindmap,webbing:stageWebbing,jellyfish:stageJellyfish,concept:stageConcept,venn:stageVenn,fishbone:stageFishbone,coordinate:stageCoordinate,pyramid:stagePyramid,concentric:stageConcentric,butterfly:stageButterfly,ychart:stageY};
 function renderDiagram(){
  const d=$('diagram');
  if(!activeTool||!activeTool.split){d.innerHTML='';$('diagramTopic').textContent='';return;}
