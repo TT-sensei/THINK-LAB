@@ -151,11 +151,14 @@ button{cursor:pointer}
  .topic-field input{border-bottom:1px solid #777!important;color:#111!important}
  .thought-block{break-inside:avoid;border:1px solid #aaa!important;background:#fff!important;padding:3mm;margin-bottom:3mm}
  .entry{background:#fff!important;border:1px solid #bbb!important;min-height:23mm}
- .field textarea{border:0!important;background:transparent!important;resize:none!important;min-height:16mm;color:#111!important;padding:2px!important}
+ .field textarea{border:0!important;border-bottom:1px solid #d6dce5!important;background:repeating-linear-gradient(to bottom,transparent 0,transparent 7mm,#d6dce5 7.15mm,transparent 7.4mm)!important;resize:none!important;min-height:27mm;color:#111!important;padding:2px!important;line-height:7.4mm!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
  .block-title,.entry-label,.field label{color:#111!important}
  .block-help{color:#444!important}
  .entry-grid{gap:2.5mm}
  .layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(2){border-radius:12px!important}
+ .label-fields[hidden]{display:none!important}
+ .topic-field input:placeholder-shown{min-height:9mm}
+ .entry{break-inside:avoid}
 }
 
 /* Diagram-first refinements: input cards become parts of a visible thinking structure. */
@@ -765,6 +768,55 @@ body.furi-off rt{display:none}
  .afterthought-prompt p{font-size:9px}
 }
 
+
+/* Standalone Navi guide: usable on screen, projector and as a one-page handout. */
+.guide-view{display:none;position:fixed;inset:0;z-index:55;overflow:auto;background:#eef2f8;padding:22px}
+.guide-view.active{display:block}
+.guide-screen-actions{max-width:1040px;margin:0 auto 14px;display:flex;justify-content:space-between;gap:10px}
+.guide-poster{max-width:1040px;min-height:calc(100vh - 100px);margin:0 auto;background:#fff;border:1px solid #dce4ef;border-radius:24px;padding:clamp(24px,4vw,48px);box-shadow:0 12px 40px rgba(34,52,79,.09);display:flex;flex-direction:column;gap:24px}
+.guide-poster-head{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid #e3e9f1;padding-bottom:18px}
+.guide-poster-head>div{flex:1}
+.guide-poster-kicker{font-size:11px;letter-spacing:.18em;color:#6880a6;font-weight:850}
+.guide-poster-head h1{font-size:clamp(28px,4vw,42px);line-height:1.2;margin:8px 0}
+.guide-poster-head p{font-size:16px;color:#647187;margin:0;max-width:650px}
+.guide-poster-head img{width:clamp(110px,18vw,190px);height:210px;object-fit:contain;object-position:center bottom}
+.guide-route{background:#f3f6fb;border:1px solid #e0e7f1;border-radius:18px;padding:20px}
+.guide-route-title{font-size:17px;font-weight:850;margin-bottom:14px}
+.guide-route-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:guide}
+.guide-route-step{position:relative;min-height:132px;background:#fff;border:1px solid #dfe6ef;border-radius:13px;padding:17px 14px 14px}
+.guide-route-step:before{counter-increment:guide;content:counter(guide);display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#e8eff9;color:#4d6c9d;font-size:13px;font-weight:900;margin-bottom:10px}
+.guide-route-step:not(:last-child):after{content:"→";position:absolute;right:-12px;top:45%;z-index:2;color:#7d91b2;font-size:20px;font-weight:900}
+.guide-route-step strong{display:block;font-size:15px;margin-bottom:5px}
+.guide-route-step p{font-size:12px;color:#647187;line-height:1.6;margin:0}
+.guide-poster-lower{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.guide-poster-card{border:1px solid #e0e6ef;border-radius:16px;padding:18px}
+.guide-poster-card h2{font-size:16px;margin:0 0 12px}
+.guide-poster-card ul{margin:0;padding-left:1.3em;display:grid;gap:8px}
+.guide-poster-card li{font-size:14px;line-height:1.55}
+.guide-reflect-questions{display:grid;gap:8px}
+.guide-reflect-questions p{margin:0;padding:9px 12px;border-radius:9px;background:#f3f6fb;font-size:13px;font-weight:750}
+.guide-poster-foot{margin-top:auto;border-top:1px solid #e3e9f1;padding-top:13px;display:flex;justify-content:space-between;gap:10px;color:#778398;font-size:11px}
+@media(max-width:700px){.guide-view{padding:10px}.guide-poster{min-height:0;padding:20px;border-radius:16px;gap:17px}.guide-poster-head img{width:88px;height:130px}.guide-route-grid{grid-template-columns:1fr 1fr}.guide-route-step:not(:last-child):after{display:none}.guide-poster-lower{grid-template-columns:1fr}.guide-screen-actions .btn{flex:1;font-size:11px;padding:9px 8px}.guide-poster-head h1{font-size:25px}.guide-poster-head p{font-size:13px}}
+@media print{
+ body:not(.guide-printing) .guide-view{display:none!important}
+ body.guide-printing>*:not(#guideView){display:none!important}
+ body.guide-printing #guideView{display:block!important;position:static!important;overflow:visible!important;padding:0!important;background:#fff!important}
+ body.guide-printing .guide-screen-actions{display:none!important}
+ body.guide-printing .guide-poster{max-width:none;min-height:0;border:0;border-radius:0;box-shadow:none;padding:0;gap:7mm}
+ body.guide-printing .guide-poster-head img{width:42mm;height:48mm}
+ body.guide-printing .guide-poster-head h1{font-size:23pt}
+ body.guide-printing .guide-poster-head p{font-size:10pt}
+ body.guide-printing .guide-route{padding:5mm}
+ body.guide-printing .guide-route-grid{gap:3mm}
+ body.guide-printing .guide-route-step{min-height:31mm;padding:3mm}
+ body.guide-printing .guide-route-step strong{font-size:11pt}
+ body.guide-printing .guide-route-step p{font-size:8.5pt}
+ body.guide-printing .guide-poster-card{padding:4mm}
+ body.guide-printing .guide-poster-card li{font-size:9.5pt}
+ body.guide-printing .guide-reflect-questions p{font-size:9pt;padding:2mm}
+ body.guide-printing .guide-poster-foot{font-size:8pt}
+}
+
 </style>
 </head>
 <body>
@@ -804,7 +856,7 @@ body.furi-off rt{display:none}
  <section class="editor" id="editorView" aria-live="polite">
   <div class="editor-head">
    <div><button class="back-link" id="backButton">← ツール一覧へ戻る</button><div class="editor-title"><span class="tool-symbol" id="editorSymbol">✳</span><div><h1 id="editorName">思考ツール</h1><p id="editorDesc"></p></div></div></div>
-   <div class="action-buttons"><button class="btn" id="resetButton">入力をリセット</button><button class="btn btn-primary" id="printButton">印刷・PDF保存 ↗</button></div>
+   <div class="action-buttons"><button class="btn" id="guideButton">ナビキャラの使い方 ↗</button><button class="btn" id="resetButton">入力をリセット</button><button class="btn btn-primary" id="printButton">シートを印刷・PDF保存 ↗</button></div>
   </div>
   <div class="guide-strip">
    <img id="guideNavi" alt="" src=""><div class="guide-copy"><div class="guide-kicker">NAVI GUIDE / THINKING SUPPORT</div><p id="guideMessage">使い方を確認して、考えを整理してみよう。</p></div><button class="guide-toggle" id="guideMore">使い方のコツ</button>
@@ -839,6 +891,15 @@ body.furi-off rt{display:none}
   </div>
  </section>
 </main>
+<section class="guide-view" id="guideView" aria-label="ナビキャラの使い方ガイド">
+ <div class="guide-screen-actions"><button class="btn" id="guideBackButton">← シートにもどる</button><button class="btn btn-primary" id="guidePrintButton">この使い方を印刷・PDF保存 ↗</button></div>
+ <article class="guide-poster" id="guidePoster">
+  <header class="guide-poster-head"><div><div class="guide-poster-kicker">THINK LAB / NAVI GUIDE</div><h1><span id="guidePosterTool">思考ツール</span>の使い方</h1><p id="guidePosterPurpose">考えを見える形にして、次の気づきにつなげよう。</p></div><img id="guidePosterNavi" alt="ナビキャラ"></header>
+  <section class="guide-route"><div class="guide-route-title">考えを進める 4つのステップ</div><div class="guide-route-grid" id="guideRouteSteps"></div></section>
+  <section class="guide-poster-lower"><div class="guide-poster-card"><h2>書くときのヒント</h2><ul id="guidePosterTips"></ul></div><div class="guide-poster-card guide-reflect"><h2>書いたあとに見直そう</h2><div class="guide-reflect-questions"><p>つながりはあるかな？</p><p>理由や根拠は十分かな？</p><p>次に考えたいことは？</p></div></div></section>
+  <footer class="guide-poster-foot"><span>うまく書こうとしなくて大丈夫。まずは自分の考えから。</span><span>THINK LAB — TT-sensei</span></footer>
+ </article>
+</section>
 <div class="modal-backdrop" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
  <div class="modal"><button class="modal-close" id="modalClose" aria-label="閉じる">×</button><div class="eyebrow">WELCOME TO THINK LAB</div><h2 id="modalTitle">思考ツールの使い方</h2><p class="modal-intro">考えを整理するための道具を、学習に合わせて選んで使おう。</p>
   <div class="modal-steps">
@@ -1171,6 +1232,24 @@ function renderDiagram(){
  }
  $('diagramTopic').textContent=currentState.topic||'';
 }
+function openGuideView(){
+ if(!activeTool)return;
+ $('guidePosterTool').textContent=activeTool.name;
+ $('guidePosterPurpose').textContent=activeTool.purpose;
+ setNaviImage($('guidePosterNavi'),activeGuideNavi,'hint');
+ const route=[
+  {title:'テーマをつかむ',body:'何について考えるのか、問いやテーマを確かめよう。'},
+  {title:'考えを書き出す',body:activeTool.steps[0]||'思いついたことを、まず書いてみよう。'},
+  {title:'整理してつなぐ',body:activeTool.steps.slice(1).join('。')||'似ていることや違い、理由を見つけよう。'},
+  {title:'見直して深める',body:'つながり・理由・新しい疑問を見つけ、次の考えにつなげよう。'}
+ ];
+ $('guideRouteSteps').innerHTML=route.map(x=>'<div class="guide-route-step"><strong>'+escapeHtml(x.title)+'</strong><p>'+escapeHtml(x.body)+'</p></div>').join('');
+ $('guidePosterTips').innerHTML=activeTool.tips.map(t=>'<li>'+escapeHtml(t)+'</li>').join('');
+ $('guideView').classList.add('active');
+ $('guideView').scrollTop=0;
+}
+function closeGuideView(){$('guideView').classList.remove('active');document.body.classList.remove('guide-printing');}
+
 function updateThoughtProgress(){
  if(!activeTool||!currentState)return;
  let filled=0,completed=0,entries=0;
@@ -1246,6 +1325,10 @@ $('blocks').addEventListener('click',e=>{
  const rem=e.target.closest('[data-remove]');if(rem){const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();updateThoughtProgress();saveState();}
 });
 $('printButton').addEventListener('click',()=>window.print());
+$('guideButton').addEventListener('click',openGuideView);
+$('guideBackButton').addEventListener('click',closeGuideView);
+$('guidePrintButton').addEventListener('click',()=>{document.body.classList.add('guide-printing');window.print();});
+window.addEventListener('afterprint',()=>document.body.classList.remove('guide-printing'));
 $('resetButton').addEventListener('click',resetActive);
 $('guideMore').addEventListener('click',()=>{if(!activeTool)return;guideExpanded=!guideExpanded;if(guideExpanded){$('guideMessage').innerHTML=rubify(activeTool.steps.join(' → ')+'。'+activeTool.tips[0]);$('guideMore').textContent='案内にもどす';}else{$('guideMessage').innerHTML=rubify(activeTool.purpose);$('guideMore').textContent='使い方のコツ';}});
 $('labelFields').addEventListener('input',e=>{const t=e.target;if(!t.matches('input[data-label]')||!currentState)return;currentState.labels[t.dataset.label]=t.value;saveState();});
