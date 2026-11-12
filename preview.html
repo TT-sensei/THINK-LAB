@@ -974,6 +974,83 @@ function stageConcept(){
  return '<div class="stage stage-concept"><div class="concept-backbone"></div>'+cards+'</div>';
 }
 
+
+function dataVal(bi,ri,field,value,hint){
+ return '<span class="diag-val" data-diag="'+bi+'-'+ri+'-'+field+'" data-hint="'+escapeHtml(hint==null?'書き込む':hint)+'">'+escapeHtml(value||'')+'</span>';
+}
+function stageTimeline(){
+ const rows=currentState.blocks[0]||[],height=Math.max(480,rows.length*112+68);
+ const line='<line x1="380" y1="28" x2="380" y2="'+(height-22)+'" stroke="#a8b9ce" stroke-width="4" stroke-linecap="round"/>';
+ const paths=rows.map((r,i)=>{const y=68+i*112,x=i%2===0?255:505;return '<path d="M380 '+y+' H'+x+'" stroke="#a8b9ce" stroke-width="2.5" fill="none"/><circle cx="380" cy="'+y+'" r="9" fill="#fff" stroke="'+(i%2===0?'#7898c1':'#8eaf9a')+'" stroke-width="4"/>';}).join('');
+ const cards=rows.map((r,i)=>{const y=68+i*112,side=i%2===0?'left':'right';return '<div class="timeline-card '+side+'" style="top:'+(y/height*100)+'%"><div class="time">'+dataVal(0,i,'time',r.time,'いつ？')+'</div><div class="event">'+dataVal(0,i,'event',r.event,'できごと・変化')+'</div></div>';}).join('');
+ return '<div class="stage stage-timeline" style="aspect-ratio:760 / '+height+';height:auto"><svg class="stage-art" viewBox="0 0 760 '+height+'" aria-hidden="true">'+line+paths+'</svg>'+cards+'</div>';
+}
+function stageFlowchart(){
+ const rows=currentState.blocks[0]||[],height=Math.max(480,rows.length*98+78);
+ const arrows=rows.slice(0,-1).map((r,i)=>{const y=58+i*98+52;return '<path d="M380 '+y+' v36 m-7 -8 l7 8 l7 -8" fill="none" stroke="#94a7c1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';}).join('');
+ const cards=rows.map((r,i)=>{const y=58+i*98;return '<div class="flow-step-card" style="top:'+(y/height*100)+'%"><span class="flow-no">'+(i+1)+'</span><div class="flow-main"><div class="flow-action">'+dataVal(0,i,'step',r.step,'すること')+'</div><div class="flow-condition">'+dataVal(0,i,'condition',r.condition,'条件・分かれ道（必要なとき）')+'</div></div></div>';}).join('');
+ return '<div class="stage" style="aspect-ratio:760 / '+height+';height:auto"><svg class="stage-art" viewBox="0 0 760 '+height+'" aria-hidden="true">'+arrows+'</svg>'+cards+'</div>';
+}
+function stageProcess(){
+ const rows=currentState.blocks[0]||[];
+ return '<div class="stage"><div class="process-road">'+rows.map((r,i)=>'<div class="process-step"><span class="process-no">'+String(i+1).padStart(2,'0')+'</span><div class="process-action">'+dataVal(0,i,'action',r.action,'すること')+'</div><div class="process-check">'+dataVal(0,i,'check',r.check,'確認すること')+'</div></div>').join('')+'</div></div>';
+}
+function stageCauseEffect(){
+ const bs=currentState.blocks||[],names=['原因','途中のできごと','結果'],symbols=['●','→','★'];
+ const cols=bs.map((rows,bi)=>'<section class="causal-column"><div class="causal-heading"><span class="causal-symbol">'+symbols[bi]+'</span>'+names[bi]+'</div>'+(rows||[]).map((r,ri)=>'<div class="causal-item">'+dataVal(bi,ri,'item',r.item,['原因を書く','できごとを書く','結果を書く'][bi])+'</div>').join('')+'</section>').join('');
+ const withArrows=cols.replace('</section><section','</section><div class="causal-arrow">→</div><section').replace('</section><section','</section><div class="causal-arrow">→</div><section');
+ return '<div class="stage"><div class="causal-map">'+withArrows+'</div></div>';
+}
+function stageTree(){
+ const criterion=((currentState.blocks[0]||[])[0]||{}).item||'',rows=currentState.blocks[1]||[];
+ return '<div class="stage"><div class="tree-map"><div class="tree-root"><span class="tree-theme stage-topic-val">'+escapeHtml(currentState.topic||'分類するもの')+'</span><span class="tree-criterion">分ける観点：'+dataVal(0,0,'item',criterion,'分類の基準')+'</span></div><div class="tree-branches"></div><div class="tree-groups">'+rows.map((r,i)=>'<section class="tree-group"><div class="tree-name">'+dataVal(1,i,'group',r.group,'仲間')+'</div><div class="tree-members">'+dataVal(1,i,'members',r.members,'具体例・下位分類')+'</div></section>').join('')+'</div></div></div>';
+}
+function stageBrace(){
+ const rows=currentState.blocks[0]||[];
+ const brace='<svg viewBox="0 0 100 420" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true"><path d="M84 8 C28 8 72 94 43 160 C31 190 14 198 8 210 C14 222 31 230 43 260 C72 326 28 412 84 412" fill="none" stroke="#8ea5c5" stroke-width="6" stroke-linecap="round"/></svg>';
+ return '<div class="stage"><div class="brace-map"><div class="brace-whole stage-topic-val">'+escapeHtml(currentState.topic||'全体・テーマ')+'</div><div class="brace-graphic">'+brace+'</div><div class="brace-parts">'+rows.map((r,i)=>'<div class="brace-part"><div class="part-name">'+dataVal(0,i,'part',r.part,'部分')+'</div><div class="part-detail">'+dataVal(0,i,'detail',r.detail,'役割・細かい部分')+'</div></div>').join('')+'</div></div></div>';
+}
+function stageDiamond(){
+ const rows=currentState.blocks[0]||[],coords=[[2,1],[1,2],[3,2],[0,3],[2,3],[4,3],[1,4],[3,4],[2,5]];
+ return '<div class="stage"><div class="diamond-rank">'+rows.map((r,i)=>'<div class="diamond-slot" style="grid-column:'+coords[i][0]+'/span 1;grid-row:'+coords[i][1]+'"><div><span class="rank-no">'+(i+1)+' 位</span><div class="rank-text">'+dataVal(0,i,'item',r.item,'項目')+'</div></div></div>').join('')+'</div></div>';
+}
+function stagePrep(){
+ const bs=currentState.blocks||[],names=['主張','理由','具体例','まとめ'],letters=['P','R','E','P'],colors=['#607da7','#85a78f','#c2a169','#9b89b7'];
+ const nodes=bs.map((b,bi)=>'<section class="prep-node"><span class="prep-letter" style="background:'+colors[bi]+'20;color:'+colors[bi]+'">'+letters[bi]+'</span><strong>'+names[bi]+'</strong><p>'+dataVal(bi,0,'text',(b[0]||{}).text,'ここに書く')+'</p></section>').join('');
+ const path=nodes.replace('</section><section','</section><div class="prep-arrow">→</div><section').replace('</section><section','</section><div class="prep-arrow">→</div><section').replace('</section><section','</section><div class="prep-arrow">→</div><section');
+ return '<div class="stage"><div class="prep-path">'+path+'</div></div>';
+}
+function stageClaim(){
+ const bs=currentState.blocks||[],evidence=bs[1]||[],reason=((bs[2]||[])[0]||{}).text||'';
+ return '<div class="stage"><div class="claim-map"><div class="claim-main"><div class="claim-label">CLAIM / 主張</div><div class="claim-text">'+dataVal(0,0,'text',((bs[0]||[])[0]||{}).text,'伝えたい主張')+'</div></div><div class="claim-evidence-row">'+evidence.map((r,i)=>'<div class="claim-evidence"><div class="evidence-no">EVIDENCE '+String(i+1).padStart(2,'0')+'</div><div class="evidence-text">'+dataVal(1,i,'fact',r.fact,'根拠・事実')+'</div><div class="evidence-source">'+dataVal(1,i,'source',r.source,'資料・出典')+'</div></div>').join('')+'</div><div class="claim-reasoning"><div class="reasoning-label">REASONING / 根拠と主張のつながり</div><div class="reasoning-text">'+dataVal(2,0,'text',reason,'根拠から主張につながる説明')+'</div></div></div></div>';
+}
+function stageReflection(){
+ const bs=currentState.blocks||[],labels=['取り組んだこと','分かったこと・気づき','次に取り組みたいこと'],items=[bs[0]||[],bs[1]||[],bs[2]||[]];
+ const cards=items.map((rows,bi)=>'<section class="reflection-step"><div class="reflection-no">STEP 0'+(bi+1)+'</div><h4>'+labels[bi]+'</h4>'+rows.map((r,ri)=>'<div class="reflection-item">'+dataVal(bi,ri,'text',r.text,'ここに書く')+'</div>').join('')+'</section>').join('');
+ const path=cards.replace('</section><section','</section><div class="prep-arrow">→</div><section').replace('</section><section','</section><div class="prep-arrow">→</div><section');
+ return '<div class="stage"><div class="reflection-path">'+path+'</div></div>';
+}
+function stageBrainstorm(){
+ const rows=currentState.blocks[0]||[];
+ return '<div class="stage"><div class="idea-board">'+rows.map((r,i)=>'<div class="idea-note" style="--tilt:'+((i%3)-1)+'deg"><div class="idea-text">'+dataVal(0,i,'idea',r.idea,'アイデア')+'</div></div>').join('')+'</div></div>';
+}
+function stageImagemap(){
+ const rows=currentState.blocks[0]||[],base=[[305,10],[535,78],[570,205],[535,330],[305,398],[75,330],[40,205],[75,78]];
+ const lines=rows.map((r,i)=>{const x=base[i%8][0]+75,y=base[i%8][1]+29;return '<path d="M380 240 Q '+((380+x)/2)+' '+((240+y)/2)+' '+x+' '+y+'" fill="none" stroke="'+NODE_PALETTE[i%8].line+'" stroke-width="3" stroke-dasharray="5 4"/>';}).join('');
+ const nodes=rows.map((r,i)=>{const c=NODE_PALETTE[i%8],x=base[i%8][0],y=base[i%8][1];return '<div class="web-node" style="'+pointStyle(x,y,150)+';--node-color:'+c.line+';background:'+c.fill+'"><strong>'+dataVal(0,i,'image',r.image,'思い浮かぶこと')+'</strong><small>'+dataVal(0,i,'memo',r.memo,'気づき・説明')+'</small></div>';}).join('');
+ return '<div class="stage stage-web"><svg class="stage-art" viewBox="0 0 760 480" aria-hidden="true">'+lines+'</svg>'+nodes+'<div class="stage-center"><span class="center-kicker">IMAGE MAP</span><span class="center-value stage-topic-val">'+escapeHtml(currentState.topic||'')+'</span></div></div>';
+}
+function stageKumade(){
+ const rows=currentState.blocks[0]||[],base=[[305,5],[535,75],[570,205],[535,335],[305,405],[75,335],[40,205],[75,75]];
+ const lines=rows.map((r,i)=>{const x=base[i%8][0]+75,y=base[i%8][1]+29;return '<path d="M380 240 L'+x+' '+y+'" stroke="'+NODE_PALETTE[i%8].line+'" stroke-width="3.5" stroke-linecap="round"/>';}).join('');
+ const nodes=rows.map((r,i)=>{const c=NODE_PALETTE[i%8],x=base[i%8][0],y=base[i%8][1];return '<div class="web-node" style="'+pointStyle(x,y,150)+';--node-color:'+c.line+';background:'+c.fill+'"><strong>'+dataVal(0,i,'view',r.view,'観点')+'</strong><small>'+dataVal(0,i,'idea',r.idea,'考え・気づき')+'</small></div>';}).join('');
+ return '<div class="stage stage-web"><svg class="stage-art" viewBox="0 0 760 480" aria-hidden="true">'+lines+'</svg>'+nodes+'<div class="stage-center"><span class="center-kicker">VIEWPOINTS</span><span class="center-value stage-topic-val">'+escapeHtml(currentState.topic||'')+'</span></div></div>';
+}
+function stageCandy(){
+ const bs=currentState.blocks||[],names=['分かっていること','予想する','確かめ方'],fields=[['fact'],['prediction','reason'],['method']],hints=[['事実・条件'],['予想','理由'],['確かめる方法']];
+ return '<div class="stage stage-candy">'+bs.map((rows,bi)=>'<section class="candy-stage"><h4>'+names[bi]+'</h4>'+(rows||[]).map((r,ri)=>fields[bi].map((field,fi)=>'<div class="candy-item">'+dataVal(bi,ri,field,r[field],hints[bi][fi])+'</div>').join('')).join('')+'</section>').join('')+'</div>';
+}
+
 const OVERLAY={mindmap:stageMindmap,webbing:stageWebbing,jellyfish:stageJellyfish,concept:stageConcept,timeline:stageTimeline,flowchart:stageFlowchart,process:stageProcess,'cause-effect':stageCauseEffect,tree:stageTree,brace:stageBrace,diamond:stageDiamond,prep:stagePrep,claim:stageClaim,reflection:stageReflection,brainstorm:stageBrainstorm,imagemap:stageImagemap,kumade:stageKumade,candy:stageCandy,venn:stageVenn,fishbone:stageFishbone,coordinate:stageCoordinate,pyramid:stagePyramid,concentric:stageConcentric,butterfly:stageButterfly,ychart:stageY};
 function renderDiagram(){
  const d=$('diagram');
