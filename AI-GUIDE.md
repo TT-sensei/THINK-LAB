@@ -109,9 +109,9 @@ Do not imply that a graphic organizer alone guarantees learning gains. The teach
 
 ## Diagram-first layout patterns
 
-The visual preview lives in `preview.html`; do not silently replace `index.html` before review.
+The production page is `index.html`. Keep one canonical production HTML file; do not create a duplicate preview copy unless a separate review workflow is explicitly requested.
 
-Four tools have purpose-built diagram renderers in the preview:
+The site has purpose-built diagram renderers for these tools:
 - `mindmap`: center theme with connected branches; render `idea` and `detail` from each row.
 - `webbing`: central theme with radial association nodes; render `word` and `link` from each row.
 - `jellyfish`: central proposition in the dome and supporting `reason` / `example` pairs in the tentacles.
@@ -127,7 +127,7 @@ Implementation constraints:
 
 ## Second-wave diagram renderers
 
-Keep the live preview isolated in `preview.html` until the owner reviews it. The 25 split-view tools should use individual diagram renderers; keep the diamond-ranking tool's existing non-split layout unchanged.
+The 25 split-view tools should use individual diagram renderers in the production page; keep the diamond-ranking tool's existing non-split layout unchanged.
 
 Purpose-built renderers added:
 - `timeline`: alternating event cards anchored to a continuous vertical time axis.
@@ -147,3 +147,12 @@ Purpose-built renderers added:
 Maintain the exact existing block and field IDs. Every learner-editable value must have one unique `data-diag` target so the existing input listener updates the displayed diagram. Use the `dataVal` helper for escaped text and blank-state hints. Extra radial entries must provide a `data-diag` target for every field, not only the first field.
 
 Keep the 9-position diamond ranking layout as it is in the non-split editor. It has a specific existing layout and should not be converted into the generic diagram panel without explicit approval.
+
+
+## Production publishing
+
+- `index.html` is the single canonical public page.
+- Do not leave preview banners, preview titles, or self-referential preview links in the public page.
+- Avoid maintaining byte-identical `preview.html` and `index.html` files; remove temporary preview copies after approval.
+- When editing minified CSS rules, preserve declaration semicolons and remove only invalid separators between completed rules.
+- After source edits, perform syntax checks and, when possible, verify the rendered page and print output in a browser. Do not claim browser verification unless it was actually performed.
