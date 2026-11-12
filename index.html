@@ -156,6 +156,51 @@ button{cursor:pointer}
  .entry-grid{gap:2.5mm}
  .layout-venn .thought-block:nth-child(1),.layout-venn .thought-block:nth-child(2){border-radius:12px!important}
 }
+
+/* Diagram-first refinements: input cards become parts of a visible thinking structure. */
+.diagram-caption{display:flex;align-items:center;justify-content:center;min-height:30px;margin:0 0 10px;padding:5px 10px;border-radius:8px;background:#f1f5fb;color:#627795;font-size:10px;font-weight:850;letter-spacing:.08em;text-align:center}
+.layout-coordinate{display:grid;grid-template-columns:1fr 1fr;gap:12px;position:relative;isolation:isolate}
+.layout-coordinate:before,.layout-coordinate:after{content:"";position:absolute;z-index:-1;pointer-events:none;background:#9aacc6;opacity:.65}
+.layout-coordinate:before{width:2px;top:78px;bottom:10px;left:50%;transform:translateX(-50%)}
+.layout-coordinate:after{height:2px;left:8px;right:8px;top:calc(50% + 20px)}
+.layout-coordinate .thought-block:first-child{grid-column:1/-1;background:#edf3fb;border:1px solid #d4e0f1}
+.layout-coordinate .thought-block:nth-child(n+2){min-height:170px;background:rgba(255,255,255,.96);border:1px solid #d8e1ed;box-shadow:0 2px 8px rgba(35,55,85,.04)}
+.layout-coordinate .thought-block:nth-child(2){border-top:4px solid #7f9dc8}
+.layout-coordinate .thought-block:nth-child(3){border-top:4px solid #b69bc8}
+.layout-coordinate .thought-block:nth-child(4){border-top:4px solid #9eb9a8}
+.layout-coordinate .thought-block:nth-child(5){border-top:4px solid #d0b27d}
+.layout-coordinate .thought-block:nth-child(n+2) .block-head{min-height:44px}
+.layout-coordinate .thought-block:nth-child(n+2) .entry-grid{grid-template-columns:1fr}
+.layout-concept .entry{position:relative;background:#f8faff;border:1px solid #d9e3f1;border-left:4px solid #9bb1d2}
+.layout-concept .entry:after{content:"→";position:absolute;right:8px;top:50%;transform:translate(50%,-50%);color:#8097b9;font-size:18px;font-weight:900}
+.layout-concept .entry .field{min-width:0}
+.layout-concept .entry .field:nth-child(2){padding:7px;border-radius:8px;background:#eaf0f8}
+.layout-concept .entry .field:nth-child(2) label{color:#536d93}
+.layout-tree .thought-block:first-child{max-width:620px;margin:0 auto 12px;background:#edf3fb;border:1px solid #d5e0ef;text-align:center}
+.layout-tree .thought-block:nth-child(2) .entry-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.layout-tree .thought-block:nth-child(2) .entry{position:relative;margin-top:8px;border-top:3px solid #a4bba9;background:#f7faf8}
+.layout-tree .thought-block:nth-child(2) .entry:before{content:"";position:absolute;width:2px;height:12px;background:#a4bba9;left:50%;top:-15px}
+.layout-brace .thought-block .entry{position:relative;background:#f8faff;border-left:4px solid #9db4d6;border-radius:8px 12px 12px 8px}
+.layout-brace .thought-block .entry:before{content:"";position:absolute;left:-13px;top:8px;bottom:8px;width:8px;border-left:2px solid #9db4d6;border-top:2px solid #9db4d6;border-bottom:2px solid #9db4d6;border-radius:7px 0 0 7px}
+.layout-bridge .entry{position:relative;background:#f8faff;border:1px solid #d9e3f1}
+.layout-bridge .entry .field:nth-child(3){background:#eaf0f8;border-radius:8px;padding:8px;position:relative}
+.layout-bridge .entry .field:nth-child(3):after{content:"同じ関係";display:block;color:#617b9f;font-size:9px;font-weight:850;text-align:center;margin-top:4px}
+.layout-timeline .entry{background:#fbfcfe;border-color:#dce4ef;border-radius:8px 13px 13px 8px}
+.layout-diamond .entry{background:#f8faff;border-color:#d9e3f1;text-align:center}
+.layout-diamond .entry:nth-child(1),.layout-diamond .entry:nth-child(5),.layout-diamond .entry:nth-child(9){background:#edf3fb;border-color:#b9cbe3}
+.layout-diamond .entry .field textarea{text-align:center}
+@media(max-width:700px){
+ .layout-coordinate{gap:8px}
+ .layout-coordinate:before{top:86px}
+ .layout-coordinate:after{top:calc(50% + 22px)}
+ .layout-tree .thought-block:nth-child(2) .entry-grid{grid-template-columns:1fr}
+}
+@media print{
+ .diagram-caption{background:#f1f4f8!important;color:#34445b!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .layout-coordinate:before,.layout-coordinate:after{background:#667!important}
+ .layout-tree .thought-block:nth-child(2) .entry{break-inside:avoid}
+}
+
 </style>
 </head>
 <body>
@@ -284,7 +329,9 @@ function renderBlock(b,bi){
   const fields=b.fields.map(f=>'<div class="field"><label>'+escapeHtml(f.label)+'</label><textarea data-block="'+bi+'" data-row="'+ri+'" data-field="'+f.id+'" placeholder="'+escapeHtml(f.placeholder||'')+'">'+escapeHtml(row[f.id]||'')+'</textarea></div>').join('');
   return '<div class="entry"><div class="entry-top"><span class="entry-label">'+escapeHtml(b.title)+' '+String(ri+1).padStart(2,'0')+'</span>'+(b.repeat?'<button type="button" class="remove-entry" data-remove="'+bi+'" data-row="'+ri+'" aria-label="この項目を削除">削除</button>':'')+'</div>'+fields+'</div>';
  }).join('');
- return '<section class="thought-block"><div class="block-head"><div><h3 class="block-title">'+escapeHtml(b.title)+'</h3><p class="block-help">'+escapeHtml(b.help||'')+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div><div class="entry-grid">'+entries+'</div>'+(b.repeat?'<button type="button" class="add-entry" data-add="'+bi+'">＋ 項目を追加する</button>':'')+'</section>';
+ const visualLabel=activeTool.layout==='concept'?'言葉 → 関係 → 言葉':activeTool.layout==='bridge'?'関係を見つけて、別の例につなぐ':activeTool.layout==='timeline'?'時間の流れ':activeTool.layout==='tree'?'大きな分類から小さな分類へ':activeTool.layout==='brace'?'全体 → 部分 → さらに細かく':activeTool.layout==='coordinate'?(bi===0?'二つの軸を決める':'位置から特徴を読み取る'):'';
+ const visual=visualLabel?'<div class="diagram-caption">'+escapeHtml(visualLabel)+'</div>':'';
+ return '<section class="thought-block" data-block-id="'+escapeHtml(b.id)+'"><div class="block-head"><div><h3 class="block-title">'+escapeHtml(b.title)+'</h3><p class="block-help">'+escapeHtml(b.help||'')+'</p></div><span class="block-index">'+String(bi+1).padStart(2,'0')+'</span></div>'+visual+'<div class="entry-grid">'+entries+'</div>'+(b.repeat?'<button type="button" class="add-entry" data-add="'+bi+'">＋ 項目を追加する</button>':'')+'</section>';
 }
 function renderEditor(spec){
  activeTool=spec;currentState=readState(spec);activeGuideNavi=pickNavi();
