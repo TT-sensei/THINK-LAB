@@ -832,6 +832,28 @@ body.furi-off rt{display:none}
 .axis-lab{max-width:104px;font-size:11.5px;line-height:1.35;white-space:normal;word-break:break-word}
 .lab-top{left:auto;right:51.5%;top:.8%;transform:none;text-align:right}
 .lab-right{right:1.2%;top:43.5%;transform:none;text-align:right}
+
+/* Shared-device choice and blank hand-writing print mode. */
+.resume-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}
+.resume-actions .btn{min-height:46px}
+#resumeCancel{min-height:40px}
+@media(max-width:520px){.resume-actions{grid-template-columns:1fr}}
+@media print{
+ body.handwrite-printing .split-wrap:not([hidden]){display:block!important}
+ body.handwrite-printing .split-wrap:not([hidden]) .diagram-panel{display:none!important}
+ body.handwrite-printing .split-wrap:not([hidden]) .input-panel{display:block!important}
+ body.handwrite-printing .split-wrap:not([hidden]) .panel-label{display:none!important}
+ body.handwrite-printing .thought-block{break-inside:auto!important;padding:5mm!important;margin:0 0 5mm!important;border:1px solid #777!important;background:#fff!important}
+ body.handwrite-printing .block-help,body.handwrite-printing .diagram-caption{display:none!important}
+ body.handwrite-printing .entry{min-height:37mm!important;padding:4mm!important;background:#fff!important;border:1px solid #999!important;break-inside:avoid!important}
+ body.handwrite-printing .entry-grid{gap:4mm!important}
+ body.handwrite-printing .field textarea{min-height:30mm!important;height:30mm!important;max-height:none!important;resize:none!important;overflow:hidden!important;padding:3mm!important;border:1px solid #999!important;border-radius:2px!important;background:#fff!important;color:transparent!important;-webkit-text-fill-color:transparent!important;box-shadow:none!important;line-height:1.5!important}
+ body.handwrite-printing .field textarea::placeholder{color:transparent!important;-webkit-text-fill-color:transparent!important}
+ body.handwrite-printing .topic-field input,body.handwrite-printing .label-field input{color:transparent!important;-webkit-text-fill-color:transparent!important}
+ body.handwrite-printing .topic-field{background:#fff!important}
+ body.handwrite-printing .diagram-panel,body.handwrite-printing .save-state{display:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -870,7 +892,7 @@ body.furi-off rt{display:none}
  <section class="editor" id="editorView" aria-live="polite">
   <div class="editor-head">
    <div><button class="back-link" id="backButton">← ツール一覧へ戻る</button><div class="editor-title"><span class="tool-symbol" id="editorSymbol">✳</span><div><h1 id="editorName">思考ツール</h1><p id="editorDesc"></p></div></div></div>
-   <div class="action-buttons"><button class="btn" id="guideButton">このシートの使い方 ↗</button><button class="btn" id="resetButton">入力をリセット</button><button class="btn btn-primary" id="printButton">シートを印刷・PDF保存 ↗</button></div>
+   <div class="action-buttons"><button class="btn" id="guideButton">このシートの使い方 ↗</button><button class="btn" id="resetButton">入力をリセット</button><button class="btn" id="handwritePrintButton" title="入力内容を隠し、広い空欄にして印刷します">手書き用（白紙）</button><button class="btn btn-primary" id="printButton">シートを印刷・PDF保存 ↗</button></div>
   </div>
   <div class="guide-strip">
    <img id="guideNavi" alt="" src=""><div class="guide-copy"><div class="guide-kicker">NAVI GUIDE / THINKING SUPPORT</div><p id="guideMessage">使い方を確認して、考えを整理してみよう。</p></div><button class="guide-toggle" id="guideMore">使い方のコツ</button>
@@ -917,6 +939,13 @@ body.furi-off rt{display:none}
    <div class="modal-step"><span class="step-dot">2</span><div><b>枠の中に直接入力する</b><p>入力欄をタップして、自分の考えを書こう。必要に応じて項目を追加できるよ。</p></div></div>
    <div class="modal-step"><span class="step-dot">3</span><div><b>印刷して学習に生かす</b><p>「印刷・PDF保存」から紙に印刷したり、PDFに保存したりできるよ。</p></div></div>
   </div><div class="modal-footer"><button class="btn btn-primary" id="modalStart">使ってみる</button></div>
+ </div>
+</div>
+<div class="modal-backdrop" id="resumeModal" role="dialog" aria-modal="true" aria-labelledby="resumeTitle">
+ <div class="modal"><div class="eyebrow">SHARED DEVICE / SAVED WORK</div><h2 id="resumeTitle">前の入力が残っています</h2>
+  <p class="modal-intro"><strong id="resumeToolName">このツール</strong>には、前に使った人の入力がこの端末に保存されています。自分の続きなら「続きから」、次の人が使うなら「新しく始める」を選んでね。新しく始めると、このツールに保存された入力を消して空欄にします。</p>
+  <div class="resume-actions"><button type="button" class="btn btn-primary" id="resumeNew">新しく始める</button><button type="button" class="btn" id="resumeContinue">続きから</button></div>
+  <div class="modal-footer"><button type="button" class="btn btn-quiet" id="resumeCancel">ツール一覧にもどる</button></div>
  </div>
 </div>
 <script>
@@ -970,6 +999,7 @@ const FURI_KEYS=Object.keys(FURI).sort((a,b)=>b.length-a.length);
 function rubify(text){const s=String(text==null?'':text);let out='',i=0;while(i<s.length){let m=null;for(const k of FURI_KEYS){if(s.startsWith(k,i)){m=k;break;}}if(m){out+='<ruby>'+escapeHtml(m)+'<rt>'+FURI[m]+'</rt></ruby>';i+=m.length;}else{out+=escapeHtml(s[i]);i++;}}return out;}
 function rubifyStatic(root){if(!root)return;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{if(!n.nodeValue||!n.nodeValue.trim())return NodeFilter.FILTER_REJECT;const p=n.parentElement;if(!p||/^(SCRIPT|STYLE|TEXTAREA|INPUT|RUBY|RT)$/.test(p.tagName))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);for(const n of nodes){const s=n.nodeValue;if(!FURI_KEYS.some(k=>s.includes(k)))continue;const span=document.createElement('span');span.innerHTML=rubify(s);n.replaceWith(span);}}
 function hasData(s){try{const v=JSON.parse(localStorage.getItem('thinklab:'+s.id));if(!v)return false;if(String(v.topic||'').trim())return true;if(v.labels&&Object.values(v.labels).some(x=>String(x||'').trim()))return true;return (v.blocks||[]).some(rows=>(rows||[]).some(r=>Object.values(r||{}).some(x=>String(x||'').trim())));}catch(e){return false;}}
+function hasSavedWork(spec){return hasData(spec);}
 function categoryName(id){const x=categories.find(c=>c.id===id);return x?x.name:'';}
 function renderCategories(){
  $('categoryTabs').innerHTML=categories.map(c=>'<button class="tab '+(activeCategory===c.id?'active':'')+'" data-category="'+c.id+'">'+c.name+'</button>').join('');
@@ -1034,6 +1064,8 @@ function readState(spec){
 function saveState(){if(!activeTool)return;try{localStorage.setItem('thinklab:'+activeTool.id,JSON.stringify(currentState));$('saveState').textContent='✓ この端末に自動保存しました';}catch(e){$('saveState').textContent='このブラウザでは保存できません。印刷して残してください。'}}
 let currentState=null;
 let guideExpanded=false;
+let pendingTool=null;
+let lastRouteKey='';
 function blockTitleHelp(b,bi){
  let t=b.title,h=b.help||'';
  if(activeTool&&activeTool.id==='venn'){
@@ -1325,7 +1357,11 @@ function renderEditor(spec){
  $('saveState').textContent='この端末に自動保存';
  window.scrollTo({top:0,behavior:'smooth'});
 }
-function returnHome(){activeTool=null;$('editorView').classList.remove('active');$('listView').classList.remove('hidden');renderCards();window.scrollTo({top:0,behavior:'smooth'});}
+function showHomeView(){pendingTool=null;$('resumeModal').classList.remove('open');activeTool=null;currentState=null;$('editorView').classList.remove('active');$('listView').classList.remove('hidden');renderCards();window.scrollTo({top:0,behavior:'smooth'});}
+function launchTool(spec){if(!spec)return;if(hasSavedWork(spec)){pendingTool=spec;activeTool=null;currentState=null;$('editorView').classList.remove('active');$('listView').classList.remove('hidden');$('resumeToolName').textContent=spec.name;$('resumeModal').classList.add('open');return;}pendingTool=null;$('resumeModal').classList.remove('open');renderEditor(spec);}
+function openToolFromList(spec){if(!spec)return;const url=window.location.pathname+window.location.search+'#'+encodeURIComponent(spec.id);history.pushState({thinkLabView:'tool',toolId:spec.id},'',url);lastRouteKey=spec.id;launchTool(spec);}
+function returnHome(){if(window.location.hash&&history.state&&history.state.thinkLabView==='tool'){history.back();return;}if(window.location.hash){history.pushState({thinkLabView:'home'},'',window.location.pathname+window.location.search);}lastRouteKey='home';showHomeView();}
+function syncRoute(){let id='';try{id=decodeURIComponent((window.location.hash||'').slice(1));}catch(e){}const spec=specs.find(x=>x.id===id);const routeKey=spec?spec.id:'home';if(routeKey===lastRouteKey)return;lastRouteKey=routeKey;if(spec)launchTool(spec);else showHomeView();}
 function openHelp(){ $('helpModal').classList.add('open');}
 function closeHelp(){ $('helpModal').classList.remove('open');}
 function resetActive(){if(!activeTool)return;if(!window.confirm('このツールに入力した内容をすべて消しますか？'))return;currentState=makeInitialState(activeTool);saveState();renderEditor(activeTool);}
@@ -1333,10 +1369,14 @@ $('homeBrand').addEventListener('click',e=>{e.preventDefault();returnHome();});
 $('helpOpen').addEventListener('click',openHelp);$('modalClose').addEventListener('click',closeHelp);$('modalStart').addEventListener('click',closeHelp);
 $('helpModal').addEventListener('click',e=>{if(e.target===$('helpModal'))closeHelp();});
 $('backButton').addEventListener('click',returnHome);
+$('resumeNew').addEventListener('click',()=>{const spec=pendingTool;if(!spec)return;try{localStorage.removeItem('thinklab:'+spec.id);}catch(e){}pendingTool=null;$('resumeModal').classList.remove('open');renderEditor(spec);});
+$('resumeContinue').addEventListener('click',()=>{const spec=pendingTool;if(!spec)return;pendingTool=null;$('resumeModal').classList.remove('open');renderEditor(spec);});
+$('resumeCancel').addEventListener('click',()=>{pendingTool=null;returnHome();});
+$('resumeModal').addEventListener('click',e=>{if(e.target===$('resumeModal')){pendingTool=null;returnHome();}});
 $('searchInput').addEventListener('input',renderCards);
 $('categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;activeCategory=b.dataset.category;renderCategories();renderCards();});
-$('toolGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const s=specs.find(x=>x.id===b.dataset.open);if(s)renderEditor(s);});
-$('quickPicks').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)renderEditor(spec);});
+$('toolGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)openToolFromList(spec);});
+$('quickPicks').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)openToolFromList(spec);});
 $('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;$('diagramTopic').textContent=e.target.value;document.querySelectorAll('.stage-topic-val').forEach(el=>el.textContent=e.target.value);saveState();});
 $('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;const dv=document.querySelector('[data-diag="'+bi+'-'+ri+'-'+field+'"]');if(dv)dv.textContent=t.value;updateThoughtProgress();saveState();}});
 $('blocks').addEventListener('click',e=>{
@@ -1344,10 +1384,11 @@ $('blocks').addEventListener('click',e=>{
  const rem=e.target.closest('[data-remove]');if(rem){if(!window.confirm('この項目を削除しますか？入力した内容も消えます。'))return;const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();updateThoughtProgress();saveState();}
 });
 $('printButton').addEventListener('click',()=>window.print());
+$('handwritePrintButton').addEventListener('click',()=>{document.body.classList.add('handwrite-printing');window.print();});
 $('guideButton').addEventListener('click',openGuideView);
 $('guideBackButton').addEventListener('click',closeGuideView);
 $('guidePrintButton').addEventListener('click',()=>{document.body.classList.add('guide-printing');window.print();});
-window.addEventListener('afterprint',()=>document.body.classList.remove('guide-printing'));
+window.addEventListener('afterprint',()=>document.body.classList.remove('guide-printing','handwrite-printing'));
 $('resetButton').addEventListener('click',resetActive);
 $('guideMore').addEventListener('click',()=>{if(!activeTool)return;guideExpanded=!guideExpanded;if(guideExpanded){$('guideMessage').innerHTML=rubify(activeTool.steps.join(' → ')+'。'+activeTool.tips[0]);$('guideMore').textContent='案内にもどす';}else{$('guideMessage').innerHTML=rubify(activeTool.purpose);$('guideMore').textContent='使い方のコツ';}});
 function updateLabelPresentation(){
@@ -1375,9 +1416,16 @@ let furiOn=true;try{furiOn=localStorage.getItem('thinklab:furigana')!=='off';}ca
 function applyFuri(){document.body.classList.toggle('furi-off',!furiOn);$('furiToggle').textContent='ふりがな '+(furiOn?'ON':'OFF');$('furiToggle').setAttribute('aria-pressed',String(furiOn));}
 $('furiToggle').addEventListener('click',()=>{furiOn=!furiOn;try{localStorage.setItem('thinklab:furigana',furiOn?'on':'off');}catch(e){}applyFuri();});
 applyFuri();
-document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('helpModal').classList.contains('open'))closeHelp();else if($('guideView').classList.contains('active'))closeGuideView();});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('helpModal').classList.contains('open'))closeHelp();else if($('resumeModal').classList.contains('open')){pendingTool=null;returnHome();}else if($('guideView').classList.contains('active'))closeGuideView();});
 rubifyStatic(document.querySelector('.hero'));rubifyStatic(document.querySelector('.quick-guide'));rubifyStatic(document.querySelector('.modal'));rubifyStatic(document.querySelector('.footer'));rubifyStatic(document.querySelector('.editor'));
 renderCategories();renderCards();
+window.addEventListener('popstate',syncRoute);
+window.addEventListener('hashchange',syncRoute);
+let initialId='';try{initialId=decodeURIComponent((window.location.hash||'').slice(1));}catch(e){}
+const initialSpec=specs.find(x=>x.id===initialId);
+const baseUrl=window.location.pathname+window.location.search;
+history.replaceState({thinkLabView:'home'},'',baseUrl);
+if(initialSpec){history.pushState({thinkLabView:'tool',toolId:initialSpec.id},'',baseUrl+'#'+encodeURIComponent(initialSpec.id));lastRouteKey=initialSpec.id;launchTool(initialSpec);}else{lastRouteKey='home';}
 })();
 </script>
 </body>
