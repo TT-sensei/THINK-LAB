@@ -854,6 +854,24 @@ body.furi-off rt{display:none}
  body.handwrite-printing .diagram-panel,body.handwrite-printing .save-state{display:none!important}
 }
 
+
+/* Round 10: grade guide, recommended tools, venn step guide and example. */
+.grade-chip{display:inline-block;background:#eef3fa;color:#526c96;border-radius:99px;padding:1px 7px;font-size:10px;font-weight:800;margin-left:6px}
+.rec-badge{display:inline-block;background:#f7c948;color:#5b4300;border-radius:99px;padding:1px 8px;font-size:10px;font-weight:900;margin-left:6px}
+.rec-section{margin:0 0 4px}
+.step-strip{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding:11px 14px;background:#fff8e1;border:1px solid #ecd9a0;border-radius:14px}
+.step-strip[hidden]{display:none}
+.step-dots{display:flex;gap:6px}
+.step-num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:900;background:#eef1f6;color:#8293ad;border:2px solid #d8e0ec}
+.step-num.done{background:#57a773;border-color:#57a773;color:#fff}
+.step-num.now{background:#4669a8;border-color:#4669a8;color:#fff;box-shadow:0 0 0 4px rgba(70,105,168,.18)}
+.step-text{font-size:14px;font-weight:800;color:#4a3f14;line-height:1.4}
+.step-sub{display:block;font-weight:600;color:#8a7a3a;font-size:11px}
+.step-actions{margin-left:auto;display:flex;gap:8px}
+.step-btn{min-height:38px}
+.example-note{font-size:12px;color:#657287;margin-top:10px}
+.editor-grade{display:block;margin-top:3px;font-size:11px;color:#7186a3;font-weight:700}
+@media print{.step-strip{display:none!important}}
 </style>
 </head>
 <body>
@@ -878,7 +896,15 @@ body.furi-off rt{display:none}
     <button class="quick-pick" data-open="venn"><span class="quick-icon">◎</span><span><b>共通点と違いを比べたい</b><small>ベン図</small></span><span class="quick-arrow">↗</span></button>
     <button class="quick-pick" data-open="fishbone"><span class="quick-icon">⑂</span><span><b>理由や原因を探りたい</b><small>フィッシュボーン</small></span><span class="quick-arrow">↗</span></button>
     <button class="quick-pick" data-open="timeline"><span class="quick-icon">→</span><span><b>順序や変化を整理したい</b><small>タイムライン</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="tree"><span class="quick-icon">⑃</span><span><b>仲間分けしたい</b><small>ツリーチャート</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="diamond"><span class="quick-icon">◆</span><span><b>大切なことを選びたい</b><small>ダイヤモンドランキング</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="ychart"><span class="quick-icon">Y</span><span><b>いろいろな視点で見たい</b><small>Yチャート</small></span><span class="quick-arrow">↗</span></button>
+    <button class="quick-pick" data-open="reflection"><span class="quick-icon">↺</span><span><b>学習をふり返りたい</b><small>ふり返りシート</small></span><span class="quick-arrow">↗</span></button>
    </div>
+  </section>
+  <section class="rec-section" aria-label="おすすめの道具">
+   <div class="section-head"><h2>おすすめの道具</h2><p>まずはこの8つから。中学年から使いやすい、基本の道具です</p></div>
+   <div class="tool-grid" id="recGrid"></div>
   </section>
   <div class="search-row">
    <div class="searchbox"><span class="search-icon">⌕</span><input id="searchInput" type="search" placeholder="思考ツールを検索する（例：比べる、理由、順序）" aria-label="思考ツールを検索"></div>
@@ -902,6 +928,7 @@ body.furi-off rt{display:none}
     <div class="paper-heading"><div class="paper-overline">THINK LAB / THINKING SHEET</div><h2 id="paperTitle">思考シート</h2><p id="paperSubtitle">考えを書き出して、見える形に整理しよう。</p></div>
     <div class="topic-field"><label id="topicLabel" for="topicInput">テーマ・問い</label><input id="topicInput" type="text" placeholder="考えるテーマを書こう"></div>
     <div class="label-fields" id="labelFields" hidden></div>
+    <div class="step-strip" id="stepStrip" hidden><div class="step-dots" id="stepDots"></div><div class="step-text" id="stepText"></div><div class="step-actions"><button type="button" class="btn step-btn" id="exampleButton">お手本を見る</button><button type="button" class="btn btn-quiet step-btn" id="stepToggle">案内を消す</button></div></div>
     <div class="split-wrap" id="splitWrap" hidden>
      <section class="diagram-panel" id="diagramPanel"><div class="diagram-head"><span class="diagram-title">図で見る</span><span class="diagram-topic" id="diagramTopic"></span></div><div class="diagram" id="diagram"></div></section>
      <div class="input-panel" id="inputPanel"><div class="panel-label">入力する</div></div>
@@ -939,6 +966,18 @@ body.furi-off rt{display:none}
    <div class="modal-step"><span class="step-dot">2</span><div><b>枠の中に直接入力する</b><p>入力欄をタップして、自分の考えを書こう。必要に応じて項目を追加できるよ。</p></div></div>
    <div class="modal-step"><span class="step-dot">3</span><div><b>印刷して学習に生かす</b><p>「印刷・PDF保存」から紙に印刷したり、PDFに保存したりできるよ。</p></div></div>
   </div><div class="modal-footer"><button class="btn btn-primary" id="modalStart">使ってみる</button></div>
+ </div>
+</div>
+<div class="modal-backdrop" id="exampleModal" role="dialog" aria-modal="true" aria-labelledby="exampleTitle">
+ <div class="modal">
+  <div class="eyebrow">EXAMPLE / お手本</div>
+  <h2 id="exampleTitle">お手本：イヌとネコを比べよう</h2>
+  <p class="modal-intro">書き方の見本です。自分のシートには入りません。見終わったら、自分の言葉で書いてみよう。</p>
+  <div id="exampleStage"></div>
+  <p class="example-note">※ お手本は見るだけのものです。この端末に保存されることもありません。</p>
+  <div class="modal-footer">
+   <button type="button" class="btn btn-primary" id="exampleClose">とじる</button>
+  </div>
  </div>
 </div>
 <div class="modal-backdrop" id="resumeModal" role="dialog" aria-modal="true" aria-labelledby="resumeTitle">
@@ -1047,12 +1086,18 @@ function previewArt(id){
  return '<svg viewBox="0 0 220 100" role="img" aria-label="'+( {mindmap:'中心から枝分かれする図',webbing:'言葉をつなぐ図',venn:'重なる二つの円',fishbone:'骨の形で原因を整理する図',matrix:'四つの枠に分類する図',coordinate:'縦軸と横軸で位置を表す図',timeline:'時間の流れを表す図',pyramid:'段で構造を表す図',ychart:'三つの視点に分かれる図'}[id]||'思考の形を表す図')+'" focusable="false">'+(art[id]||fallback)+'</svg>';
 }
 
+
+function renderRec(){
+ const host=$('recGrid');if(!host)return;
+ host.innerHTML=REC_TOOLS.map(id=>specs.find(x=>x.id===id)).filter(Boolean).map((s)=>'<button class="tool-card" data-open="'+s.id+'"><div class="tool-preview">'+previewArt(s.id)+'</div><div class="tool-card-body"><div class="card-top"><span class="tool-number">TOOL '+String(specs.indexOf(s)+1).padStart(2,'0')+'</span><span class="tool-symbol">'+s.symbol+'</span></div><h3>'+rubify(s.name)+'</h3><p>'+rubify(s.desc)+'</p><span class="category-label"><span>'+categoryName(s.category)+'<span class="grade-chip">'+(GRADE_GUIDE[s.id]||'')+'</span><span class="rec-badge">おすすめ</span></span><span>開く ↗'+(hasData(s)?'　<span class="saved-badge">● 入力あり</span>':'')+'</span></span></div></button>').join('');
+}
 function renderCards(){
  const q=$('searchInput').value.trim().toLowerCase();
  const list=specs.filter(s=>(activeCategory==='all'||s.category===activeCategory)&&(!q||(s.name+' '+s.desc+' '+categoryName(s.category)+' '+s.purpose).toLowerCase().includes(q)));
  $('toolCount').textContent=list.length+' / '+specs.length+' tools';
- $('listHeading').textContent=activeCategory==='all'?'思考ツールを選ぶ':categoryName(activeCategory)+'ためのツール';
- $('toolGrid').innerHTML=list.length?list.map((s)=>'<button class="tool-card" data-open="'+s.id+'"><div class="tool-preview">'+previewArt(s.id)+'</div><div class="tool-card-body"><div class="card-top"><span class="tool-number">TOOL '+String(specs.indexOf(s)+1).padStart(2,'0')+'</span><span class="tool-symbol">'+s.symbol+'</span></div><h3>'+rubify(s.name)+'</h3><p>'+rubify(s.desc)+'</p><span class="category-label"><span>'+categoryName(s.category)+'</span><span>開く ↗'+(hasData(s)?'　<span class="saved-badge">● 入力あり</span>':'')+'</span></span></div></button>').join(''):'<div class="empty">条件に合うツールが見つかりません。検索語を変えてみてね。</div>';
+ $('listHeading').textContent=activeCategory==='all'?'もっと道具を見る（ぜんぶの道具）':categoryName(activeCategory)+'ためのツール';
+ $('toolGrid').innerHTML=list.length?list.map((s)=>'<button class="tool-card" data-open="'+s.id+'"><div class="tool-preview">'+previewArt(s.id)+'</div><div class="tool-card-body"><div class="card-top"><span class="tool-number">TOOL '+String(specs.indexOf(s)+1).padStart(2,'0')+'</span><span class="tool-symbol">'+s.symbol+'</span></div><h3>'+rubify(s.name)+'</h3><p>'+rubify(s.desc)+'</p><span class="category-label"><span>'+categoryName(s.category)+'<span class="grade-chip">'+(GRADE_GUIDE[s.id]||'')+'</span>'+(REC_TOOLS.includes(s.id)?'<span class="rec-badge">おすすめ</span>':'')+'</span><span>開く ↗'+(hasData(s)?'　<span class="saved-badge">● 入力あり</span>':'')+'</span></span></div></button>').join(''):'<div class="empty">条件に合うツールが見つかりません。検索語を変えてみてね。</div>';
+ renderRec();
 }
 function makeInitialState(spec){
  return {topic:'',labels:Object.fromEntries((spec.labels||[]).map(l=>[l.id,''])),blocks:spec.blocks.map(b=>Array.from({length:b.initial},()=>Object.fromEntries(b.fields.map(f=>[f.id,'']))))};
@@ -1294,6 +1339,8 @@ function openGuideView(){
 function closeGuideView(){$('guideView').classList.remove('active');document.body.classList.remove('guide-printing');}
 
 const REFLECTION_PROMPTS={"mindmap":[["考えはどこまで広がった？","最初には思いつかなかった考えや、新しい枝を探そう。"],["似ている考えをまとめられる？","仲間にできそうな言葉を集め、まとまりに名前を付けよう。"],["次に深めたいことは？","もっと調べたいことや、確かめたい疑問を選ぼう。"]],"webbing":[["どの言葉がつながっている？","言葉どうしの関係を、理由とともに説明しよう。"],["新しいまとまりは見つかった？","似た言葉を集めると、どんな共通点が見えるかな。"],["中心の言葉から何が分かった？","連想を広げる前と後で、考えの変化を振り返ろう。"]],"brainstorm":[["どんなアイデアが出た？","自分では思いつかなかった案や、意外な案を探そう。"],["似たアイデアをまとめられる？","共通する目的や特徴でグループにしてみよう。"],["次に試したい案は？","実現できそうか、誰に役立つかを考えて選ぼう。"]],"imagemap":[["どんな場面や気持ちが浮かんだ？","言葉だけでなく、様子や感覚にも目を向けよう。"],["イメージどうしに関係はある？","似た場面や対照的なイメージを見つけよう。"],["表現に生かせそうな発見は？","書く・描く・伝えるときに使いたいものを選ぼう。"]],"venn":[["共通点から何が分かった？","二つに共通する特徴が、どんな意味をもつか考えよう。"],["一番大きな違いは何？","比べる視点をそろえて、違いを具体的に説明しよう。"],["比べたことで見方は変わった？","片方だけを見ていたときには気付かなかったことを探そう。"]],"compare":[["同じ視点で比べられた？","比べる条件がそろっているか、表の項目を見直そう。"],["最も大きな違い・共通点は？","書いた情報から、特に大切だと思う点を選ぼう。"],["その違いはなぜ生まれた？","資料や観察をもとに、理由まで考えてみよう。"]],"matrix":[["縦と横の視点は適切？","二つの軸の意味がはっきりし、分類に役立つか確かめよう。"],["意外な場所に入った情報は？","予想と違った位置にあるものから、新しい特徴を探そう。"],["分類すると何が見えてきた？","四つのまとまりを比べ、全体の傾向を説明しよう。"]],"pmi":[["よい点と気になる点を両方見られた？","一方に偏らず、異なる立場から考えたか確かめよう。"],["おもしろい点から何が生まれそう？","意外な可能性や、新しい工夫につながる点を探そう。"],["考えや提案をどう改善できる？","三つの視点を合わせて、よりよい案を考えよう。"]],"jellyfish":[["中心の考えを支える理由は？","理由と具体例が対応しているか確かめよう。"],["具体例は理由の裏付けになっている？","経験や資料など、確かめられる事実があるか見直そう。"],["一番伝えたい理由はどれ？","大切な理由を選び、中心の考えとのつながりを説明しよう。"]],"fishbone":[["原因を一つに決めつけていない？","人・環境・方法など、別の視点からも考えよう。"],["原因を支える事実や根拠は？","予想と確かめられた事実を分けて見直そう。"],["どの原因から確かめる？","影響の大きさや確かめやすさから、次の調査を決めよう。"]],"cause-effect":[["原因から結果までつながっている？","途中のできごとを飛ばさず、順序と関係を確かめよう。"],["ほかの原因も考えられる？","一つの結果に複数の原因が関わっていないか考えよう。"],["この関係を説明する資料は？","矢印で結んだ理由を、資料や事実で確かめよう。"]],"pyramid":[["結論は根拠から導ける？","事実と理由が、上段の結論を支えているか見直そう。"],["根拠に不足はない？","別の資料や具体例が必要なところを探そう。"],["一番伝えたい結論は明確？","情報を整理したことで、最初の考えがどう変わったか確認しよう。"]],"flowchart":[["手順に抜けや逆戻りはない？","初めて取り組む人の立場で、順番をたどってみよう。"],["判断の分かれ道は分かりやすい？","条件と行き先が明確か確かめよう。"],["この流れで目的を達成できる？","安全さや無駄の少なさも考えて見直そう。"]],"process":[["それぞれの手順は具体的？","何をすればよいか、行動がはっきり書けているか確認しよう。"],["順番に理由はある？","先に行う必要があることや、入れ替えられる手順を考えよう。"],["できたか確かめる方法は？","各段階の確認ポイントや完成の条件を見直そう。"]],"timeline":[["出来事の順序は正確？","時期や年月を確かめ、前後関係を見直そう。"],["大きな変化が起きたのはいつ？","出来事の前後で何が変わったか比べよう。"],["出来事どうしに関係はある？","時間の順番だけでなく、原因や影響も考えてみよう。"]],"prep":[["最初の主張ははっきりしている？","聞き手が自分の考えを一文でつかめるか確かめよう。"],["理由と具体例はつながっている？","具体例が理由を支え、理由が主張につながるか見直そう。"],["最後のまとめは主張と一致する？","最初と最後の考えが一貫しているか読んで確かめよう。"]],"claim":[["主張を支える根拠は十分？","複数の事実や資料から確かめられるか見直そう。"],["事実と自分の考えを分けている？","資料に書かれたことと、そこから考えたことを区別しよう。"],["根拠から主張へ説明できる？","「なぜこの主張が言えるのか」を自分の言葉にしよう。"]],"kwl":[["最初の疑問は解決した？","学習前に書いた「知りたいこと」に戻って確かめよう。"],["学習して新しく分かったことは？","学習前と比べ、増えた知識や変わった考えを見つけよう。"],["次に調べたい疑問は？","まだ説明できないことや、新しく生まれた問いを書こう。"]],"ychart":[["三つの視点から見られた？","視点に偏りがないか確かめよう。"],["視点によって気付きはどう違った？","同じ対象でも、見る角度で変わった発見を比べよう。"],["全体としてどんな特徴がある？","三つの視点を合わせて、対象の特徴をまとめよう。"]],"reflection":[["事実と気持ちを分けて振り返れた？","実際に起きたことと、そのとき感じたことを確かめよう。"],["できたことと課題は何？","次にも生かしたいことと、改善したいことを具体的にしよう。"],["次は何を変えて取り組む？","振り返りを次の行動につながる目標にしよう。"]],"coordinate":[["その位置にした理由は？","縦軸・横軸の条件に照らして説明しよう。"],["近くにあるものの共通点は？","同じあたりに位置する情報の特徴を見つけよう。"],["位置を変えたいものはある？","新しい情報や考えを踏まえて、判断を見直そう。"]],"diamond":[["順位を決めた基準は明確？","何を大切にして並べたのか、判断のものさしを確かめよう。"],["順位の理由を説明できる？","上位と下位の違いを、具体的な根拠で説明しよう。"],["友達と順位が違ったらなぜ？","大切にした視点の違いから、新しい見方を見つけよう。"]],"butterfly":[["左右の情報は対応している？","同じ観点で左右を比べられているか確かめよう。"],["左右を比べて見えた違いは？","対になる特徴や、反対の性質を見つけよう。"],["中央のテーマとの関係は？","左右の情報を合わせて、中心のテーマを説明しよう。"]],"kumade":[["大切な視点を十分に出せた？","一つの方向に偏らず、異なる角度から考えよう。"],["視点どうしに共通点はある？","似た内容をまとめると、どんな大きなまとまりになるかな。"],["特に深めたい枝はどれ？","さらに考えたい視点を選び、調べることを決めよう。"]],"concentric":[["中心と外側の関係は？","中心に近いものと遠いものの違いを説明しよう。"],["どの範囲まで影響が広がる？","中心のテーマが周りにどう関わるか考えよう。"],["配置を決めた基準は？","円の内外に置いた理由を、共通の基準で説明しよう。"]],"candy":[["事実・予想・確かめ方は区別できた？","分かっていることと、まだ確かめていないことを見直そう。"],["予想には理由がある？","知っていることや経験をもとに、なぜそう考えたか説明しよう。"],["予想を確かめるには何が必要？","結果を比べられる方法や、集める情報を具体的にしよう。"]],"concept":[["概念どうしをどう結び付けた？","矢印や線の意味を言葉にして説明しよう。"],["つながりに抜けや誤りはない？","資料や学習内容に照らして、関係を確かめよう。"],["全体の仕組みを説明できる？","複数の概念を使って、テーマを自分の言葉で説明しよう。"]],"tree":[["分類の基準はそろっている？","同じ観点で仲間分けできているか確かめよう。"],["別の分け方もできる？","分類の基準を変えると、どんなまとまりができるかな。"],["上の分類と具体例はつながる？","それぞれの仲間に入る理由を説明しよう。"]],"brace":[["部分を合わせると全体になる？","分け忘れや重なりがないか確かめよう。"],["それぞれの部分の役割は？","部分が全体の中でどんな働きをしているか考えよう。"],["さらに細かく分ける必要はある？","説明に必要なところまで、部分と役割を見直そう。"]],"bridge":[["二つの言葉の関係を説明できる？","見た目ではなく、働きや役割などの関係を言葉にしよう。"],["別の組み合わせでも同じ関係？","CとDにも、AとBと同じ関係が成り立つか確かめよう。"],["関係を見つけると何が分かる？","言葉や数量、仕組みの共通する関係をまとめよう."]]};
+const GRADE_GUIDE={mindmap:'3年生〜',webbing:'2年生〜',brainstorm:'3年生〜',imagemap:'1年生〜',venn:'3年生〜',compare:'3年生〜',matrix:'4年生〜',pmi:'4年生〜',jellyfish:'4年生〜',fishbone:'4年生〜','cause-effect':'3年生〜',pyramid:'4年生〜',flowchart:'4年生〜',process:'3年生〜',timeline:'3年生〜',prep:'5年生〜',claim:'5年生〜',kwl:'3年生〜',ychart:'3年生〜',reflection:'2年生〜',coordinate:'4年生〜',diamond:'4年生〜',butterfly:'3年生〜',kumade:'2年生〜',concentric:'3年生〜',candy:'3年生〜',concept:'5年生〜',tree:'3年生〜',brace:'4年生〜',bridge:'5年生〜'};
+const REC_TOOLS=['webbing','venn','compare','fishbone','cause-effect','pyramid','ychart','reflection'];
 function renderReflectionPrompts(){
  const host=$('reflectionPrompts');if(!host||!activeTool)return;
  const prompts=REFLECTION_PROMPTS[activeTool.id]||[['考えを整理して分かったことは？','書き出す前と後で、見方がどう変わったか振り返ろう。'],['理由やつながりを説明できる？','図の中の情報を使って、自分の言葉で説明しよう。'],['次に考えたいことは？','まだ分からないことや、新しく生まれた疑問を見つけよう。']];
@@ -1312,10 +1359,32 @@ function updateThoughtProgress(){
  if(count)count.textContent=filled;
  if(msg)msg.textContent=filled===0?'まずは一つ、考えを書いてみよう。':completed>0?completed+'項目がそろったよ。理由やつながりも見直してみよう。':entries+'項目の中に、'+filled+'つの考えが書けているよ。続きを書いてみよう。';
 }
+const VENN_STEPS=[['くらべる2つを決めよう','上の「比べるもの」の欄に、2つの名前を入れてね'],['それぞれだけの特徴を書こう','Aだけのことは左の欄に、Bだけのことは右の欄に書こう'],['同じところを探そう','両方に当てはまることを、真ん中の欄に書こう'],['見直して、気づいたことを話そう','図を見ながら、比べて気づいたことを友達と話してみよう']];
+const VENN_EXAMPLE={topic:'イヌとネコを比べよう',labels:{a:'イヌ',b:'ネコ'},blocks:[[{item:'よく走る'},{item:'散歩がいる'},{item:'大きな声でほえる'}],[{item:'毛がある'},{item:'4本の足で歩く'},{item:'動物である'}],[{item:'高いところが好き'},{item:'夜も目がよく見える'},{item:'静かに歩く'}]]};
+function stepGuideOn(){try{return localStorage.getItem('thinklab:stepguide')!=='off';}catch(e){return true;}}
+function vennDone(){const B=currentState.blocks||[],L=currentState.labels||{};const has=bi=>(B[bi]||[]).some(r=>Object.values(r).some(v=>String(v||'').trim()));return [!!(String(L.a||'').trim()&&String(L.b||'').trim()),has(0)&&has(2),has(1)];}
+function updateStepGuide(){
+ const strip=$('stepStrip');if(!strip)return;
+ if(!activeTool||activeTool.id!=='venn'||!currentState){strip.hidden=true;return;}
+ strip.hidden=false;
+ const on=stepGuideOn();
+ $('stepToggle').textContent=on?'案内を消す':'案内を出す';
+ const dots=$('stepDots'),txt=$('stepText');
+ if(!on){dots.innerHTML='';txt.innerHTML='';return;}
+ const d=vennDone();let cur=d.findIndex(x=>!x);if(cur<0)cur=3;
+ dots.innerHTML=VENN_STEPS.map((st,i)=>'<span class="step-num '+(i<3?(d[i]?'done':(i===cur?'now':'')):(cur===3?'now':''))+'">'+(i+1)+'</span>').join('');
+ txt.innerHTML=rubify(VENN_STEPS[cur][0])+'<span class="step-sub">'+rubify(VENN_STEPS[cur][1])+'</span>';
+}
+function showExample(){
+ const bak=currentState;currentState=VENN_EXAMPLE;
+ $('exampleStage').innerHTML=stageVenn();
+ currentState=bak;
+ $('exampleModal').classList.add('open');
+}
 function renderEditor(spec){
  activeTool=spec;currentState=readState(spec);activeGuideNavi=pickNavi();
  $('listView').classList.add('hidden');$('editorView').classList.add('active');
- $('editorSymbol').textContent=spec.symbol;$('editorName').innerHTML=rubify(spec.name);$('editorDesc').innerHTML=rubify(spec.desc);
+ $('editorSymbol').textContent=spec.symbol;$('editorName').innerHTML=rubify(spec.name);$('editorDesc').innerHTML=rubify(spec.desc)+'<span class="editor-grade">学年のめやす：'+(GRADE_GUIDE[spec.id]||'')+'</span>';
  $('paperTitle').innerHTML=rubify(spec.name);$('paperSubtitle').innerHTML=rubify(spec.purpose);
  $('topicLabel').textContent=spec.id==='timeline'?'テーマ・期間':'テーマ・問い';
  $('topicInput').value=currentState.topic||'';
@@ -1324,7 +1393,7 @@ function renderEditor(spec){
  guideExpanded=false;$('guideMore').textContent='使い方のコツ';
  $('guideMessage').innerHTML=rubify(spec.purpose);
  setNaviImage($('guideNavi'),activeGuideNavi,'hint');
- $('useSteps').innerHTML=spec.steps.map((s,i)=>'<div class="use-step"><span class="step-dot">'+(i+1)+'</span><span>'+rubify(s)+'</span></div>').join('');
+ $('useSteps').innerHTML=spec.steps.map((s,i)=>'<div class="use-step"><span class="step-dot">'+(i+1)+'</span><span>'+rubify(s)+'</span></div>').join('');updateStepGuide();
  $('useCases').innerHTML=rubify(spec.cases);
  const subjectExamples={
   mindmap:'国語：物語を読んで気付いたことを広げる\n社会：地域の課題や調べたいことを出す\n総合：探究テーマの候補を広げる',
@@ -1373,15 +1442,21 @@ $('resumeNew').addEventListener('click',()=>{const spec=pendingTool;if(!spec)ret
 $('resumeContinue').addEventListener('click',()=>{const spec=pendingTool;if(!spec)return;pendingTool=null;$('resumeModal').classList.remove('open');renderEditor(spec);});
 $('resumeCancel').addEventListener('click',()=>{pendingTool=null;returnHome();});
 $('resumeModal').addEventListener('click',e=>{if(e.target===$('resumeModal')){pendingTool=null;returnHome();}});
+
+$('recGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)openToolFromList(spec);});
+$('stepToggle').addEventListener('click',()=>{try{localStorage.setItem('thinklab:stepguide',stepGuideOn()?'off':'on');}catch(e){}updateStepGuide();});
+$('exampleButton').addEventListener('click',showExample);
+$('exampleClose').addEventListener('click',()=>$('exampleModal').classList.remove('open'));
+$('exampleModal').addEventListener('click',e=>{if(e.target===$('exampleModal'))$('exampleModal').classList.remove('open');});
 $('searchInput').addEventListener('input',renderCards);
 $('categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;activeCategory=b.dataset.category;renderCategories();renderCards();});
 $('toolGrid').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)openToolFromList(spec);});
 $('quickPicks').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(!b)return;const spec=specs.find(x=>x.id===b.dataset.open);if(spec)openToolFromList(spec);});
 $('topicInput').addEventListener('input',e=>{if(!currentState)return;currentState.topic=e.target.value;$('diagramTopic').textContent=e.target.value;document.querySelectorAll('.stage-topic-val').forEach(el=>el.textContent=e.target.value);saveState();});
-$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;const dv=document.querySelector('[data-diag="'+bi+'-'+ri+'-'+field+'"]');if(dv)dv.textContent=t.value;updateThoughtProgress();saveState();}});
+$('blocks').addEventListener('input',e=>{const t=e.target;if(!t.matches('textarea[data-block]'))return;const bi=Number(t.dataset.block),ri=Number(t.dataset.row),field=t.dataset.field;if(currentState.blocks[bi]&&currentState.blocks[bi][ri]){currentState.blocks[bi][ri][field]=t.value;const dv=document.querySelector('[data-diag="'+bi+'-'+ri+'-'+field+'"]');if(dv)dv.textContent=t.value;updateThoughtProgress();updateStepGuide();saveState();}});
 $('blocks').addEventListener('click',e=>{
- const add=e.target.closest('[data-add]');if(add){const bi=Number(add.dataset.add),b=activeTool.blocks[bi];currentState.blocks[bi].push(Object.fromEntries(b.fields.map(f=>[f.id,''])));$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();updateThoughtProgress();saveState();}
- const rem=e.target.closest('[data-remove]');if(rem){if(!window.confirm('この項目を削除しますか？入力した内容も消えます。'))return;const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();updateThoughtProgress();saveState();}
+ const add=e.target.closest('[data-add]');if(add){const bi=Number(add.dataset.add),b=activeTool.blocks[bi];currentState.blocks[bi].push(Object.fromEntries(b.fields.map(f=>[f.id,''])));$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();updateThoughtProgress();updateStepGuide();saveState();}
+ const rem=e.target.closest('[data-remove]');if(rem){if(!window.confirm('この項目を削除しますか？入力した内容も消えます。'))return;const bi=Number(rem.dataset.remove),ri=Number(rem.dataset.row);if(currentState.blocks[bi].length<=1){currentState.blocks[bi][ri]=Object.fromEntries(activeTool.blocks[bi].fields.map(f=>[f.id,'']));}else currentState.blocks[bi].splice(ri,1);$('blocks').innerHTML=activeTool.blocks.map(renderBlock).join('');renderDiagram();updateThoughtProgress();updateStepGuide();saveState();}
 });
 $('printButton').addEventListener('click',()=>window.print());
 $('handwritePrintButton').addEventListener('click',()=>{document.body.classList.add('handwrite-printing');window.print();});
@@ -1408,7 +1483,7 @@ function updateLabelPresentation(){
   });
  }
 }
-$('labelFields').addEventListener('input',e=>{const t=e.target;if(!t.matches('input[data-label]')||!currentState)return;currentState.labels[t.dataset.label]=t.value;updateLabelPresentation();saveState();});
+$('labelFields').addEventListener('input',e=>{const t=e.target;if(!t.matches('input[data-label]')||!currentState)return;currentState.labels[t.dataset.label]=t.value;updateLabelPresentation();updateStepGuide();saveState();});
 activeNavi=pickNavi();setNaviImage($('heroNavi'),activeNavi,'waving');
 const heroLines=[['考えることを楽しもう。','使いたい道具を選んで、考えを入力してみよう。書いた内容は自動で保存されるよ。'],['どの道具で考えてみる？','目的に合う思考ツールを選ぶと、考えが整理しやすくなるよ。'],['思いついたことから始めよう。','うまく書こうとしなくて大丈夫。まずは自分の考えを書いてみよう。']];
 const heroLine=heroLines[Math.floor(Math.random()*heroLines.length)];$('heroNaviTitle').textContent=heroLine[0];$('heroNaviText').textContent=heroLine[1];
